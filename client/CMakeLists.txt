@@ -1,9 +1,11 @@
+cmake_minimum_required(VERSION 3.15)
+project(client)
 # Auto compile ui design files
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 
-include(cmake/utils.cmake)
+include(../cmake/utils.cmake)
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 

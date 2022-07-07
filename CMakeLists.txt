@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED 14)
 
 find_package(nlohmann_json CONFIG REQUIRED)
 
-include(client/client.cmake)
-include(server/server.cmake)
+add_subdirectory(client)
+add_subdirectory(server)
