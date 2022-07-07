@@ -11,8 +11,10 @@ set(CMAKE_AUTOMOC ON)
 include(cmake/utils.cmake)
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+find_package(Poco COMPONENTS Net Util JSON REQUIRED)
 
 add_executable(QTWorld WIN32 main.cpp main_window.cpp main_window.ui)
 target_link_libraries(QTWorld PRIVATE Qt5::Widgets)
+target_link_libraries(QTWorld PRIVATE Poco::Net Poco::Util Poco::JSON)
 
 windeployqt(QTWorld)
