@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.15)
+project(server)
 find_package(Poco COMPONENTS Net Util JSON REQUIRED)
 
 add_executable(server main.cpp)
