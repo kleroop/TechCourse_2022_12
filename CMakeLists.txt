@@ -3,18 +3,7 @@ project(QTWorld)
 
 set(CMAKE_CXX_STANDARD_REQUIRED 14)
 
-# Auto compile ui design files
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOMOC ON)
+find_package(nlohmann_json CONFIG REQUIRED)
 
-include(cmake/utils.cmake)
-
-find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
-find_package(Poco COMPONENTS Net Util JSON REQUIRED)
-
-add_executable(QTWorld WIN32 main.cpp main_window.cpp main_window.ui)
-target_link_libraries(QTWorld PRIVATE Qt5::Widgets)
-target_link_libraries(QTWorld PRIVATE Poco::Net Poco::Util Poco::JSON)
-
-windeployqt(QTWorld)
+include(client/client.cmake)
+include(server/server.cmake)
