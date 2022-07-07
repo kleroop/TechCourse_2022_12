@@ -2,12 +2,11 @@
 
 static void pushed_s(bool checked)
 {
-    (void) checked;
+    (void)checked;
     puts("Push");
 }
 
-MainWindow::MainWindow(QWidget *parent)
-: QMainWindow(parent) // call parent class constructor
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) // call parent class constructor
 {
     counter = 0;
 
@@ -25,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::pushed(bool checked)
 {
-    (void) checked;
+    (void)checked;
     counter++;
     ui.label->setText(QString::fromStdString("pushed " + std::to_string(counter)));
 }

@@ -8,7 +8,7 @@
 #include "ui_main_window.h"
 
 // base class must be public
-class MainWindow: public QMainWindow
+class MainWindow : public QMainWindow
 {
 public:
     MainWindow(QWidget *parent = NULL);
