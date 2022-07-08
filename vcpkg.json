@@ -2,7 +2,12 @@
   "name": "qt-world",
   "version": "0.0.1",
   "dependencies": [
-    "poco",
+    {
+      "name": "poco",
+      "features": [
+        "postgresql"
+      ]
+    },
     "nlohmann-json"
   ]
 }
