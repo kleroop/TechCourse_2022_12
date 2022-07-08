@@ -4,12 +4,16 @@ project(client)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
-
+set(CMAKE_OPTIO)
 include(../cmake/utils.cmake)
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Network)
 
-add_executable(client WIN32 main.cpp main_window.cpp main_window.ui)
-target_link_libraries(client PRIVATE Qt5::Widgets Qt5::Core nlohmann_json::nlohmann_json)
+add_executable(client WIN32 main.cpp main_window.cpp main_window.ui LoginBackgroundImg.qrc)
+target_link_libraries(client PRIVATE Qt5::Widgets)
+target_link_libraries(client PRIVATE Qt5::Core)
+#target_link_libraries(client PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(client PRIVATE Qt5::Network)
 
 windeployqt(client)

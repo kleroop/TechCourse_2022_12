@@ -2,3 +2,5 @@ cmake-build-*/
 .idea/
 vcpkg/
 build/
+/client/CMakeLists.txt.user
+build-client-*/

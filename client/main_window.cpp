@@ -1,35 +1,63 @@
 #include "main_window.h"
+#include "ui_main_window.h"
 
-static void pushed_s(bool checked)
+#include "QMessageBox"
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QUrl>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QByteArray>
+
+MainWindow::MainWindow(QWidget *parent)
+        : QMainWindow(parent)
+        , ui(new Ui::MainWindow)
 {
-    (void)checked;
-    puts("Push");
+    ui->setupUi(this);
 }
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) // call parent class constructor
+MainWindow::~MainWindow()
 {
-    counter = 0;
-
-    ui.setupUi(this); // init all ui elements
-
-    ui.label->setText(QString::fromUtf8("Привіт, світ!"));
-
-    timer.setInterval(5000);
-    QObject::connect(&timer, &QTimer::timeout, this, &MainWindow::timeout);
-    timer.start();
-
-    QObject::connect(ui.pushButton, &QPushButton::clicked, &pushed_s);
-    QObject::connect(ui.pushButton, &QPushButton::clicked, this, &MainWindow::pushed);
+    delete ui;
 }
 
-void MainWindow::pushed(bool checked)
-{
-    (void)checked;
-    counter++;
-    ui.label->setText(QString::fromStdString("pushed " + std::to_string(counter)));
+void MainWindow::loginResult(QNetworkReply *reply){
+    if(reply->error() != QNetworkReply::NoError){
+        QString err = reply->errorString();
+        QMessageBox::information(this, "Connection Error", err);
+    }
+    else{
+        QString contents = QString::fromUtf8(reply->readAll());
+        ui->tokenText->setText(contents);
+        ui->stackedWidget->setCurrentIndex(1);
+    }
+    reply->deleteLater();
 }
 
-void MainWindow::timeout()
+void MainWindow::on_loginButton_clicked()
 {
-    this->pushed(false);
+    QString adminEmail = ui->emailForm->text();
+    QString adminPassword = ui->passwordForm->text();
+
+    QJsonObject loginbody;
+    loginbody["email"] = adminEmail;
+    loginbody["password"] = adminPassword;
+    QJsonDocument doc(loginbody);
+    QByteArray data = doc.toJson();
+
+    auto *manager = new QNetworkAccessManager(this);
+
+    QUrl loginpath(loginurl);
+
+    QNetworkRequest request(loginpath);
+
+    request.setHeader( QNetworkRequest::ContentTypeHeader, "application/json" );
+
+    QNetworkReply *reply = manager->post(request, data);
+
+    QObject::connect(reply, &QNetworkReply::finished, [=](){
+        this->loginResult(reply);
+        reply->deleteLater();
+    });
 }
