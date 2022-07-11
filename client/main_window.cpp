@@ -9,9 +9,14 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QByteArray>
+#include "nlohmann/json.hpp"
+#include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow) {
+#include "../serialization.h"
+
+using json = nlohmann::json;
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 }
 
@@ -28,18 +33,17 @@ void MainWindow::loginResult(QNetworkReply *reply) {
         ui->tokenText->setText(contents);
         ui->stackedWidget->setCurrentIndex(1);
     }
-    reply->deleteLater();
 }
 
 void MainWindow::on_loginButton_clicked() {
     QString adminEmail = ui->emailForm->text();
     QString adminPassword = ui->passwordForm->text();
 
-    QJsonObject loginBody;
-    loginBody["email"] = adminEmail;
-    loginBody["password"] = adminPassword;
-    QJsonDocument doc(loginBody);
-    QByteArray data = doc.toJson();
+    json reqJson = loginReq::deserialize(adminEmail.toStdString(), adminPassword.toStdString());
+
+    string jsonString = to_string(reqJson);
+    const char* jsonCstring = jsonString.c_str();
+    QByteArray data(jsonCstring);
 
     auto *manager = new QNetworkAccessManager(this);
 
