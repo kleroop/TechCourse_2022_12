@@ -1,11 +1,7 @@
 #ifndef QTWORLD_ROOT_H
 #define QTWORLD_ROOT_H
 
-#include <Poco/Net/HTTPRequestHandler.h>
-#include <Poco/Net/HTTPServerRequest.h>
-#include <Poco/Net/HTTPServerResponse.h>
-#include <nlohmann/json.hpp>
-#include "../../common/utils/poco_response.h"
+#include "handler_includes.h"
 
 class Root : public Poco::Net::HTTPRequestHandler
 {

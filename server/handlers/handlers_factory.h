@@ -8,11 +8,13 @@
 
 #include "root.h"
 #include "shutdown.h"
+#include "not_found.h"
 
 
 enum Handlers {
     RootHandler,
-    ShutdownHandler
+    ShutdownHandler,
+    HandlersCount
 };
 
 class HandlersFactory : public Poco::Net::HTTPRequestHandlerFactory
