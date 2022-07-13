@@ -5,7 +5,9 @@
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/HTTPServerRequest.h>
 #include <map>
+
 #include "root.h"
+#include "shutdown.h"
 
 
 enum Handlers {

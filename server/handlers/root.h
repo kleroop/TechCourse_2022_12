@@ -5,6 +5,7 @@
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 #include <nlohmann/json.hpp>
+#include "../../common/utils/poco_response.h"
 
 class Root : public Poco::Net::HTTPRequestHandler
 {

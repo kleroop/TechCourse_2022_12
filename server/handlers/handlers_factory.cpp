@@ -20,5 +20,7 @@ Poco::Net::HTTPRequestHandler * HandlersFactory::getHandler(Handlers handler)
     switch (handler) {
         case Handlers::RootHandler:
             return new Root();
+        case Handlers::ShutdownHandler:
+            return new Shutdown();
     }
 }

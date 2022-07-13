@@ -2,8 +2,7 @@
 
 void Root::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response)
 {
-    response.setChunkedTransferEncoding(true);
-    response.setContentType("application/json");
+    prepare_server_response(response);
 
     std::ostream& ostr = response.send();
 
@@ -11,5 +10,5 @@ void Root::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPS
     json_response["status"] = 200;
     json_response["data"] = "Hello world";
 
-    ostr << json_response.dump(4);
+    ostr << json_response.dump();
 }
