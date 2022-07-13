@@ -27,7 +27,8 @@ MainWindow::~MainWindow() {
 void MainWindow::loginResult(QNetworkReply *reply) {
     if (reply->error() != QNetworkReply::NoError) {
         QString err = reply->errorString();
-        QMessageBox::information(this, "Connection Error", err);
+        QString code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
+        QMessageBox::information(this, "Connection Error", code + ": " + err);
     } else {
         QString contents = QString::fromUtf8(reply->readAll());
         ui->tokenText->setText(contents);
