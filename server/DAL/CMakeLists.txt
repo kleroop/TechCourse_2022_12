@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.15)
+project(server)
+find_package(Poco COMPONENTS Data REQUIRED)
+
+add_library(DAL SHARED dal.cpp)
+include(GenerateExportHeader)
+generate_export_header(DAL)
+target_include_directories(DAL PUBLIC include ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(DAL PRIVATE Poco::Data)
+add_library(server::DAL ALIAS DAL)
