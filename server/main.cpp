@@ -1,4 +1,3 @@
-int main()
-{
-    return 0;
-}
+#include "server.h"
+
+POCO_SERVER_MAIN(Server)
