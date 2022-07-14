@@ -2,13 +2,13 @@
 
 void Root::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response)
 {
-    prepare_server_response(response);
+    prepareServerResponse(response);
 
     std::ostream& ostr = response.send();
 
-    nlohmann::json  json_response;
-    json_response["status"] = 200;
-    json_response["data"] = "Hello world";
+    nlohmann::json  jsonResponse;
+    jsonResponse["status"] = 200;
+    jsonResponse["data"] = "Hello world";
 
-    ostr << json_response.dump();
+    ostr << jsonResponse.dump();
 }

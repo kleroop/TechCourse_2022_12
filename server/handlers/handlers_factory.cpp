@@ -12,6 +12,7 @@ Poco::Net::HTTPRequestHandler * HandlersFactory::createRequestHandler(const Poco
 HandlersFactory::HandlersFactory()
 {
     routes["/"] = Handlers::RootHandler;
+    routes["/auth"] = Handlers::AuthHandler;
     routes["/shutdown"] = Handlers::ShutdownHandler;
 }
 
@@ -23,6 +24,8 @@ Poco::Net::HTTPRequestHandler * HandlersFactory::getHandler(Handlers handler)
     switch (handler) {
         case Handlers::RootHandler:
             return new Root();
+        case Handlers::AuthHandler:
+            return new Auth();
         case Handlers::ShutdownHandler:
             return new Shutdown();
     }

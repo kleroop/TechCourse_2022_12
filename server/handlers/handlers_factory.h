@@ -9,11 +9,13 @@
 #include "root.h"
 #include "shutdown.h"
 #include "not_found.h"
+#include "auth.h"
 
 
 enum Handlers {
     RootHandler,
     ShutdownHandler,
+    AuthHandler,
     HandlersCount
 };
 

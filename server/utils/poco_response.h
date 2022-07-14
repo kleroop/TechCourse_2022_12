@@ -3,6 +3,6 @@
 
 #include <Poco/Net/HTTPServerResponse.h>
 
-void prepare_server_response(Poco::Net::HTTPServerResponse& response);
+void prepareServerResponse(Poco::Net::HTTPServerResponse& response);
 
 #endif
