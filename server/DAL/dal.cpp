@@ -39,8 +39,7 @@ DALStatus DALUserGetByUsername(DALUser *out, char *username)
     return DAL_OK;
 }
 
-DALStatus DALUserEdit(DALUser *out, DALUser uint32_t, char *username, char *email, char *pwd_hash,
-                      bool is_admin)
+DALStatus DALUserEdit(DALUser *inout)
 {
     return DAL_OK;
 }
