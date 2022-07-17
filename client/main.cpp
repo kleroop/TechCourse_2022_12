@@ -1,9 +1,15 @@
 #include "main_window.h"
+#include "QApplication"
+#include <QLoggingCategory>
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
-    MainWindow win;
-    win.show();
-    return app.exec();
+    QApplication a(argc, argv);
+
+    QLoggingCategory::setFilterRules("*.debug=true");
+
+    MainWindow w;
+    w.show();
+    w.setFixedSize(w.size());
+    return QApplication::exec();
 }
