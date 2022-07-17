@@ -5,16 +5,18 @@
 using json = nlohmann::json;
 using namespace std;
 
-class loginReq{
+class loginReq
+{
 public:
     void serialize();
     static json deserialize(string email, string password);
 };
 
-class loginRes{
+class loginRes
+{
 public:
     static string serialize(json j);
     void deserialize();
 };
 
-#endif //QTWORLD_SERIALIZATION_H
+#endif // QTWORLD_SERIALIZATION_H
