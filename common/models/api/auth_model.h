@@ -1,8 +1,7 @@
 #ifndef QTWORLD_AUTH_MODEL_H
 #define QTWORLD_AUTH_MODEL_H
 
-#include "../serializable.h"
-#include "../../../server/utils/poco_request.h"
+#include "models/serializable.h"
 #include <Poco/JWT/JWT.h>
 
 using namespace nlohmann;

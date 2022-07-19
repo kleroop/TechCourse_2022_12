@@ -1,5 +1,4 @@
 #include "auth_model.h"
-#include <utility>
 
 AuthRequest::AuthRequest(std::string _email, std::string _password) : email(std::move(_email)), password(std::move(_password)) {}
 

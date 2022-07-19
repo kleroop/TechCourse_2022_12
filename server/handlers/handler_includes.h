@@ -9,6 +9,6 @@
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 #include <nlohmann/json.hpp>
-#include "../utils/poco_response.h"
+#include "poco_response.h"
 
 #endif

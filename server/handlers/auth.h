@@ -5,8 +5,8 @@
 #include <Poco/JWT/Token.h>
 #include <Poco/JWT/Signer.h>
 #include "handler_includes.h"
-#include "common/models/api/auth_model.h"
-#include "server/utils/poco_request.h"
+#include "models/api/auth_model.h"
+#include "poco_request.h"
 
 using namespace nlohmann;
 
