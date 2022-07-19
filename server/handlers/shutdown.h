@@ -4,6 +4,8 @@
 #include <Poco/Process.h>
 #include "handler_includes.h"
 
+using namespace nlohmann;
+
 class Shutdown : public Poco::Net::HTTPRequestHandler
 {
 public:

@@ -3,6 +3,8 @@
 
 #include "handler_includes.h"
 
+using namespace nlohmann;
+
 class Root : public Poco::Net::HTTPRequestHandler
 {
 public:

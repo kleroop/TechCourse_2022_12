@@ -5,7 +5,7 @@ void Shutdown::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::H
     prepareServerResponse(response);
     std::ostream& ostream = response.send();
 
-    nlohmann::json responseJson;
+    json responseJson;
 
     responseJson["status"] = 200;
     responseJson["data"] = "Server will be stopped";

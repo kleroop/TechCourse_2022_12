@@ -3,6 +3,7 @@
 
 #include "handler_includes.h"
 
+using namespace nlohmann;
 
 class NotFound : public Poco::Net::HTTPRequestHandler
 {

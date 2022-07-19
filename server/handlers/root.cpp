@@ -6,7 +6,7 @@ void Root::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPS
 
     std::ostream& ostr = response.send();
 
-    nlohmann::json  jsonResponse;
+    json  jsonResponse;
     jsonResponse["status"] = 200;
     jsonResponse["data"] = "Hello world";
 

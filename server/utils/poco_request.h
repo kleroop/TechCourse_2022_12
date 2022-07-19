@@ -4,6 +4,8 @@
 #include <nlohmann/json.hpp>
 #include <streambuf>
 
-nlohmann::json toJson(std::istream& data);
+using namespace nlohmann;
+
+json toJson(std::istream& data);
 
 #endif

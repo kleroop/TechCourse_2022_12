@@ -5,7 +5,7 @@ void NotFound::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::H
     prepareServerResponse(response);
     std::ostream& ostream = response.send();
 
-    nlohmann::json responseJson;
+    json responseJson;
     responseJson["status"] = 404;
     responseJson["data"] = "Not found";
 
