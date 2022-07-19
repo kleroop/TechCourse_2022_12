@@ -5,7 +5,8 @@
     {
       "name": "poco",
       "features": [
-        "postgresql"
+        "postgresql",
+        "netssl"
       ]
     },
     "nlohmann-json"
