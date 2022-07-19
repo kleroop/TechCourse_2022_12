@@ -3,16 +3,15 @@
 
 #include <nlohmann/json.hpp>
 
+using namespace nlohmann;
+
 class ISerializable
 {
-protected:
-    std::string _error;
-
 public:
-    std::string error();
+    std::string error;
 
-    virtual nlohmann::json serialize() = 0;
-    virtual void deserialize(nlohmann::json data) = 0;
+    virtual json serialize() = 0;
+    virtual void deserialize(json data) = 0;
 };
 
 #endif

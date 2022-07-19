@@ -3,20 +3,29 @@
 
 #include "../serializable.h"
 #include "../../../server/utils/poco_request.h"
+#include <Poco/JWT/JWT.h>
+
+using namespace nlohmann;
 
 class AuthRequest : public ISerializable
 {
-private:
-    std::string _email;
-    std::string _password;
-
 public:
-    std::string email();
-    std::string password();
+    std::string email;
+    std::string password;
 
-    explicit AuthRequest(std::string email = "", std::string password = "");
-    nlohmann::json serialize() override;
-    void deserialize(nlohmann::json data) override;
+    explicit AuthRequest(std::string _email = "", std::string _password = "");
+    json serialize() override;
+    void deserialize(json data) override;
+};
+
+class AuthResponse : public ISerializable
+{
+public:
+    std::string token;
+
+    explicit AuthResponse(std::string _token = "");
+    json serialize() override;
+    void deserialize(json data) override;
 };
 
 #endif

@@ -6,7 +6,7 @@ int Server::main(const std::vector<std::string> &args)
     server.start();
 
     std::cout << "Server successfully running on " << server.port() << " port" << "\n";
-    std::cout << "To shutdown server call 'http://localhost:5000/shutdown'" << "\n";
+    std::cout << "To shutdown server call 'http://localhost:5000/shutdown' or CTR + C in terminal (SIGTERM)" << "\n";
 
     waitForTerminationRequest();
     server.stop();
