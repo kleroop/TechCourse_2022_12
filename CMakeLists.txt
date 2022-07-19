@@ -9,3 +9,4 @@ find_package(nlohmann_json CONFIG REQUIRED)
 
 add_subdirectory(client)
 add_subdirectory(server)
+add_subdirectory(common)
