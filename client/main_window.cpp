@@ -1,47 +1,36 @@
 #include "main_window.h"
 #include "ui_main_window.h"
 
-#include "QMessageBox"
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QUrl>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QByteArray>
-#include <QDebug>
-
-#include "nlohmann/json.hpp"
-
-
-
 using json = nlohmann::json;
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
-{
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
-{
+
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::loginResult(QNetworkReply *reply)
-{
-    if (reply->error() != QNetworkReply::NoError) {
-        QString err = reply->errorString();
-        QString code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
-        QMessageBox::information(this, "Connection Error", code + ": " + err);
+
+void MainWindow::loginResult(QNetworkReply *reply) {
+    json replyJson = toJson(reply);
+
+    if ((replyJson["status"]) != 200) {
+        QMessageBox::information(this, "Connection Error", toQString(replyJson["data"]["message"]));
     } else {
-        QString contents = QString::fromUtf8(reply->readAll());
-        ui->tokenText->setText(contents);
+        ui->tokenText->setText(toQString(replyJson["data"]["token"]));
         ui->stackedWidget->setCurrentIndex(1);
     }
 }
 
-void MainWindow::on_loginButton_clicked()
-{
+
+void MainWindow::on_loginBackButton_clicked() {
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_loginButton_clicked() {
     QString adminEmail = ui->emailForm->text();
     QString adminPassword = ui->passwordForm->text();
 
@@ -52,9 +41,6 @@ void MainWindow::on_loginButton_clicked()
     auto *manager = new QNetworkAccessManager(this);
     QUrl loginPath(loginUrl);
     QNetworkRequest request(loginPath);
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
     QNetworkReply *reply = manager->post(request, data);
 
     QObject::connect(reply, &QNetworkReply::finished, [=]() {

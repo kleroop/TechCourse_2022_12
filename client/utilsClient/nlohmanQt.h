@@ -8,6 +8,8 @@ using json = nlohmann::json;
 
 json toJson(QNetworkReply *reply);
 
-QByteArray toQtByteArray(json document);
+QByteArray toQtByteArray(const json &document);
 
-#endif //QTWORLD_NLOHMANQT_H
+QString toQString(const json &document);
+
+#endif
