@@ -5,8 +5,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 
-include(../cmake/utils.cmake)
-
 find_package(Qt5 COMPONENTS Core Widgets Network REQUIRED)
 
 add_subdirectory(nlohmanQt)
