@@ -8,6 +8,8 @@
         "postgresql"
       ]
     },
-    "nlohmann-json"
+    "nlohmann-json",
+    "openssl",
+    "libpq"
   ]
 }

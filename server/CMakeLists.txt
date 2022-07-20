@@ -6,6 +6,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(Poco COMPONENTS Net Util JSON REQUIRED)
 
+add_subdirectory(utils)
 add_subdirectory(DAL)
 
 add_executable(server main.cpp)
