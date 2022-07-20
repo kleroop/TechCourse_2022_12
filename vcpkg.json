@@ -9,8 +9,6 @@
         "netssl"
       ]
     },
-    "nlohmann-json",
-    "openssl",
-    "libpq"
+    "nlohmann-json"
   ]
 }

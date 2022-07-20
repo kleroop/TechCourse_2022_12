@@ -28,7 +28,5 @@ Poco::Net::HTTPRequestHandler * HandlersFactory::getHandler(Handlers handler)
             return new Auth();
         case Handlers::ShutdownHandler:
             return new Shutdown();
-        default:
-            return new NotFound();
     }
 }
