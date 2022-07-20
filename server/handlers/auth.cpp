@@ -38,7 +38,7 @@ void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPS
     char pwdHash[PHASH_SIZE];
     utils_phash(pwdHash, authRequest.password);
 
-    if (status != DAL_OK || authRequest.email != user.email || strcmp(pwdHash, user.pwd_hash) != 0)
+    if (status != DAL_OK || authRequest.email != user.email || strcmp(pwdHash, user.pwdHash) != 0)
     {
         responseJson["data"] = { {"message", "User with such credentials doesn't exist"} };
         responseJson["status"] = 401;
