@@ -16,18 +16,22 @@
 
 using json = nlohmann::json;
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow() {
+MainWindow::~MainWindow()
+{
     delete ui;
 }
 
-void MainWindow::loginResult(QNetworkReply *reply) {
+void MainWindow::loginResult(QNetworkReply *reply)
+{
     if (reply->error() != QNetworkReply::NoError) {
         QString err = reply->errorString();
-        QMessageBox::information(this, "Connection Error", err);
+        QString code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString();
+        QMessageBox::information(this, "Connection Error", code + ": " + err);
     } else {
         QString contents = QString::fromUtf8(reply->readAll());
         ui->tokenText->setText(contents);
@@ -35,14 +39,15 @@ void MainWindow::loginResult(QNetworkReply *reply) {
     }
 }
 
-void MainWindow::on_loginButton_clicked() {
+void MainWindow::on_loginButton_clicked()
+{
     QString adminEmail = ui->emailForm->text();
     QString adminPassword = ui->passwordForm->text();
 
     json reqJson = loginReq::deserialize(adminEmail.toStdString(), adminPassword.toStdString());
 
     string jsonString = to_string(reqJson);
-    const char* jsonCstring = jsonString.c_str();
+    const char *jsonCstring = jsonString.c_str();
     QByteArray data(jsonCstring);
 
     auto *manager = new QNetworkAccessManager(this);

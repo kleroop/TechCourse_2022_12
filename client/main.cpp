@@ -2,7 +2,8 @@
 #include "QApplication"
 #include <QLoggingCategory>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     QApplication a(argc, argv);
 
     QLoggingCategory::setFilterRules("*.debug=true");
