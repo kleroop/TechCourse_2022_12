@@ -9,10 +9,11 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QByteArray>
-#include "nlohmann/json.hpp"
 #include <QDebug>
 
-#include "../serialization.h"
+#include "nlohmann/json.hpp"
+
+
 
 using json = nlohmann::json;
 
@@ -44,16 +45,12 @@ void MainWindow::on_loginButton_clicked()
     QString adminEmail = ui->emailForm->text();
     QString adminPassword = ui->passwordForm->text();
 
-    json reqJson = loginReq::deserialize(adminEmail.toStdString(), adminPassword.toStdString());
-
-    string jsonString = to_string(reqJson);
-    const char *jsonCstring = jsonString.c_str();
-    QByteArray data(jsonCstring);
+    AuthRequest requestObj(adminEmail.toStdString(), adminPassword.toStdString());
+    json requestJson = requestObj.serialize();
+    QByteArray data = toQtByteArray(requestJson);
 
     auto *manager = new QNetworkAccessManager(this);
-
     QUrl loginPath(loginUrl);
-
     QNetworkRequest request(loginPath);
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
