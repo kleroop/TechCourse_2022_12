@@ -57,8 +57,7 @@ DALStatus DALInit()
                    "    username VARCHAR(32) NOT NULL UNIQUE,"
                    "    email VARCHAR(320) NOT NULL UNIQUE,"
                    "    pwd_hash VARCHAR(32) NOT NULL,"
-                   "    is_admin BOOL NOT NULL,"
-                   "    CONSTRAINT DUser_unique UNIQUE (username, email)"
+                   "    is_admin BOOL NOT NULL"
                    ")",
                 now;
     } catch (Poco::Exception &e) {
