@@ -32,9 +32,13 @@ void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPS
         return;
     }
 
-    // Mocking checking if admin-user with these credentials exists
-    //TODO: connect with DAL and do the actual authorization
-    if (authRequest.email != "mail@mail.com" || authRequest.password != "1234")
+    DALUser user;
+    DALStatus status = DALUserGetByEmail(&user, authRequest.email.c_str());
+
+    char pwdHash[PHASH_SIZE];
+    utils_phash(pwdHash, authRequest.password);
+
+    if (status != DAL_OK || authRequest.email != user.email || strcmp(pwdHash, user.pwd_hash) != 0)
     {
         responseJson["data"] = { {"message", "User with such credentials doesn't exist"} };
         responseJson["status"] = 401;
