@@ -6,7 +6,7 @@
 int main()
 {
     char pwd[PHASH_SIZE];
-    if (DALInit() != DAL_OK) {
+    if (DALInitEx(true) != DAL_OK) {
         puts("Couldn't init DAL connection");
         return EXIT_FAILURE;
     }

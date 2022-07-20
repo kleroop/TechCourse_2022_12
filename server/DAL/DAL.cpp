@@ -5,6 +5,8 @@
 #include <Poco/Data/Session.h>
 #include <Poco/Exception.h>
 #include <Poco/Data/DataException.h>
+#include <cstring>
+
 using Poco::Data::PostgreSQL::ConnectionException;
 using Poco::Data::PostgreSQL::Connector;
 using Poco::Data::PostgreSQL::PostgreSQLException;
@@ -26,21 +28,21 @@ class DUser
 public:
     int32_t id;
     // max length defined by the standard + nul terminator
-    string username, email, pwd_hash;
-    bool is_admin;
+    string username, email, pwdHash;
+    bool isAdmin;
     DALUser toPOD()
     {
         DALUser r;
         r.id = id;
         strcpy(r.username, username.c_str());
         strcpy(r.email, email.c_str());
-        strcpy(r.pwd_hash, pwd_hash.c_str());
-        r.is_admin = is_admin;
+        strcpy(r.pwdHash, pwdHash.c_str());
+        r.isAdmin = isAdmin;
         return r;
     };
 };
 
-DALStatus DALInit()
+DALStatus DALInitEx(bool dropTables)
 {
     Connector::registerConnector();
     try {
@@ -51,20 +53,38 @@ DALStatus DALInit()
         puts(e.what());
         return DAL_CONNECTION_FAILED;
     }
+    if (dropTables) {
+        Statement drop(session);
+        drop << "DROP TABLE IF EXISTS DUser CASCADE;";
+        try {
+            drop.execute();
+        } catch (const Poco::Exception &e) {
+            puts(e.displayText().c_str());
+            return DAL_ERROR;
+        }
+    }
+
+    Statement create(session);
+    create << "CREATE TABLE IF NOT EXISTS DUser ("
+              "    id SERIAL PRIMARY KEY,"
+              "    username VARCHAR(32) NOT NULL UNIQUE,"
+              "    email VARCHAR(320) NOT NULL UNIQUE,"
+              "    pwdHash VARCHAR(32) NOT NULL,"
+              "    isAdmin BOOL NOT NULL"
+              ")";
     try {
-        session << "CREATE TABLE IF NOT EXISTS DUser ("
-                   "    id SERIAL PRIMARY KEY,"
-                   "    username VARCHAR(32) NOT NULL UNIQUE,"
-                   "    email VARCHAR(320) NOT NULL UNIQUE,"
-                   "    pwd_hash VARCHAR(32) NOT NULL,"
-                   "    is_admin BOOL NOT NULL"
-                   ")",
-                now;
-    } catch (Poco::Exception &e) {
+        create.execute();
+    } catch (const Poco::Exception &e) {
         puts(e.displayText().c_str());
         return DAL_ERROR;
     }
+
     return DAL_OK;
+}
+
+DALStatus DALInit()
+{
+    return DALInitEx(false);
 }
 
 void DALQuit()
@@ -73,16 +93,16 @@ void DALQuit()
     delete session_;
 }
 
-DALStatus DALUserCreate(DALUser *out, const char *username, const char *email, const char *pwd_hash,
-                        bool is_admin)
+DALStatus DALUserCreate(DALUser *out, const char *username, const char *email, const char *pwdHash,
+                        bool isAdmin)
 {
     DUser du;
     Statement insert(session);
-    insert << "INSERT INTO DUser (username, email, pwd_hash, is_admin) "
+    insert << "INSERT INTO DUser (username, email, pwdHash, isAdmin) "
               "VALUES ($1, $2, $3, $4) "
               "ON CONFLICT DO NOTHING "
               "RETURNING id ",
-            use(username), use(email), use(pwd_hash), use(is_admin), into(du.id);
+            use(username), use(email), use(pwdHash), use(isAdmin), into(du.id);
     try {
         if (!insert.execute()) {
             return DAL_USER_EXISTS;
@@ -94,8 +114,8 @@ DALStatus DALUserCreate(DALUser *out, const char *username, const char *email, c
     if (out) {
         du.username = username;
         du.email = email;
-        du.pwd_hash = pwd_hash;
-        du.is_admin = is_admin;
+        du.pwdHash = pwdHash;
+        du.isAdmin = isAdmin;
         *out = du.toPOD();
     }
     return DAL_OK;
@@ -105,8 +125,8 @@ DALStatus DALUserGetById(DALUser *out, uint32_t id)
 {
     DUser du;
     Statement select(session);
-    select << "SELECT id, username, email, pwd_hash, is_admin FROM DUser WHERE id=$1", into(du.id),
-            into(du.username), into(du.email), into(du.pwd_hash), into(du.is_admin), use(id);
+    select << "SELECT id, username, email, pwdHash, isAdmin FROM DUser WHERE id=$1", into(du.id),
+            into(du.username), into(du.email), into(du.pwdHash), into(du.isAdmin), use(id);
     try {
         if (!select.execute()) {
             return DAL_NOT_FOUND;
@@ -125,8 +145,8 @@ DALStatus DALUserGetByUsername(DALUser *out, const char *username)
 {
     DUser du;
     Statement select(session);
-    select << "SELECT id, username, email, pwd_hash, is_admin FROM DUser WHERE username=$1",
-            into(du.id), into(du.username), into(du.email), into(du.pwd_hash), into(du.is_admin),
+    select << "SELECT id, username, email, pwdHash, isAdmin FROM DUser WHERE username=$1",
+            into(du.id), into(du.username), into(du.email), into(du.pwdHash), into(du.isAdmin),
             use(username);
     try {
         if (!select.execute()) {
@@ -146,9 +166,8 @@ DALStatus DALUserGetByEmail(DALUser *out, const char *email)
 {
     DUser du;
     Statement select(session);
-    select << "SELECT id, username, email, pwd_hash, is_admin FROM DUser WHERE email=$1",
-            into(du.id), into(du.username), into(du.email), into(du.pwd_hash), into(du.is_admin),
-            use(email);
+    select << "SELECT id, username, email, pwdHash, isAdmin FROM DUser WHERE email=$1", into(du.id),
+            into(du.username), into(du.email), into(du.pwdHash), into(du.isAdmin), use(email);
     try {
         if (!select.execute()) {
             return DAL_NOT_FOUND;
@@ -166,10 +185,9 @@ DALStatus DALUserGetByEmail(DALUser *out, const char *email)
 DALStatus DALUserEdit(const DALUser *in)
 {
     Statement select(session);
-    select << "UPDATE DUser SET (username, email, pwd_hash, is_admin) = ($1, $2, $3, $4) "
+    select << "UPDATE DUser SET (username, email, pwdHash, isAdmin) = ($1, $2, $3, $4) "
               "WHERE id=$5",
-            bind(in->username), bind(in->email), bind(in->pwd_hash), bind(in->is_admin),
-            bind(in->id);
+            bind(in->username), bind(in->email), bind(in->pwdHash), bind(in->isAdmin), bind(in->id);
     try {
         if (!select.execute()) {
             return DAL_NOT_FOUND;

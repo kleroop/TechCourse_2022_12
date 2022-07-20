@@ -14,17 +14,19 @@ typedef struct
 {
     int32_t id;
     // max length defined by the standard + nul terminator
-    char username[32 + 1], email[320 + 1], pwd_hash[32 + 1];
-    bool is_admin;
+    char username[32 + 1], email[320 + 1], pwdHash[32 + 1];
+    bool isAdmin;
 } DALUser;
 
 DAL_EXPORT DALStatus DALInit();
 
+DAL_EXPORT DALStatus DALInitEx(bool dropTables);
+
 DAL_EXPORT void DALQuit();
 
 DAL_EXPORT DALStatus DALUserCreate(DALUser *out, const char username[32 + 1],
-                                   const char email[320 + 1], const char pwd_hash[32 + 1],
-                                   bool is_admin);
+                                   const char email[320 + 1], const char pwdHash[32 + 1],
+                                   bool isAdmin);
 
 DAL_EXPORT DALStatus DALUserGetById(DALUser *out, uint32_t id);
 
