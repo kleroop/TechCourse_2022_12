@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>Resourses/image_BG.png</file>
+        <file>Resources/image_BG.png</file>
+
+        <file>Resources/fonts/open-sans/OpenSans-Bold.ttf</file>
+        <file>Resources/fonts/open-sans/OpenSans-Regular.ttf</file>
+        <file>Resources/fonts/open-sans/OpenSans-Semibold.ttf</file>
+        <file>Resources/fonts/roboto/RobotoCondensed-Bold.ttf</file>
+        <file>Resources/fonts/roboto/Roboto-Regular.ttf</file>
+        <file>Resources/fonts/roboto/Roboto-Medium.ttf</file>
     </qresource>
 </RCC>
