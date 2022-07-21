@@ -8,13 +8,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     ui->errorLabel->setText("");
-
-    QFontDatabase::addApplicationFont(R"(F:\SS\TechCourse_2022_12\client\Resources\fonts\open-sans\OpenSans-Bold.ttf)");
-    QFontDatabase::addApplicationFont(R"(F:\SS\TechCourse_2022_12\client\Resources\fonts\open-sans\OpenSans-Regular.ttf)");
-    QFontDatabase::addApplicationFont(R"(F:\SS\TechCourse_2022_12\client\Resources\fonts\open-sans\OpenSans-Semibold.ttf)");
-    QFontDatabase::addApplicationFont(R"(F:\SS\TechCourse_2022_12\client\Resources\fonts\roboto\RobotoCondensed-Bold.ttf)");
-    QFontDatabase::addApplicationFont(R"(F:\SS\TechCourse_2022_12\client\Resources\fonts\roboto\Roboto-Regular.ttf)");
-    QFontDatabase::addApplicationFont(R"(F:\SS\TechCourse_2022_12\client\Resources\fonts\roboto\Roboto-Medium.ttf)");
 }
 
 
