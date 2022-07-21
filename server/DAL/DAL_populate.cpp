@@ -6,7 +6,7 @@
 int main()
 {
     char pwd[PHASH_SIZE];
-    if (DALInit() != DAL_OK) {
+    if (DALInitEx(true) != DAL_OK) {
         puts("Couldn't init DAL connection");
         return EXIT_FAILURE;
     }
@@ -14,7 +14,7 @@ int main()
 
     utils_phash(pwd, "admin");
 
-    switch (DALUserCreate(&u, "admin", "admin1@examle.com", pwd, true)) {
+    switch (DALUserCreate(&u, "admin", "admin1@example.com", pwd, true)) {
     case DAL_OK:
     case DAL_USER_EXISTS:
         break;
@@ -24,9 +24,9 @@ int main()
 
     assert(DALUserGetByUsername(&u, "admin") == DAL_OK);
     assert(DALUserGetById(NULL, u.id) == DAL_OK);
-    assert(DALUserGetByEmail(NULL, "admin1@examle.com") == DAL_OK
-           ^ DALUserGetByEmail(NULL, "admin@examle.com") == DAL_OK);
-    strcpy(u.email, "admin@examle.com");
+    assert(DALUserGetByEmail(NULL, "admin1@example.com") == DAL_OK
+           ^ DALUserGetByEmail(NULL, "admin@example.com") == DAL_OK);
+    strcpy(u.email, "admin@example.com");
     assert(DALUserEdit(&u) == DAL_OK);
     u.id = 0;
     assert(DALUserEdit(&u) == DAL_NOT_FOUND);
