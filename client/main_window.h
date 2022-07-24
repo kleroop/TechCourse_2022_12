@@ -3,9 +3,7 @@
 
 #include "QNetworkReply"
 #include <QMainWindow>
-
-#include "models/api/auth_model.h"
-#include "nlohmanQt/nlohmanQt.h"
+#include <api.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,11 +24,9 @@ private slots:
 
     void on_loginButton_clicked();
 
-    void loginResult(QNetworkReply *reply);
-
 private:
     Ui::MainWindow *ui;
-    QString loginUrl = "https://localhost:5000/auth";
+    Api api;
 };
 
 #endif // MAIN_WINDOW_H

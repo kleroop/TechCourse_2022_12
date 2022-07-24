@@ -2,7 +2,6 @@
 #define QTWORLD_AUTH_MODEL_H
 
 #include "models/serializable.h"
-#include <Poco/JWT/JWT.h>
 
 using namespace nlohmann;
 
