@@ -10,8 +10,7 @@
 #include <QByteArray>
 #include "QFontDatabase"
 
-#include "models/api/auth_model.h"
-#include "utilsClient/nlohmanQt.h"
+#include "models/auth_model.h"
 
 #include "nlohmann/json.hpp"
 #include <api.h>
@@ -40,8 +39,6 @@ private slots:
     void on_passwordForm_textChanged();
 
     void on_loginButton_clicked();
-
-    void loginResult(QNetworkReply *reply);
 
     void resizeEvent(QResizeEvent *event) override;
 
