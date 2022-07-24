@@ -1,7 +1,7 @@
 #ifndef QTWORLD_AUTH_MODEL_H
 #define QTWORLD_AUTH_MODEL_H
 
-#include "models/serializable.h"
+#include <models/ISerializable.h>
 
 using namespace nlohmann;
 
