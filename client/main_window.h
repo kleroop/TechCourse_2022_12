@@ -2,7 +2,9 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+
 #include "screens/login.h"
+#include "screens/home.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,7 +22,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
     Login login;
+    Home home;
 };
 
 #endif // MAIN_WINDOW_H

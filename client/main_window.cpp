@@ -4,9 +4,12 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    ui->stackedWidget->addWidget(&login);
 
-    ui->stackedWidget->setCurrentIndex(0);
+    // Adding our screens here
+    ui->stackedWidget->addWidget(&login);
+    ui->stackedWidget->addWidget(&home);
+
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
 
