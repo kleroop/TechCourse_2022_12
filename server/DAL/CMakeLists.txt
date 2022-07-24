@@ -9,7 +9,7 @@ add_library(DAL SHARED DAL.cpp)
 include(GenerateExportHeader)
 generate_export_header(DAL)
 
-target_include_directories(DAL PUBLIC include ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(DAL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(DAL PRIVATE Poco::DataPostgreSQL)
 add_library(server::DAL ALIAS DAL)
 

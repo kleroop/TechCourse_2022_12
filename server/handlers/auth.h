@@ -5,10 +5,10 @@
 #include <Poco/JWT/Token.h>
 #include <Poco/JWT/Signer.h>
 #include "handler_includes.h"
-#include "models/api/auth_model.h"
+#include "models/auth_model.h"
 #include "poco_request.h"
 #include "phash.h"
-#include "DAL.h"
+#include "../DAL/DAL.h"
 
 using namespace nlohmann;
 
