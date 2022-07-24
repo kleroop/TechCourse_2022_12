@@ -12,7 +12,6 @@
 
 #include "models/api/auth_model.h"
 #include "utilsClient/nlohmanQt.h"
-#include "api/api.h"
 
 #include "nlohmann/json.hpp"
 
@@ -30,10 +29,7 @@ public:
 
     ~MainWindow() override;
 
-    void testSlot(int *responeObj);
-
-public slots:
-    void testSlot(AuthResponse *responeObj);
+private slots:
 
     void on_loginBackButton_clicked();
 
@@ -52,4 +48,4 @@ private:
     QString loginUrl = "http://localhost:5000/auth";
 };
 
-#endif
+#endif // MAIN_WINDOW_H
