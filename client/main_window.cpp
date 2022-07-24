@@ -7,6 +7,7 @@ using json = nlohmann::json;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     //todo fix fonts
+    //todo separate pages code
     ui->errorLabel->setText(""); //todo delete with deleting sample text in ui.errorLabel when fonts fixed
 }
 
@@ -44,13 +45,15 @@ void MainWindow::loginResult(QNetworkReply *reply) {
 
     QString errorFormStyle("font-family: 'Open Sans';\n""font-style: normal;\n""font-weight: 400;\nfont-size: 14px;\n" //todo find better solution
                            "line-height: 19px;\n""padding-left: 15px;\n""border: 1px solid #D72130;");
+    AuthResponse obj;
+    obj.deserialize(replyJson);
 
-    if ((replyJson["status"]) != 200) {
-        ui->errorLabel->setText(toQString(replyJson["data"]["message"]));
+    if (!obj.error.empty()) {
+        ui->errorLabel->setText(QString::fromStdString(obj.error));
         ui->emailForm->setStyleSheet(errorFormStyle);
         ui->passwordForm->setStyleSheet(errorFormStyle);
     } else {
-        ui->tokenText->setText(toQString(replyJson["data"]["token"]));
+        ui->tokenText->setText(QString::fromStdString(obj.token));
         ui->stackedWidget->setCurrentIndex(1);
     }
 }
@@ -61,21 +64,18 @@ void MainWindow::on_loginBackButton_clicked() { //todo delete with temporary pag
 }
 
 
+void MainWindow::testSlot(AuthResponse *responeObj) {
+    ui->errorLabel->setText(QString::fromStdString(responeObj->error));
+}
+
+void MainWindow::testSlot(int *responeObj) {
+    ui->errorLabel->setText(QString::fromStdString(std::to_string(*responeObj)));
+}
+
 void MainWindow::on_loginButton_clicked() {
     QString adminEmail = ui->emailForm->text();
     QString adminPassword = ui->passwordForm->text();
 
-    AuthRequest requestObj(adminEmail.toStdString(), adminPassword.toStdString());
-    json requestJson = requestObj.serialize();
-    QByteArray data = toQtByteArray(requestJson);
-
-    auto *manager = new QNetworkAccessManager(this);
-    QUrl loginPath(loginUrl);
-    QNetworkRequest request(loginPath);
-    QNetworkReply *reply = manager->post(request, data);
-
-    QObject::connect(reply, &QNetworkReply::finished, [=]() {
-        this->loginResult(reply);
-        reply->deleteLater();
-    });
+    login(this, adminEmail.toStdString(),
+          adminPassword.toStdString(), [this](int *obj){ this->testSlot(obj); });
 }
