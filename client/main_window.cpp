@@ -61,21 +61,17 @@ void MainWindow::on_loginBackButton_clicked() { //todo delete with temporary pag
 }
 
 
-void MainWindow::on_loginButton_clicked() {
+void MainWindow::on_loginButton_clicked()
+{
     QString adminEmail = ui->emailForm->text();
     QString adminPassword = ui->passwordForm->text();
+    api.login(adminEmail.toStdString(), adminPassword.toStdString(), [=](const AuthResponse &resp) {
+        if (!resp.error.empty()) {
+            QMessageBox::information(this, "Connection Error", QString::fromStdString(resp.error));
+        } else {
+            ui->tokenText->setText(QString::fromStdString(resp.token));
+            ui->stackedWidget->setCurrentIndex(1);
+        }
 
-    AuthRequest requestObj(adminEmail.toStdString(), adminPassword.toStdString());
-    json requestJson = requestObj.serialize();
-    QByteArray data = toQtByteArray(requestJson);
-
-    auto *manager = new QNetworkAccessManager(this);
-    QUrl loginPath(loginUrl);
-    QNetworkRequest request(loginPath);
-    QNetworkReply *reply = manager->post(request, data);
-
-    QObject::connect(reply, &QNetworkReply::finished, [=]() {
-        this->loginResult(reply);
-        reply->deleteLater();
     });
 }

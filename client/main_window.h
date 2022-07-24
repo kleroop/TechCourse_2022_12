@@ -14,6 +14,8 @@
 #include "utilsClient/nlohmanQt.h"
 
 #include "nlohmann/json.hpp"
+#include <api.h>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -45,7 +47,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QString loginUrl = "http://localhost:5000/auth";
+    Api api;
 };
 
 #endif // MAIN_WINDOW_H
