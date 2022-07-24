@@ -1,0 +1,37 @@
+#ifndef QTWORLD_LOGIN_H
+#define QTWORLD_LOGIN_H
+
+#include <QWidget>
+#include "api.h"
+
+QT_BEGIN_NAMESPACE
+namespace Ui {
+class Login;
+}
+QT_END_NAMESPACE
+
+class Login : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit Login(QWidget *parent = nullptr);
+    ~Login() override;
+
+private:
+    Ui::Login *ui;
+    Api api;
+
+private slots:
+    void on_loginBackButton_clicked();
+
+    void on_emailForm_textChanged();
+
+    void on_passwordForm_textChanged();
+
+    void on_loginButton_clicked();
+
+    void resizeEvent(QResizeEvent *event) override;
+};
+
+#endif // QTWORLD_LOGIN_H
