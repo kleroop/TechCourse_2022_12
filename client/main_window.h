@@ -2,17 +2,17 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
-#include "QMessageBox"
+#include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QUrl>
 #include <QByteArray>
-#include "QFontDatabase"
+#include <QFontDatabase>
 
-#include "models/auth_model.h"
+#include <models/auth_model.h>
 
-#include "nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 #include <api.h>
 
 

@@ -11,6 +11,7 @@ class Api
 {
 public:
     Api();
+    ~Api();
     void login(string email, string password, const std::function<void(const AuthResponse &)> &f);
 
 private:

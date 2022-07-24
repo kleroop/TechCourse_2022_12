@@ -7,7 +7,7 @@
 #include <Poco/Util/ServerApplication.h>
 #include <iostream>
 #include "handlers/handlers_factory.h"
-#include "DAL.h"
+#include "DAL/DAL.h"
 
 #define PORT 5000
 #define MAX_QUEUED 256

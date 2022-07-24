@@ -1,4 +1,4 @@
-#include "api.h"
+#include <api.h>
 #include <QNetworkReply>
 
 static json toJson(QNetworkReply *reply)
@@ -30,6 +30,12 @@ Api::Api()
 {
     manager = new QNetworkAccessManager();
 }
+
+Api::~Api()
+{
+    delete manager;
+}
+
 void Api::makeRequest(string path, json inp, const std::function<void(const json &)> &f)
 {
     QString url = QString::fromStdString("http://localhost:5000" + path);

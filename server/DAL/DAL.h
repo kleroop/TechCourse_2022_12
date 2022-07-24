@@ -1,7 +1,7 @@
 #ifndef DAL_H
 #define DAL_H
 
-#include <dal_export.h>
+#include "dal_export.h"
 #include <cstdint>
 
 #ifdef __cplusplus
