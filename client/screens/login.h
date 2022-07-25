@@ -23,13 +23,9 @@ private:
     Api api;
 
 private slots:
-    void on_loginBackButton_clicked();
-
-    void on_emailForm_textChanged();
-
-    void on_passwordForm_textChanged();
-
-    void on_loginButton_clicked();
+    void onLoginBackButtonClicked();
+    void onFormTextChanged();
+    void onLoginButtonClicked();
 
     void resizeEvent(QResizeEvent *event) override;
 };

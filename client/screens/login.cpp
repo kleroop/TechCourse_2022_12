@@ -6,6 +6,11 @@ Login::Login(QWidget *parent) : QWidget(parent), ui(new Ui::Login)
     ui->setupUi(this);
     //TODO: fix fonts
     ui->errorLabel->setText(""); //TODO: delete with deleting sample text in ui.errorLabel when fonts fixed
+
+    connect(ui->emailForm, &QLineEdit::textChanged, this, &Login::onFormTextChanged);
+    connect(ui->passwordForm, &QLineEdit::textChanged, this, &Login::onFormTextChanged);
+    connect(ui->loginButton, &QPushButton::clicked, this, &Login::onLoginButtonClicked);
+    connect(ui->loginBackButton, &QPushButton::clicked, this, &Login::onLoginBackButtonClicked);
 }
 
 Login::~Login()
@@ -22,7 +27,7 @@ void Login::resizeEvent(QResizeEvent *event)
     ui->loginBgImg->setFixedWidth(w);
 }
 
-void Login::on_emailForm_textChanged()
+void Login::onFormTextChanged()
 {
     QString noErrorFormStyle("font-family: 'Open Sans';\n""font-style: normal;\n""font-weight: 400;\nfont-size: 14px;\n"//todo find better solution
                              "line-height: 19px;\n""padding-left: 15px;\n""border: 1px solid #414C5F;");
@@ -32,18 +37,13 @@ void Login::on_emailForm_textChanged()
     ui->errorLabel->setText("");
 }
 
-void Login::on_passwordForm_textChanged()
-{
-    Login::on_emailForm_textChanged();
-}
-
-void Login::on_loginBackButton_clicked()
+void Login::onLoginBackButtonClicked()
 {
     //TODO: delete with temporary page(tokenPage)
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void Login::on_loginButton_clicked()
+void Login::onLoginButtonClicked()
 {
     QString adminEmail = ui->emailForm->text();
     QString adminPassword = ui->passwordForm->text();
