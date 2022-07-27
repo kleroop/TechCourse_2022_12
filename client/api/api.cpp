@@ -38,14 +38,11 @@ Api::~Api()
 
 void Api::makeRequest(string path, json inp, const std::function<void(const json &)> &f)
 {
-    QString url = QString::fromStdString("http://localhost:5000" + path);
-    QUrl loginPath(url);
-    QNetworkRequest request(loginPath);
-    QByteArray data = toQtByteArray(inp);
+    QNetworkRequest request(QUrl(QString::fromStdString("http://localhost:5000" + path)));
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    QNetworkReply *reply = manager->post(request, data);
+    QNetworkReply *reply = manager->post(request, toQtByteArray(inp));
 
     QObject::connect(reply, &QNetworkReply::finished, [=]() {
         f(toJson(reply));
@@ -53,6 +50,7 @@ void Api::makeRequest(string path, json inp, const std::function<void(const json
     });
 }
 
+// todo: serialize error check with changed makeRequest to use ISerializable
 void Api::login(string email, string password, const std::function<void(const AuthResponse &)> &f)
 {
     AuthRequest m(email, password);
