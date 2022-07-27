@@ -2,19 +2,9 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
-#include <QMessageBox>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QUrl>
-#include <QByteArray>
-#include <QFontDatabase>
 
-#include <models/auth_model.h>
-
-#include <nlohmann/json.hpp>
-#include <api.h>
-
+#include "screens/login.h"
+#include "screens/home.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,21 +20,11 @@ public:
 
     ~MainWindow() override;
 
-private slots:
-
-    void on_loginBackButton_clicked();
-
-    void on_emailForm_textChanged();
-
-    void on_passwordForm_textChanged();
-
-    void on_loginButton_clicked();
-
-    void resizeEvent(QResizeEvent *event) override;
-
 private:
     Ui::MainWindow *ui;
-    Api api;
+
+    Login login;
+    Home home;
 };
 
 #endif // MAIN_WINDOW_H
