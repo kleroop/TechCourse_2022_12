@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>Resources/image_BG.png</file>
+        <file>Resources/user_prof_pic.png</file>
+        <file>Resources/switch_icon.jpg</file>
+        <file>Resources/dropdownIcon.png</file>
 
         <file>Resources/fonts/open-sans/OpenSans-Bold.ttf</file>
         <file>Resources/fonts/open-sans/OpenSans-Regular.ttf</file>

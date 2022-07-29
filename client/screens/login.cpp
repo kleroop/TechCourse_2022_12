@@ -1,6 +1,16 @@
 #include "login.h"
 #include "ui_Login.h"
 
+int resizeImgWidth(const std::string& path, QLabel* label){
+    QPixmap picture = QPixmap (QString::fromStdString(path));
+    double width = picture.width();
+    double height = picture.height();
+    double ratio = width / height;
+    int w = ratio * label->height();
+
+    return w;
+}
+
 Login::Login(QWidget *parent) : QWidget(parent), ui(new Ui::Login)
 {
     ui->setupUi(this);
@@ -11,6 +21,8 @@ Login::Login(QWidget *parent) : QWidget(parent), ui(new Ui::Login)
     connect(ui->passwordForm, &QLineEdit::textChanged, this, &Login::onFormTextChanged);
     connect(ui->loginButton, &QPushButton::clicked, this, &Login::onLoginButtonClicked);
     connect(ui->loginBackButton, &QPushButton::clicked, this, &Login::onLoginBackButtonClicked);
+
+    ui->loginBgImg->setFixedWidth(resizeImgWidth("://Resources/image_BG.png", ui->loginBgImg));//todo make it work
 }
 
 Login::~Login()
@@ -21,10 +33,7 @@ Login::~Login()
 void Login::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
-
-    double ratio = (double) 642 / (double) 1024;// TODO: replace hardcoded numbers with picture properties (QPixmap.width)
-    int w = ratio * QWidget::size().height();
-    ui->loginBgImg->setFixedWidth(w);
+    ui->loginBgImg->setFixedWidth(resizeImgWidth("://Resources/image_BG.png", ui->loginBgImg));
 }
 
 void Login::onFormTextChanged()
