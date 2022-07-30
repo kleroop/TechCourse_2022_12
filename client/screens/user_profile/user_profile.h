@@ -17,8 +17,6 @@ public:
     explicit userProfile(QWidget *parent = nullptr);
     ~userProfile() override;
 
-    Ui::userProfile *ui;
-
 signals:
     void dropdownButtonClicked();
 
@@ -26,7 +24,7 @@ private slots:
     void onDropdownButtonClicked();
 
 private:
-
+    Ui::userProfile *ui;
 };
 
 #endif

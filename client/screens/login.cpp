@@ -14,7 +14,6 @@ int resizeImgWidth(const std::string& path, QLabel* label){
 Login::Login(QWidget *parent) : QWidget(parent), ui(new Ui::Login)
 {
     ui->setupUi(this);
-    //TODO: fix fonts
     ui->errorLabel->setText(""); //TODO: delete with deleting sample text in ui.errorLabel when fonts fixed
 
     connect(ui->emailForm, &QLineEdit::textChanged, this, &Login::onFormTextChanged);
