@@ -1,15 +1,13 @@
 #include "user_login.h"
 #include "ui_user_login.h"
 
-userLogin::userLogin(QWidget *parent) : QWidget(parent), ui(new Ui::userLogin)
-{
+UserLogin::UserLogin(QWidget *parent) : QWidget(parent), ui(new Ui::UserLogin) {
     ui->setupUi(this);
 
     //connect(ui->dropdownButton, &QPushButton::clicked, this, &userProfile::onDropdownButtonClicked);
 }
 
-userLogin::~userLogin()
-{
+UserLogin::~UserLogin() {
     delete ui;
 }
 //

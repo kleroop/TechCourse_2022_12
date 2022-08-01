@@ -1,19 +1,16 @@
 #include "user_profile.h"
 #include "ui_user_profile.h"
 
-userProfile::userProfile(QWidget *parent) : QWidget(parent), ui(new Ui::userProfile)
-{
+
+UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProfile) {
     ui->setupUi(this);
 
-    connect(ui->dropdownButton, &QPushButton::clicked, this, &userProfile::onDropdownButtonClicked);
+    this->dropdownMenu = new UserDropdown(parent, ui->dropdownButton, this);
+    dropdownMenu->hide();
+
+    connect(ui->dropdownButton, &QPushButton::clicked, dropdownMenu, &UserDropdown::onDropdownButtonClicked);
 }
 
-userProfile::~userProfile()
-{
+UserProfile::~UserProfile() {
     delete ui;
-}
-
-void userProfile::onDropdownButtonClicked()
-{
-    emit dropdownButtonClicked();
 }

@@ -2,29 +2,26 @@
 #define QTWORLD_USER_PROFILE_H
 
 #include <QWidget>
+#include "user_dropdown/user_dropdown.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class userProfile;
+    class UserProfile;
 }
 QT_END_NAMESPACE
 
-class userProfile : public QWidget
-{
-    Q_OBJECT
+class UserProfile : public QWidget {
+Q_OBJECT
 
 public:
-    explicit userProfile(QWidget *parent = nullptr);
-    ~userProfile() override;
+    explicit UserProfile(QWidget *parent = nullptr);
 
-signals:
-    void dropdownButtonClicked();
+    ~UserProfile() override;
 
-private slots:
-    void onDropdownButtonClicked();
+    UserDropdown *dropdownMenu;
 
 private:
-    Ui::userProfile *ui;
+    Ui::UserProfile *ui;
 };
 
 #endif

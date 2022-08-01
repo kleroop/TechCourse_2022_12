@@ -2,23 +2,33 @@
 #define QTWORLD_USER_DROPDOWN_H
 
 #include <QWidget>
+#include "QPushButton"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class userDropdown;
+    class UserDropdown;
 }
 QT_END_NAMESPACE
 
-class userDropdown : public QWidget
-{
-    Q_OBJECT
+class UserDropdown : public QWidget {
+Q_OBJECT
 
 public:
-    explicit userDropdown(QWidget *parent = nullptr);
-    ~userDropdown() override;
+    explicit UserDropdown(QWidget *parent = nullptr, QPushButton *DropdownButton = nullptr,
+                          QWidget *ButtonParent = nullptr);
+
+    ~UserDropdown() override;
+
+    void updatePos();
+
+public slots:
+
+    void onDropdownButtonClicked();
 
 private:
-    Ui::userDropdown *ui;
+    Ui::UserDropdown *ui;
+    QPushButton *DropdownButton;
+    QWidget *ButtonParent;
 };
 
 #endif
