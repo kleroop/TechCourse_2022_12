@@ -2,7 +2,7 @@
 #define QTWORLD_HOME_H
 
 #include <QWidget>
-#include "user_profile/user_profile.h"
+#include "widgets/user_profile/user_profile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
