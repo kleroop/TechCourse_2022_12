@@ -5,10 +5,10 @@
 UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProfile) {
     ui->setupUi(this);
 
-    this->dropdownMenu = new UserDropdown(parent, ui->dropdownButton, this);
-    dropdownMenu->hide();
+    this->DropdownMenu = new UserDropdown(parent, ui->dropdownButton, this);
+    DropdownMenu->hide();
 
-    connect(ui->dropdownButton, &QPushButton::clicked, dropdownMenu, &UserDropdown::onDropdownButtonClicked);
+    connect(ui->dropdownButton, &QPushButton::clicked, DropdownMenu, &UserDropdown::onDropdownButtonClicked);
 }
 
 UserProfile::~UserProfile() {

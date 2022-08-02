@@ -15,7 +15,7 @@ Home::~Home() {
 
 void Home::resizeEvent(QResizeEvent *event) {
     QWidget::resizeEvent(event);
-    this->UserProfileWidget->dropdownMenu->updatePos(); //todo resize event doesnt trigger child's resize event slot, fbs
+    this->UserProfileWidget->DropdownMenu->updatePos(); //todo resize event doesnt trigger child's resize event slot, fbs
 }
 
 

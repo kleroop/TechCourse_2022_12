@@ -7,7 +7,7 @@ UserDropdown::UserDropdown(QWidget *parent, QPushButton *DropdownButton,
                            QWidget *ButtonParent) : QWidget(parent), ui(new Ui::UserDropdown) {
     ui->setupUi(this);
 
-    auto *effect = new QGraphicsDropShadowEffect;
+    auto *effect = new QGraphicsDropShadowEffect(this);
     effect->setBlurRadius(30);
     effect->setXOffset(0);
     effect->setYOffset(0);
