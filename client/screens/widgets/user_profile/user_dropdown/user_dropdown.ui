@@ -75,7 +75,6 @@
          <font>
           <family>Open Sans</family>
           <pointsize>-1</pointsize>
-          <weight>75</weight>
           <italic>false</italic>
           <bold>true</bold>
          </font>
@@ -104,7 +103,6 @@ line-height: 16px;</string>
          <font>
           <family>Open Sans</family>
           <pointsize>-1</pointsize>
-          <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
@@ -300,9 +298,9 @@ border: none;</string>
   <zorder>verticalLayoutWidget</zorder>
  </widget>
  <resources>
-  <include location="../../../QResources.qrc"/>
-  <include location="../../../QResources.qrc"/>
-  <include location="../../../QResources.qrc"/>
+  <include location="../../../../QResources.qrc"/>
+  <include location="../../../../QResources.qrc"/>
+  <include location="../../../../QResources.qrc"/>
  </resources>
  <connections/>
 </ui>

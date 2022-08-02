@@ -26,8 +26,8 @@ UserDropdown::~UserDropdown() {
 void UserDropdown::updatePos() {
     auto *button = this->DropdownButton;
 
-    int dropdownX = button->x() + ButtonParent->x() - this->width() / 2 + button->width() / 2;
-    int dropdownY = button->y() + ButtonParent->y() + button->height();
+    int dropdownX = (button->x() + button->width() / 2) - this->width() / 2 + ButtonParent->parentWidget()->x();// todo kill it, please
+    int dropdownY = (button->y() + button->height() / 2) + button->height() + ButtonParent->parentWidget()->y();
     this->move(dropdownX, dropdownY);
 }
 

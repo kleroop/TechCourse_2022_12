@@ -4,9 +4,9 @@
 Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home) {
     ui->setupUi(this);
 
-    this->UserProfileWidget = new UserProfile(this);
-    ui->userProfileLayout->replaceWidget(ui->profile, UserProfileWidget);
-    delete ui->profile;
+    this->HeaderWidget = new Header(this);
+    delete ui->headerPlaceholder;
+    ui->headerFrame->layout()->addWidget(HeaderWidget);
 }
 
 Home::~Home() {
@@ -15,7 +15,7 @@ Home::~Home() {
 
 void Home::resizeEvent(QResizeEvent *event) {
     QWidget::resizeEvent(event);
-    this->UserProfileWidget->DropdownMenu->updatePos(); //todo resize event doesnt trigger child's resize event slot, fbs
+    this->HeaderWidget->UserProfileWidget->DropdownMenu->updatePos(); //todo resize event doesnt trigger child's resize event slot, fbs
 }
 
 

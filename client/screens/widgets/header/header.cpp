@@ -4,6 +4,10 @@
 Header::Header(QWidget *parent) : QWidget(parent), ui(new Ui::Header)
 {
     ui->setupUi(this);
+
+    this->UserProfileWidget = new UserProfile(this);
+    delete ui->profile_placeholder;
+    ui->right_menu->layout()->addWidget(UserProfileWidget);
 }
 
 Header::~Header()
@@ -11,7 +15,7 @@ Header::~Header()
     delete ui;
 }
 
-QHBoxLayout *Header::getRightSection()
+QFrame *Header::getRightSection()
 {
     return ui->right_menu;
 }

@@ -2,7 +2,9 @@
 #define HEADER_H
 
 #include <QWidget>
-#include <QHBoxLayout>
+#include <QFrame>
+
+#include "../user_profile/user_profile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +19,8 @@ class Header : public QWidget
 public:
     explicit Header(QWidget *parent = nullptr);
     ~Header() override;
-    QHBoxLayout *getRightSection();
+    QFrame *getRightSection();
+    UserProfile *UserProfileWidget;
 
 private:
     Ui::Header *ui;
