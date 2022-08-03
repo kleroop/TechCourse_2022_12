@@ -5,6 +5,7 @@
 UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProfile) {
     ui->setupUi(this);
 
+    /* fixme: no check if parent is NULL */
     this->DropdownMenu = new UserDropdown(parent->parentWidget(), ui->dropdownButton, this);
     DropdownMenu->hide();
 

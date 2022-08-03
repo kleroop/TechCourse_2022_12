@@ -1,21 +1,29 @@
 #include "header.h"
+#include "user_profile.h"
 #include <ui_Header.h>
 
-Header::Header(QWidget *parent) : QWidget(parent), ui(new Ui::Header)
+Header::Header(QWidget *parent, std::vector<QWidget *> right_widgets)
+    : QWidget(parent), ui(new Ui::Header)
 {
     ui->setupUi(this);
-
-    this->UserProfileWidget = new UserProfile(this);
-    delete ui->profile_placeholder;
-    ui->right_menu->layout()->addWidget(UserProfileWidget);
+    widgets = right_widgets;
+    for (auto w : widgets) {
+        ui->right_menu->layout()->addWidget(w);
+        w->setParent(this);
+    }
+    delete ui->profilePlaceholder;
+    ui->right_menu->layout()->addWidget(new UserProfile(this));
 }
 
 Header::~Header()
 {
+    for (auto w : widgets) {
+        delete w;
+    }
     delete ui;
 }
 
-QFrame *Header::getRightSection()
+QHBoxLayout *Header::getRightSection()
 {
     return ui->right_menu;
 }
