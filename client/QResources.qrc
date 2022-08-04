@@ -1,4 +1,5 @@
 <RCC>
+<<<<<<< Updated upstream
     <qresource prefix="/">
         <file>Resources/image_BG.png</file>
         <file>Resources/user_prof_pic.png</file>
@@ -12,4 +13,39 @@
         <file>Resources/fonts/roboto/Roboto-Regular.ttf</file>
         <file>Resources/fonts/roboto/Roboto-Medium.ttf</file>
     </qresource>
+=======
+  <qresource prefix="/">
+    <file>Resources/icons/hover_element.png</file>
+    <file>Resources/icons/advertising_icon_active.png</file>
+    <file>Resources/icons/partners_icon_active.png</file>
+    <file>Resources/icons/partners_icon.png</file>
+    <file>Resources/icons/advertising_icon.png</file>
+    <file>Resources/icons/teams_icon.png</file>
+    <file>Resources/icons/teams_icon_active.png</file>
+    <file>Resources/icons/architecture_icon.png</file>
+    <file>Resources/icons/architecture_icon_active.png</file>
+    <file>Resources/icons/social_icon.png</file>
+    <file>Resources/icons/social_icon_active.png</file>
+    <file>Resources/icons/footer_icon.png</file>
+    <file>Resources/icons/footer_icon_active.png</file>
+    <file>Resources/icons/surveys_icon.png</file>
+    <file>Resources/icons/surveys_icon_active.png</file>
+    <file>Resources/dropdownIcon.png</file>
+    <file>Resources/switch_icon.jpg</file>
+    <file>Resources/user_prof_pic.png</file>
+    <file>Resources/icons/banners_icon.png</file>
+    <file>Resources/icons/banners_icon_active.png</file>
+    <file>Resources/icons/users_icon_active.png</file>
+    <file>Resources/icons/users_icon.png</file>
+    <file>Resources/image_BG.png</file>
+    <file>Resources/icons/languages_icon.png</file>
+    <file>Resources/icons/languages_icon_active.png</file>
+    <file>Resources/fonts/open-sans/OpenSans-Bold.ttf</file>
+    <file>Resources/fonts/open-sans/OpenSans-Regular.ttf</file>
+    <file>Resources/fonts/open-sans/OpenSans-Semibold.ttf</file>
+    <file>Resources/fonts/roboto/RobotoCondensed-Bold.ttf</file>
+    <file>Resources/fonts/roboto/Roboto-Regular.ttf</file>
+    <file>Resources/fonts/roboto/Roboto-Medium.ttf</file>
+  </qresource>
+>>>>>>> Stashed changes
 </RCC>

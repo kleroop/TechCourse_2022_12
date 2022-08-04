@@ -11,6 +11,7 @@ add_subdirectory(utils)
 add_subdirectory(api)
 add_subdirectory(screens/widgets)
 
+<<<<<<< Updated upstream
 
 add_executable(client WIN32 main.cpp main_window.cpp main_window.ui
         QResources.qrc
@@ -21,5 +22,16 @@ target_link_libraries(client PRIVATE
         nlohmann_json::nlohmann_json
         common
         client::utils client::api client::widgets)
+=======
+add_executable(client WIN32 main.cpp main_window.cpp main_window.ui QResources.qrc
+        screens/login.cpp screens/login.h screens/login.ui
+        screens/home.cpp screens/home.h screens/home.ui
+        screens/user_profile/user_profile.cpp screens/user_profile/user_profile.h screens/user_profile/user_profile.ui
+        screens/user_profile/user_dropdown/user_dropdown.cpp screens/user_profile/user_dropdown/user_dropdown.h screens/user_profile/user_dropdown/user_dropdown.ui
+        screens/user_profile/user_login/user_login.cpp screens/user_profile/user_login/user_login.h screens/user_profile/user_login/user_login.ui
+        screens/navigation/navigation.cpp screens/navigation/navigation.h screens/navigation/navigation.ui screens/navigation/button_decorator/hover/hover.cpp screens/navigation/button_decorator/hover/hover.h screens/navigation/button_decorator/hover/hover.ui screens/navigation/button_decorator/buttondecorator.cpp screens/navigation/button_decorator/buttondecorator.h screens/navigation/button_decorator/buttondecorator.ui)
+
+target_link_libraries(client PRIVATE Qt5::Widgets Qt5::Core Qt5::Network nlohmann_json::nlohmann_json common client::utils client::api)
+>>>>>>> Stashed changes
 
 windeployqt(client)
