@@ -29,7 +29,7 @@ public:
 
     QString text;
     QString icon;
-    Hover* hover;
+    Hover* hover = nullptr;
     QWidget *parentWidget;
     QWidget *parent;
 private:

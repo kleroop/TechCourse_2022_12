@@ -14,7 +14,7 @@ ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new 
 
 ButtonDecorator::~ButtonDecorator()
 {
-    delete hover;
+    if (hover) delete hover;
     delete ui;
 }
 
