@@ -2,7 +2,7 @@
 #define QTWORLD_BUTTONDECORATOR_H
 
 #include <QWidget>
-#include "hover/hover.h"
+#include "hover.h"
 #include <QHoverEvent>
 #include <QEvent>
 #include <QPushButton>
