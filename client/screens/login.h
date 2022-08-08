@@ -6,16 +6,16 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class Login;
+    class Login;
 }
 QT_END_NAMESPACE
 
-class Login : public QWidget
-{
-    Q_OBJECT
+class Login : public QWidget {
+Q_OBJECT
 
 public:
     explicit Login(QWidget *parent = nullptr);
+
     ~Login() override;
 
 private:
@@ -23,8 +23,11 @@ private:
     Api api;
 
 private slots:
+
     void onLoginBackButtonClicked();
+
     void onFormTextChanged();
+
     void onLoginButtonClicked();
 
     void resizeEvent(QResizeEvent *event) override;

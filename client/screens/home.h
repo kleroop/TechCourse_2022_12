@@ -2,23 +2,30 @@
 #define QTWORLD_HOME_H
 
 #include <QWidget>
+#include "widgets/header/header.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class Home;
+    class Home;
 }
 QT_END_NAMESPACE
 
-class Home : public QWidget
-{
-    Q_OBJECT
+class Home : public QWidget {
+Q_OBJECT
 
 public:
     explicit Home(QWidget *parent = nullptr);
+
     ~Home() override;
+
+private slots:
+
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     Ui::Home *ui;
+
+    Header *HeaderWidget;
 };
 
-#endif // QTWORLD_HOME_H
+#endif
