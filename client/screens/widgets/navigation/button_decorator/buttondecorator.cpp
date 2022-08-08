@@ -14,6 +14,7 @@ ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new 
 
 ButtonDecorator::~ButtonDecorator()
 {
+    delete hover;
     delete ui;
 }
 
@@ -54,7 +55,7 @@ void ButtonDecorator::hoverLeave(QHoverEvent * event)
                         "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
 
 }
-void ButtonDecorator::setDate(QWidget *parent, QWidget *parentWidget, QString text, QString icon)
+void ButtonDecorator::setData(QWidget *parent, QWidget *parentWidget, QString text, QString icon)
 {
     this->parent = parent;
     this->parentWidget = parentWidget;

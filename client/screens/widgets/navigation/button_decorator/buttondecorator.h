@@ -25,7 +25,7 @@ public:
     void hoverEnter(QHoverEvent * event);
     void hoverLeave(QHoverEvent * event);
 
-    void setDate(QWidget *parent, QWidget *parentWidget, QString text, QString icon);
+    void setData(QWidget *parent, QWidget *parentWidget, QString text, QString icon);
 
     QString text;
     QString icon;
