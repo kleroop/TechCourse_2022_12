@@ -19,7 +19,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
 
     ~MainWindow() override;
-
 private:
     Ui::MainWindow *ui;
 

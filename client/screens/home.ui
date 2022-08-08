@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1152</width>
-    <height>726</height>
+    <width>1115</width>
+    <height>921</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="rootLayout" stretch="1,1,1,10">
+    <layout class="QVBoxLayout" name="rootLayout" stretch="0,1,1,10">
      <property name="spacing">
       <number>10</number>
      </property>
@@ -26,78 +26,59 @@
       <number>50</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="headerLayout" stretch="105,323,49,125">
-       <property name="spacing">
-        <number>0</number>
+      <widget class="QFrame" name="headerFrame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <item>
-        <widget class="QLabel" name="logo">
-         <property name="styleSheet">
-          <string notr="true">background:  #FBE7C4;
-color:  #2B2F43;
-font-size: 10px;
-font-weight:  400;
-text-align: center;
-</string>
-         </property>
-         <property name="text">
-          <string>Logo or identity</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="switchButton">
-         <property name="styleSheet">
-          <string notr="true">background:  #ECD3E5;
-color:  #2B2F43;
-font-size: 10px;
-font-weight:  400;
-text-align: center;
-</string>
-         </property>
-         <property name="text">
-          <string>Switch</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="profile">
-         <property name="styleSheet">
-          <string notr="true">background:  #FBF7D5;
-color:  #2B2F43;
-font-size: 10px;
-font-weight:  400;
-text-align: center;
-</string>
-         </property>
-         <property name="text">
-          <string>Profile</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QHBoxLayout" name="headerLayout" stretch="0">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="headerPlaceholder">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 170, 0);</string>
+          </property>
+          <property name="text">
+           <string>headerPlaceholder</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="margin">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="CTALayout" stretch="2,3,2">
@@ -111,10 +92,10 @@ text-align: center;
         <widget class="QLabel" name="pageName">
          <property name="styleSheet">
           <string notr="true">background:  #D7E4F1;
-color:  #2B2F43;
-font-size: 30px;
-font-weight:  700;
-text-align: center;</string>
+                                            color:  #2B2F43;
+                                            font-size: 30px;
+                                            font-weight:  700;
+                                            text-align: center;</string>
          </property>
          <property name="text">
           <string>Home</string>
@@ -149,10 +130,10 @@ text-align: center;</string>
           <widget class="QLabel" name="cancelButton">
            <property name="styleSheet">
             <string notr="true">background:  #FBF7D5;
-color:  #2B2F43;
-font-size: 10px;
-font-weight:  400;
-text-align: center;</string>
+                                                    color:  #2B2F43;
+                                                    font-size: 10px;
+                                                    font-weight:  400;
+                                                    text-align: center;</string>
            </property>
            <property name="text">
             <string>Cancel</string>
@@ -166,10 +147,10 @@ text-align: center;</string>
           <widget class="QLabel" name="saveButton">
            <property name="styleSheet">
             <string notr="true">background:  #ECD3E5;
-color:  #2B2F43;
-font-size: 10px;
-font-weight:  400;
-text-align: center;</string>
+                                                    color:  #2B2F43;
+                                                    font-size: 10px;
+                                                    font-weight:  400;
+                                                    text-align: center;</string>
            </property>
            <property name="text">
             <string>Save All Changes</string>
@@ -189,10 +170,10 @@ text-align: center;</string>
         <widget class="QLabel" name="label">
          <property name="styleSheet">
           <string notr="true">background:  #DFE9BE;
-color:  #2B2F43;
-font-size: 10px;
-font-weight:  400;
-text-align: center;</string>
+                                            color:  #2B2F43;
+                                            font-size: 10px;
+                                            font-weight:  400;
+                                            text-align: center;</string>
          </property>
          <property name="text">
           <string>Horisontal menu with static itemse</string>
@@ -216,23 +197,23 @@ text-align: center;</string>
         <number>0</number>
        </property>
        <item>
-        <layout class="QVBoxLayout" name="localNavigataion">
+        <layout class="QVBoxLayout" name="localNavigation">
          <item>
-          <widget class="QLabel" name="navigatiionMock">
+          <widget class="QLabel" name="navigationMock">
            <property name="styleSheet">
             <string notr="true">background:  #ECD3E5;
-color:  #2B2F43;
-font-size: 10px;
-font-weight:  400;
-text-align: center;
-padding-top:  32px;
-padding-left: 8px;
-</string>
+                                                    color:  #2B2F43;
+                                                    font-size: 10px;
+                                                    font-weight:  400;
+                                                    text-align: center;
+                                                    padding-top:  32px;
+                                                    padding-left: 8px;
+                                                </string>
            </property>
            <property name="text">
-            <string>List 
-of menu 
-items</string>
+            <string>List
+                                                    of menu
+                                                    items</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -257,11 +238,26 @@ items</string>
          </property>
          <item>
           <widget class="QLabel" name="contentMock">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="sizeIncrement">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string notr="true">font-size:  12px;
-font-weight: 400;
-color:  #2B2F43;
-border: 1px dashed black;</string>
+                                                    font-weight: 400;
+                                                    color:  #2B2F43;
+                                                    border: 1px dashed black;</string>
            </property>
            <property name="text">
             <string>Content Area</string>
