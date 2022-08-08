@@ -22,7 +22,6 @@ public:
 
 private:
     Ui::Header *ui;
-    std::vector<QWidget *> widgets;
 };
 
 #endif // HEADER_H
