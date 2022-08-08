@@ -8,11 +8,11 @@ Navigation::Navigation(QWidget *parent) : QWidget(parent), ui(new Ui::Navigation
     ui->bannersButton->setDate(this, parent, "Banners", "banners");
     ui->languagesButton->setDate(this, parent, "Languages", "languages");
     ui->footerButton->setDate(this, parent, "Footer", "footer");
-    ui->socialButton->setDate(this, parent, "Social", "social");
+    ui->socialButton->setDate(this, parent, "Social Networks", "social");
     ui->usersButton->setDate(this, parent, "Users", "users");
-    ui->architectureButton->setDate(this, parent, "Architecture", "architecture");
+    ui->architectureButton->setDate(this, parent, "Information architecture", "architecture");
     ui->teamsButton->setDate(this, parent, "Teams", "teams");
-    ui->partnersButton->setDate(this, parent, "Partners", "partners");
+    ui->partnersButton->setDate(this, parent, "News Partners", "partners");
     ui->advertisingButton->setDate(this, parent, "Advertising", "advertising");
 }
 

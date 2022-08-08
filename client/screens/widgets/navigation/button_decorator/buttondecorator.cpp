@@ -10,7 +10,6 @@ ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new 
     ui->setupUi(this);
     setAttribute(Qt::WA_Hover);
     this->setMouseTracking(true);
-    this->hover = nullptr;
 }
 
 ButtonDecorator::~ButtonDecorator()
@@ -40,29 +39,25 @@ void ButtonDecorator::hoverEnter(QHoverEvent * event)
 {
     hover = new Hover(parentWidget, this, this->parent, text);
     hover->show();
-    this->setStyleSheet("border-radius: 32%;\n"
-                        "padding: 14px;\n"
-                        "width: 10px;\n"
-                        "height: 10px;\n"
+    this->setStyleSheet("border-radius: 27%;\n"
+                        "padding: 13px;\n"
                         "background: #f9f9fb;\n"
-                        "image: url(:/Resources/icons/" + this->icon  + "_icon_active.png);\n");
+                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon_active.png);\n");
 }
 
 void ButtonDecorator::hoverLeave(QHoverEvent * event)
 {
     hover->hide();
-    this->setStyleSheet("border-radius: 32%;\n"
-                        "padding: 14px;\n"
-                        "width: 10px;\n"
-                        "height: 10px;\n"
+    this->setStyleSheet("border-radius: 27%;\n"
+                        "padding: 13px;\n"
                         "background-color: none;\n"
-                        "image: url(:/Resources/icons/" + this->icon  + "_icon.png);\n");
+                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
 
 }
 void ButtonDecorator::setDate(QWidget *parent, QWidget *parentWidget, QString text, QString icon)
 {
     this->parent = parent;
     this->parentWidget = parentWidget;
-    this->text = text;
-    this->icon = icon;
+    this->text = std::move(text);
+    this->icon = std::move(icon);
 }

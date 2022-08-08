@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>116</width>
+    <width>262</width>
     <height>52</height>
    </rect>
   </property>
@@ -30,15 +30,21 @@
     <rect>
      <x>7</x>
      <y>0</y>
-     <width>101</width>
+     <width>91</width>
      <height>50</height>
     </rect>
    </property>
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>150</horstretch>
+     <verstretch>40</verstretch>
     </sizepolicy>
+   </property>
+   <property name="sizeIncrement">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
    </property>
    <property name="contextMenuPolicy">
     <enum>Qt::NoContextMenu</enum>
@@ -49,17 +55,23 @@
    <property name="styleSheet">
     <string notr="true">background: #313541;
 border-radius: 4px;
-height: 10px;
-
 color: white;
-text-align: center;
 </string>
    </property>
    <property name="text">
     <string>text</string>
    </property>
+   <property name="textFormat">
+    <enum>Qt::PlainText</enum>
+   </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+   <property name="margin">
+    <number>-1</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -84,7 +96,7 @@ text-align: center;
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">image: url(:/Resources/icons/hover_element.png);
+    <string notr="true">image: url(:/Resources/navigation_icons/hover_element.png);
 width: 5px;</string>
    </property>
    <property name="text">
@@ -95,7 +107,7 @@ width: 5px;</string>
   <zorder>label</zorder>
  </widget>
  <resources>
-  <include location="../../../../QResources.qrc"/>
+  <include location="../../../../../QResources.qrc"/>
  </resources>
  <connections/>
 </ui>

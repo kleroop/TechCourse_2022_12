@@ -2,12 +2,9 @@
 #define QTWORLD_HOME_H
 
 #include <QWidget>
-<<<<<<< Updated upstream
 #include "widgets/header/header.h"
-=======
-#include "navigation/navigation.h"
-#include "user_profile/user_profile.h"
->>>>>>> Stashed changes
+#include "widgets/navigation/navigation.h"
+#include "widgets/user_profile/user_profile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,7 +19,6 @@ public:
     explicit Home(QWidget *parent = nullptr);
 
     ~Home() override;
-<<<<<<< Updated upstream
 
 private slots:
 
@@ -30,16 +26,8 @@ private slots:
 
 private:
     Ui::Home *ui;
-
     Header *HeaderWidget;
-=======
-    void resizeEvent(QResizeEvent *event);
-    Navigation *navigation;
-    UserProfile *UserProfileWidget;
-private:
-    Ui::Home *ui;
-
->>>>>>> Stashed changes
+    Navigation *NavigationWidget;
 };
 
 #endif

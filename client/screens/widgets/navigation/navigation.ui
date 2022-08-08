@@ -2,13 +2,22 @@
 <ui version="4.0">
  <class>Navigation</class>
  <widget class="QWidget" name="Navigation">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>116</width>
-    <height>744</height>
+    <height>557</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="mouseTracking">
    <bool>false</bool>
@@ -21,6 +30,15 @@
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>7</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
@@ -39,8 +57,17 @@
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
      <item>
       <widget class="ButtonDecorator" name="surveysButton">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -49,8 +76,8 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
@@ -67,19 +94,15 @@
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 11px;
-padding-top: 18px;
-width: 10px;
-height: 10px;
-background-color: none;
-image: url(:/Resources/icons/surveys_icon.png);
-	border: none;
+border-radius: 27%;
+padding: 13px;
+image: url(:/Resources/navigation_icons/surveys_icon.png);
+border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/surveys_icon_active.png);
+	image: url(:/Resources/navigation_icons/surveys_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -97,8 +120,8 @@ QPushButton:hover{
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
@@ -109,18 +132,16 @@ QPushButton:hover{
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 14px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/banners_icon.png);
+image: url(:/Resources/navigation_icons/banners_icon.png);
 	border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/banners_icon_active.png);
+	image: url(:/Resources/navigation_icons/banners_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -138,8 +159,8 @@ QPushButton:hover{
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
@@ -162,18 +183,16 @@ QPushButton:hover{
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 12px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/languages_icon.png);
+image: url(:/Resources/navigation_icons/languages_icon.png);
 	border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/languages_icon_active.png);
+	image: url(:/Resources/navigation_icons/languages_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -206,8 +225,8 @@ QPushButton:hover{
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
@@ -218,18 +237,16 @@ QPushButton:hover{
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 15px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/footer_icon.png);
+image: url(:/Resources/navigation_icons/footer_icon.png);
 border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/footer_icon_active.png);
+	image: url(:/Resources/navigation_icons/footer_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -247,8 +264,8 @@ QPushButton:hover{
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
@@ -259,19 +276,16 @@ QPushButton:hover{
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 15px;
-padding-right: 16px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/social_icon.png);
+image: url(:/Resources/navigation_icons/social_icon.png);
 	border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/social_icon_active.png);
+	image: url(:/Resources/navigation_icons/social_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -289,24 +303,25 @@ QPushButton:hover{
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 15px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/users_icon.png);
+image: url(:/Resources/navigation_icons/users_icon.png);
 	border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/users_icon_active.png);
+	image: url(:/Resources/navigation_icons/users_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -324,8 +339,8 @@ QPushButton:hover{
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
@@ -336,18 +351,16 @@ QPushButton:hover{
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 14px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/architecture_icon.png);
+image: url(:/Resources/navigation_icons/architecture_icon.png);
 	border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/architecture_icon_active.png);
+	image: url(:/Resources/navigation_icons/architecture_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -365,8 +378,8 @@ QPushButton:hover{
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
@@ -377,18 +390,16 @@ QPushButton:hover{
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 15px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/teams_icon.png);
+image: url(:/Resources/navigation_icons/teams_icon.png);
 	border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/teams_icon_active.png);
+	image: url(:/Resources/navigation_icons/teams_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -406,8 +417,8 @@ QPushButton:hover{
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
@@ -418,18 +429,16 @@ QPushButton:hover{
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 14px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/partners_icon.png);
+image: url(:/Resources/navigation_icons/partners_icon.png);
 	border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/partners_icon_active.png);
+	image: url(:/Resources/navigation_icons/partners_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -440,37 +449,41 @@ QPushButton:hover{
      <item>
       <widget class="ButtonDecorator" name="advertisingButton">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>65</width>
-         <height>65</height>
+         <width>55</width>
+         <height>55</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="baseSize">
         <size>
-         <width>0</width>
-         <height>0</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-border-radius: 32%;
-padding: 14px;
-width: 10px;
-height: 10px;
+border-radius: 27%;
+padding: 13px;
 background-color: none;
-image: url(:/Resources/icons/advertising_icon.png);
+image: url(:/Resources/navigation_icons/advertising_icon.png);
 	border: none;
 }
 
 QPushButton:hover{
 	background: #f9f9fb;
-	image: url(:/Resources/icons/advertising_icon_active.png);
+	image: url(:/Resources/navigation_icons/advertising_icon_active.png);
 }</string>
        </property>
        <property name="text">
@@ -501,7 +514,7 @@ QPushButton:hover{
       <enum>QFrame::Plain</enum>
      </property>
      <property name="lineWidth">
-      <number>2</number>
+      <number>1</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -531,7 +544,7 @@ QPushButton:hover{
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../QResources.qrc"/>
+  <include location="../../../QResources.qrc"/>
  </resources>
  <connections/>
 </ui>
