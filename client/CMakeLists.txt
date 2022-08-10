@@ -11,7 +11,6 @@ add_subdirectory(utils)
 add_subdirectory(api)
 add_subdirectory(screens/widgets)
 
-
 add_executable(client WIN32 main.cpp main_window.cpp main_window.ui
         QResources.qrc
         screens/login.cpp screens/login.ui
@@ -21,5 +20,4 @@ target_link_libraries(client PRIVATE
         nlohmann_json::nlohmann_json
         common
         client::utils client::api client::widgets)
-
 windeployqt(client)

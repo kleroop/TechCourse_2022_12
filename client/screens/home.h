@@ -2,16 +2,19 @@
 #define QTWORLD_HOME_H
 
 #include <QWidget>
-#include "widgets/header/header.h"
+#include "user_profile.h"
+#include "header.h"
+#include "navigation.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-    class Home;
+class Home;
 }
 QT_END_NAMESPACE
 
-class Home : public QWidget {
-Q_OBJECT
+class Home : public QWidget
+{
+    Q_OBJECT
 
 public:
     explicit Home(QWidget *parent = nullptr);
@@ -24,8 +27,8 @@ private slots:
 
 private:
     Ui::Home *ui;
-
     Header *HeaderWidget;
+    Navigation *NavigationWidget;
 };
 
 #endif
