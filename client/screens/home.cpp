@@ -3,8 +3,7 @@
 
 #include "info_arch.h"
 
-Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
-{
+Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home) {
     ui->setupUi(this);
 
     this->HeaderWidget = new Header(this);
@@ -22,12 +21,10 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
     ui->contentContainer->layout()->addWidget(InfoArchWidget);
 }
 
-Home::~Home()
-{
+Home::~Home() {
     delete ui;
 }
 
-void Home::resizeEvent(QResizeEvent *event)
-{
+void Home::resizeEvent(QResizeEvent *event) {
     QWidget::resizeEvent(event);
 }

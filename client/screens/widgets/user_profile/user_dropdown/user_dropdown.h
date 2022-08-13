@@ -22,6 +22,7 @@ public:
     void updatePos();
 
 public slots:
+
     void onDropdownButtonClicked();
 
 private:

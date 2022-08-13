@@ -12,10 +12,10 @@ UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProf
     connect(ui->dropdownButton, &QPushButton::clicked, DropdownMenu, &UserDropdown::onDropdownButtonClicked);
 
     connect(ui->switchButton, &QPushButton::clicked, DropdownMenu, [=]() {
-        if (ui->userStatus->isVisible()){
+        if (ui->userStatus->isVisible()) {
             ui->userStatus->hide();
             ui->userName->setText("Brandon User");
-        }else{
+        } else {
             ui->userStatus->show();
             ui->userName->setText("Brandon Miles");
         }
