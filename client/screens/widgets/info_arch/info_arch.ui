@@ -74,6 +74,7 @@
          <font>
           <family>Open Sans</family>
           <pointsize>-1</pointsize>
+          <weight>75</weight>
           <italic>false</italic>
           <bold>true</bold>
          </font>
@@ -145,6 +146,7 @@ color: #B2B2B2;</string>
             <font>
              <family>Open Sans</family>
              <pointsize>-1</pointsize>
+             <weight>87</weight>
              <italic>false</italic>
              <bold>true</bold>
             </font>
@@ -168,7 +170,7 @@ color: #B2B2B2;</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="0" column="0" alignment="Qt::AlignHCenter">
           <widget class="QPushButton" name="buttonTemplate">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
@@ -178,13 +180,13 @@ color: #B2B2B2;</string>
            </property>
            <property name="minimumSize">
             <size>
-             <width>160</width>
+             <width>100</width>
              <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>160</width>
+             <width>100</width>
              <height>36</height>
             </size>
            </property>
@@ -192,24 +194,24 @@ color: #B2B2B2;</string>
             <font>
              <family>Open Sans</family>
              <pointsize>-1</pointsize>
+             <weight>87</weight>
              <italic>false</italic>
              <bold>true</bold>
-             <stylestrategy>PreferDefault</stylestrategy>
             </font>
            </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
-            <string notr="true">border: 0.5px solid #D4D9E2;
-
-font-family: 'Open Sans';
+            <string notr="true">font-family: 'Open Sans';
 font-style: normal;
 font-weight: 700;
 font-size: 14px;
 line-height: 19px;
 
-color: #B2B2B2;</string>
+color: #B2B2B2;
+
+border: none;</string>
            </property>
            <property name="text">
             <string>PushButton</string>
@@ -280,6 +282,7 @@ color: #B2B2B2;</string>
          <font>
           <family>Open Sans</family>
           <pointsize>-1</pointsize>
+          <weight>75</weight>
           <italic>false</italic>
           <bold>true</bold>
          </font>
@@ -403,6 +406,7 @@ color: #B2B2B2;</string>
          <font>
           <family>Open Sans</family>
           <pointsize>-1</pointsize>
+          <weight>75</weight>
           <italic>false</italic>
           <bold>true</bold>
          </font>

@@ -6,17 +6,17 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-    class UserDropdown;
+    class InfoArchDropdown;
 }
 QT_END_NAMESPACE
 
-class UserDropdown : public QWidget {
+class InfoArchDropdown : public QWidget {
 Q_OBJECT
 
 public:
-    explicit UserDropdown(QWidget *parent = nullptr);
+    explicit InfoArchDropdown(QWidget *parent = nullptr);
 
-    ~UserDropdown() override;
+    ~InfoArchDropdown() override;
 
     void updatePos(QPushButton* button);
 
@@ -25,7 +25,7 @@ public slots:
     void onDropdownButtonClicked(QPushButton* button);
 
 private:
-    Ui::UserDropdown *ui;
+    Ui::InfoArchDropdown *ui;
 };
 
 #endif

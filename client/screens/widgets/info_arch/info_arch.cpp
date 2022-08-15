@@ -38,18 +38,30 @@ InfoArch::InfoArch(QWidget *parent) : QWidget(parent), ui(new Ui::InfoArch) {
     this->catTree = generateCat();
 
     fillContainer(ui->categoriesFrame->layout(), catTree.categories);
+
+    auto* dropdown = new InfoArchDropdown(this);
 }
 
 InfoArch::~InfoArch() {
     delete ui;
 }
 
+std::vector<CatButton *> InfoArch::btnWrapper(std::vector<CustomButton *> buttons){
+    std::vector<CatButton *> result;
+
+    for(CustomButton* btn: buttons){
+        result.push_back(new CatButton(this, btn));
+    }
+
+    return result;
+}
+
 std::vector<CustomButton *>
-InfoArch::getCustomButtons(const std::vector<ICategory> &categories, QPushButton *buttonTemplate, bool clickable) {
+InfoArch::getCustomButtons(const std::vector<ICategory> &categories, QPushButton *btnTemplate, bool clickable) {
     std::vector<CustomButton *> result;
 
     for (const ICategory &category: categories) {
-        auto *tempButton = new CustomButton(this, buttonTemplate, (ICategory *) &category);
+        auto *tempButton = new CustomButton(this, btnTemplate, (ICategory *) &category);
 
         if (clickable) {
             connect(tempButton, &QPushButton::clicked, this, [this, tempButton]() {
@@ -76,12 +88,13 @@ void clearLayout(QLayout *container) {  //todo move to utils
 void InfoArch::fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable,
                              bool replace) {//todo maybe move to utils
     std::vector<CustomButton *> buttons = getCustomButtons(categories, buttonTemplate, clickable);
+    std::vector<CatButton *> wrappedButtons = btnWrapper(buttons);
 
     if (replace) {
         clearLayout(container);
     }
 
-    for (QPushButton *button: buttons) {
+    for (QWidget *button: wrappedButtons) {
         container->addWidget(button);
     }
 }

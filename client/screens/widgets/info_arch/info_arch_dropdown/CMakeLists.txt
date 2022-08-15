@@ -1,0 +1,2 @@
+add_library(info_arch_dropdown info_arch_dropdown.cpp info_arch_dropdown.ui)
+target_include_directories(info_arch_dropdown PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -1,10 +1,10 @@
-#include "user_dropdown.h"
-#include "ui_user_dropdown.h"
+#include "info_arch_dropdown.h"
+#include "ui_info_arch_dropdown.h"
 
 #include "QGraphicsDropShadowEffect"
 
 
-UserDropdown::UserDropdown(QWidget *parent) : QWidget(parent->window()), ui(new Ui::UserDropdown) {
+InfoArchDropdown::InfoArchDropdown(QWidget *parent) : QWidget(parent->window()), ui(new Ui::InfoArchDropdown) {
     ui->setupUi(this);
 
     auto *effect = new QGraphicsDropShadowEffect(this);
@@ -15,17 +15,17 @@ UserDropdown::UserDropdown(QWidget *parent) : QWidget(parent->window()), ui(new 
     this->setGraphicsEffect(effect);
 }
 
-UserDropdown::~UserDropdown() {
+InfoArchDropdown::~InfoArchDropdown() {
     delete ui;
 }
 
-void UserDropdown::updatePos(QPushButton* button) {
+void InfoArchDropdown::updatePos(QPushButton* button) {
     int dropdownX = button->mapTo(dynamic_cast<const QWidget *>(this->parent()), QPoint(0, 0)).x() - this->width() / 2;
     int dropdownY = button->mapTo(dynamic_cast<const QWidget *>(this->parent()), QPoint(0, 0)).y() + button->height();
     this->move(dropdownX, dropdownY);
 }
 
-void UserDropdown::onDropdownButtonClicked(QPushButton* button) {
+void InfoArchDropdown::onDropdownButtonClicked(QPushButton* button) {
     if (this->isVisible()) {
         this->hide();
     } else {

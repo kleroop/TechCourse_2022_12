@@ -6,10 +6,12 @@ UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProf
     ui->setupUi(this);
 
     /* fixme: no check if parent is NULL */
-    this->DropdownMenu = new UserDropdown(parent->parentWidget(), ui->dropdownButton, this);
+    this->DropdownMenu = new UserDropdown(this);
     DropdownMenu->hide();
 
-    connect(ui->dropdownButton, &QPushButton::clicked, DropdownMenu, &UserDropdown::onDropdownButtonClicked);
+    connect(ui->dropdownButton, &QPushButton::clicked, DropdownMenu, [this]() {
+        this->DropdownMenu->onDropdownButtonClicked(ui->dropdownButton);
+    });
 
     connect(ui->switchButton, &QPushButton::clicked, DropdownMenu, [=]() {
         if (ui->userStatus->isVisible()) {
@@ -20,7 +22,6 @@ UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProf
             ui->userName->setText("Brandon Miles");
         }
     });
-
 }
 
 UserProfile::~UserProfile() {
