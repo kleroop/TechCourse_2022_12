@@ -1,11 +1,11 @@
 #include "user_dropdown.h"
 #include "ui_user_dropdown.h"
 
-#include "QGraphicsDropShadowEffect"
-
 
 UserDropdown::UserDropdown(QWidget *parent) : QWidget(parent->window()), ui(new Ui::UserDropdown) {
     ui->setupUi(this);
+
+    this->hide();
 
     auto *effect = new QGraphicsDropShadowEffect(this);
     effect->setBlurRadius(30);

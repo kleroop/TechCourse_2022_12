@@ -7,7 +7,6 @@ UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProf
 
     /* fixme: no check if parent is NULL */
     this->DropdownMenu = new UserDropdown(this);
-    DropdownMenu->hide();
 
     connect(ui->dropdownButton, &QPushButton::clicked, DropdownMenu, [this]() {
         this->DropdownMenu->onDropdownButtonClicked(ui->dropdownButton);
@@ -26,4 +25,5 @@ UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProf
 
 UserProfile::~UserProfile() {
     delete ui;
+    delete DropdownMenu;
 }

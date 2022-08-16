@@ -31,26 +31,28 @@ InfoArch::InfoArch(QWidget *parent) : QWidget(parent), ui(new Ui::InfoArch) {
     ui->setupUi(this);
 
     buttonTemplate = ui->buttonTemplate;
-
-    buttonTemplate->setVisible(false);
+    buttonTemplate->hide();
     ui->categoriesFrame->layout()->takeAt(ui->categoriesFrame->layout()->indexOf(buttonTemplate));
 
     this->catTree = generateCat();
+    this->dropdown = new InfoArchDropdown(this);
 
-    fillContainer(ui->categoriesFrame->layout(), catTree.categories);
+    fillCategories();
 
-    auto* dropdown = new InfoArchDropdown(this);
+    connect(ui->addCategoryButton, &QPushButton::clicked, this, [this](){ createHandler(CategoryTypes::CATEGORY);});
+    connect(ui->addSubCategoryButton, &QPushButton::clicked, this, [this](){ createHandler(CategoryTypes::SUBCATEGORY);});
+    connect(ui->addTeamButton, &QPushButton::clicked, this, [this](){ createHandler(CategoryTypes::TEAM);});
 }
 
 InfoArch::~InfoArch() {
     delete ui;
 }
 
-std::vector<CatButton *> InfoArch::btnWrapper(std::vector<CustomButton *> buttons){
+std::vector<CatButton *> InfoArch::btnWrapper(const std::vector<CustomButton *>& buttons){
     std::vector<CatButton *> result;
 
     for(CustomButton* btn: buttons){
-        result.push_back(new CatButton(this, btn));
+        result.push_back(new CatButton(this, btn, this->dropdown));
     }
 
     return result;
@@ -70,10 +72,8 @@ InfoArch::getCustomButtons(const std::vector<ICategory> &categories, QPushButton
         } else {
             tempButton->setCursor(Qt::ArrowCursor);
         }
-
         result.push_back(tempButton);
     }
-
     return result;
 }
 
@@ -85,10 +85,32 @@ void clearLayout(QLayout *container) {  //todo move to utils
     }
 }
 
-void InfoArch::fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable,
-                             bool replace) {//todo maybe move to utils
-    std::vector<CustomButton *> buttons = getCustomButtons(categories, buttonTemplate, clickable);
-    std::vector<CatButton *> wrappedButtons = btnWrapper(buttons);
+void InfoArch::fillCategories() {
+    this->activeCategory = nullptr;
+    clearLayout(ui->subCategoriesFrame->layout());
+    clearLayout(ui->teamsFrame->layout());
+    ui->addSubCategoryButton->hide();
+    ui->addTeamButton->hide();
+    fillContainer(ui->categoriesFrame->layout(), catTree.categories);
+}
+
+void InfoArch::fillSubCategories() {
+    ICategory *category = this->activeCategory;
+    this->activeSubCategory = nullptr;
+    clearLayout(ui->teamsFrame->layout());
+    ui->addSubCategoryButton->show();
+    ui->addTeamButton->hide();
+    fillContainer(ui->subCategoriesFrame->layout(), category->children);
+}
+
+void InfoArch::fillTeams() {
+    ICategory *category = this->activeSubCategory;
+    ui->addTeamButton->show();
+    fillContainer(ui->teamsFrame->layout(), category->children, false);
+}
+
+void InfoArch::fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable, bool replace) {//todo maybe move to utils
+    std::vector<CatButton *> wrappedButtons = btnWrapper(getCustomButtons(categories, buttonTemplate, clickable));
 
     if (replace) {
         clearLayout(container);
@@ -102,13 +124,39 @@ void InfoArch::fillContainer(QLayout *container, const std::vector<ICategory> &c
 void InfoArch::buttonHandler(CustomButton *button) {
     ICategory *category = button->category;
 
-    if (category->type == categoryTypes::CATEGORY) {
-        clearLayout(ui->teamsFrame->layout());
-        fillContainer(ui->subCategoriesFrame->layout(), category->children);
-    } else if (category->type == categoryTypes::SUBCATEGORY) {
-        fillContainer(ui->teamsFrame->layout(), category->children, false);
+    if (category->type == CategoryTypes::CATEGORY) {
+        this->activeCategory = category;
+        fillSubCategories();
+    } else if (category->type == CategoryTypes::SUBCATEGORY) {
+        this->activeSubCategory = category;
+        fillTeams();
     }
 }
+
+void InfoArch::createHandler(CategoryTypes type) {
+    this->addCatDialog = new AddCatDialog(this);
+
+    addCatDialog->onCreateCall([=](const std::string &name) {
+        if(!name.empty()){
+            if(type == CategoryTypes::CATEGORY){
+                this->catTree.categories.insert(catTree.categories.begin(), Category(NAN, name));
+                fillCategories();
+            }else if(type == CategoryTypes::SUBCATEGORY){
+                this->activeCategory->children.insert(activeCategory->children.begin(), SubCategory(NAN, name));
+                fillSubCategories();
+            }else if(type == CategoryTypes::TEAM){
+                this->activeSubCategory->children.insert(activeSubCategory->children.begin(), Team(NAN, name));
+                fillTeams();
+            }
+        }
+    });
+}
+
+
+
+
+
+
 
 
 

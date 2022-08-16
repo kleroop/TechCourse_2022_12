@@ -1,8 +1,10 @@
-#ifndef QTWORLD_USER_DROPDOWN_H
-#define QTWORLD_USER_DROPDOWN_H
+#ifndef QTWORLD_INFO_ARCH_DROPDOWN_H
+#define QTWORLD_INFO_ARCH_DROPDOWN_H
 
 #include <QWidget>
 #include "QPushButton"
+#include "QGraphicsDropShadowEffect"
+#include "../cat_button/CustomButton.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,7 +24,7 @@ public:
 
 public slots:
 
-    void onDropdownButtonClicked(QPushButton* button);
+    void onDropdownButtonClicked(QPushButton* dropdownButton, CustomButton* catButton);
 
 private:
     Ui::InfoArchDropdown *ui;

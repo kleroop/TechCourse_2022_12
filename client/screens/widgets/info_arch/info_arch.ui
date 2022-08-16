@@ -66,8 +66,8 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>160</width>
-          <height>36</height>
+          <width>172</width>
+          <height>38</height>
          </size>
         </property>
         <property name="font">
@@ -274,8 +274,8 @@ border: none;</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>160</width>
-          <height>36</height>
+          <width>172</width>
+          <height>38</height>
          </size>
         </property>
         <property name="font">
@@ -398,8 +398,8 @@ color: #B2B2B2;</string>
         </property>
         <property name="minimumSize">
          <size>
-          <width>160</width>
-          <height>36</height>
+          <width>172</width>
+          <height>38</height>
          </size>
         </property>
         <property name="font">

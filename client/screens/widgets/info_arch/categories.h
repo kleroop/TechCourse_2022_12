@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-enum categoryTypes {
+enum CategoryTypes {
     CATEGORY,
     SUBCATEGORY,
     TEAM
@@ -24,7 +24,7 @@ public:
     ICategory *parent;
     std::string title;
     std::vector<ICategory> children = {};
-    categoryTypes type;
+    CategoryTypes type;
     //todo add position and show/hide
 };
 
@@ -36,21 +36,21 @@ public:
 class Category : public ICategory {
 public:
     Category(int id, std::string title, ICategory *parent = nullptr) : ICategory(id, std::move(title), parent) {
-        this->type = categoryTypes::CATEGORY;
+        this->type = CategoryTypes::CATEGORY;
     }
 };
 
 class SubCategory : public ICategory {
 public:
     SubCategory(int id, std::string title, ICategory *parent = nullptr) : ICategory(id, std::move(title), parent) {
-        this->type = categoryTypes::SUBCATEGORY;
+        this->type = CategoryTypes::SUBCATEGORY;
     }
 };
 
 class Team : public ICategory {
 public:
     Team(int id, std::string title, ICategory *parent = nullptr) : ICategory(id, std::move(title), parent) {
-        this->type = categoryTypes::TEAM;
+        this->type = CategoryTypes::TEAM;
     }
 };
 

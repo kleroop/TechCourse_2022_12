@@ -4,25 +4,8 @@
 #include <QWidget>
 #include "QPushButton"
 #include "../categories.h"
-
-
-class CustomButton : public QPushButton {
-Q_OBJECT
-
-public:
-    explicit CustomButton(QWidget *parent = nullptr, QPushButton *original = nullptr, ICategory *category = nullptr) {
-        this->setParent(parent);
-        this->setText(QString::fromStdString(category->title));
-        this->setMinimumSize(original->minimumSize());
-        this->setMaximumSize(original->maximumSize());
-        this->setSizePolicy(original->sizePolicy());
-        this->setStyleSheet(original->styleSheet());
-        this->setCursor(original->cursor());
-        this->category = category;
-    };
-
-    ICategory *category;
-};
+#include "../info_arch_dropdown/info_arch_dropdown.h"
+#include "CustomButton.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -33,12 +16,14 @@ class CatButton : public QWidget {
 Q_OBJECT
 
 public:
-    explicit CatButton(QWidget *parent = nullptr, CustomButton* MainButton = nullptr);
+    explicit CatButton(QWidget *parent, CustomButton* mainButton, InfoArchDropdown* dropdown);
 
     ~CatButton() override;
 
 private:
     Ui::CatButton *ui;
+    InfoArchDropdown* dropdown;
+    CustomButton* mainButton;
 };
 
 #endif

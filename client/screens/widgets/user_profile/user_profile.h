@@ -18,10 +18,9 @@ public:
 
     ~UserProfile() override;
 
-    UserDropdown *DropdownMenu;
-
 private:
     Ui::UserProfile *ui;
+    UserDropdown *DropdownMenu;
 };
 
 #endif

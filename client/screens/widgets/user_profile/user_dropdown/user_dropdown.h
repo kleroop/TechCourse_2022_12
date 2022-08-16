@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "QPushButton"
+#include "QGraphicsDropShadowEffect"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
