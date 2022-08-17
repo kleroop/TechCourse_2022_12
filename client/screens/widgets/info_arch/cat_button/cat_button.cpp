@@ -7,11 +7,12 @@ CatButton::CatButton(QWidget *parent, CustomButton* mainButton, InfoArchDropdown
     ui->buttonContainer->addWidget(mainButton);
 
     this->mainButton = mainButton;
-    this->dropdown = dropdown;
+    this->dropdownButton = ui->dropdownButton;
 
-    connect(ui->dropdownButton, &QPushButton::clicked, this->dropdown, [this]() {
-        this->dropdown->onDropdownButtonClicked(ui->dropdownButton, this->mainButton);
-    });
+    if(this->mainButton->category->isHidden){
+        this->setStyleSheet(this->styleSheet() + "background-color: rgb(190, 190, 190);");
+        this->mainButton->setStyleSheet(this->mainButton->styleSheet() + "color: rgb(255, 255, 255);");
+    }
 }
 
 CatButton::~CatButton() {

@@ -35,7 +35,6 @@ InfoArch::InfoArch(QWidget *parent) : QWidget(parent), ui(new Ui::InfoArch) {
     ui->categoriesFrame->layout()->takeAt(ui->categoriesFrame->layout()->indexOf(buttonTemplate));
 
     this->catTree = generateCat();
-    this->dropdown = new InfoArchDropdown(this);
 
     fillCategories();
 
@@ -52,7 +51,11 @@ std::vector<CatButton *> InfoArch::btnWrapper(const std::vector<CustomButton *>&
     std::vector<CatButton *> result;
 
     for(CustomButton* btn: buttons){
-        result.push_back(new CatButton(this, btn, this->dropdown));
+        auto* tempButton = new CatButton(this, btn);
+        connect(tempButton->dropdownButton, &QPushButton::clicked, this, [this, btn, tempButton]{
+            this->hideCatHandler(btn->category, tempButton->dropdownButton);
+        });
+        result.push_back(tempButton);
     }
 
     return result;
@@ -72,6 +75,7 @@ InfoArch::getCustomButtons(const std::vector<ICategory> &categories, QPushButton
         } else {
             tempButton->setCursor(Qt::ArrowCursor);
         }
+
         result.push_back(tempButton);
     }
     return result;
@@ -85,28 +89,42 @@ void clearLayout(QLayout *container) {  //todo move to utils
     }
 }
 
-void InfoArch::fillCategories() {
-    this->activeCategory = nullptr;
-    clearLayout(ui->subCategoriesFrame->layout());
-    clearLayout(ui->teamsFrame->layout());
-    ui->addSubCategoryButton->hide();
-    ui->addTeamButton->hide();
+void InfoArch::updateAllContainers() {
+    fillCategories(false);
+    fillSubCategories(false);
+    fillTeams(false);
+}
+
+void InfoArch::fillCategories(bool clean) {
+    if(clean){
+        this->activeCategory = nullptr;
+        clearLayout(ui->subCategoriesFrame->layout());
+        clearLayout(ui->teamsFrame->layout());
+        ui->addSubCategoryButton->hide();
+        ui->addTeamButton->hide();
+    }
     fillContainer(ui->categoriesFrame->layout(), catTree.categories);
 }
 
-void InfoArch::fillSubCategories() {
+void InfoArch::fillSubCategories(bool clean) {
     ICategory *category = this->activeCategory;
-    this->activeSubCategory = nullptr;
-    clearLayout(ui->teamsFrame->layout());
-    ui->addSubCategoryButton->show();
-    ui->addTeamButton->hide();
-    fillContainer(ui->subCategoriesFrame->layout(), category->children);
+    if(category){
+        if(clean) {
+            this->activeSubCategory = nullptr;
+            clearLayout(ui->teamsFrame->layout());
+            ui->addTeamButton->hide();
+        }
+        ui->addSubCategoryButton->show();
+        fillContainer(ui->subCategoriesFrame->layout(), category->children);
+    }
 }
 
-void InfoArch::fillTeams() {
+void InfoArch::fillTeams(bool clean) {
     ICategory *category = this->activeSubCategory;
-    ui->addTeamButton->show();
-    fillContainer(ui->teamsFrame->layout(), category->children, false);
+    if(category){
+        ui->addTeamButton->show();
+        fillContainer(ui->teamsFrame->layout(), category->children, false);
+    }
 }
 
 void InfoArch::fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable, bool replace) {//todo maybe move to utils
@@ -149,6 +167,20 @@ void InfoArch::createHandler(CategoryTypes type) {
                 fillTeams();
             }
         }
+    });
+}
+
+
+void InfoArch::hideCatHandler(ICategory* category, QPushButton* button){
+    this->dropdown = new InfoArchDropdown(this);
+
+    dropdown->onCreateCall(category->isHidden, button, [=]() {
+        if (category->isHidden) {
+            category->isHidden = false;
+        } else {
+            category->isHidden = true;
+        }
+        updateAllContainers();
     });
 }
 

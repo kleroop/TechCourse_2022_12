@@ -25,7 +25,8 @@ public:
     std::string title;
     std::vector<ICategory> children = {};
     CategoryTypes type;
-    //todo add position and show/hide
+    bool isHidden = false;
+    //todo add position
 };
 
 class CategoriesTree {

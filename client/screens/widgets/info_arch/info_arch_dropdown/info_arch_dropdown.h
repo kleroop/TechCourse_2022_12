@@ -5,6 +5,7 @@
 #include "QPushButton"
 #include "QGraphicsDropShadowEffect"
 #include "../cat_button/CustomButton.h"
+#include <click_catch_overlay.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,12 +23,13 @@ public:
 
     void updatePos(QPushButton* button);
 
-public slots:
-
-    void onDropdownButtonClicked(QPushButton* dropdownButton, CustomButton* catButton);
+    void onCreateCall(bool isHidden, QPushButton *dropdownButton, const std::function<void()> &f);
 
 private:
+    ClickCatchOverlay* overlay;
+
     Ui::InfoArchDropdown *ui;
+
 };
 
 #endif

@@ -6,6 +6,9 @@ AddCatDialog::AddCatDialog(QWidget *parent) : QWidget(parent->window()), ui(new 
     ui->setupUi(this);
     this->show();
 
+    this->overlay = new ClickCatchOverlay(this, true);
+    connect(overlay, &ClickCatchOverlay::clicked, this, [this](){delete this;});
+
     auto *effect = new QGraphicsDropShadowEffect(this);
     effect->setBlurRadius(30);
     effect->setOffset(0, 0);
@@ -16,6 +19,7 @@ AddCatDialog::AddCatDialog(QWidget *parent) : QWidget(parent->window()), ui(new 
 }
 
 AddCatDialog::~AddCatDialog() {
+    delete overlay;
     delete ui;
 }
 
@@ -33,3 +37,5 @@ void AddCatDialog::onCreateCall(const std::function<void(std::string)> &f) {
         delete this;
     });
 }
+
+

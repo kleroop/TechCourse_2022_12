@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QGraphicsDropShadowEffect>
+#include <click_catch_overlay.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class AddCatDialog; }
@@ -20,8 +21,8 @@ public slots:
     void onCreateCall(const std::function<void(std::string)> &f);
 
 private:
+    ClickCatchOverlay* overlay;
     Ui::AddCatDialog *ui;
-    std::string* namePtr;
 };
 
 

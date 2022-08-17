@@ -16,9 +16,11 @@ class CatButton : public QWidget {
 Q_OBJECT
 
 public:
-    explicit CatButton(QWidget *parent, CustomButton* mainButton, InfoArchDropdown* dropdown);
+    explicit CatButton(QWidget *parent, CustomButton* mainButton, InfoArchDropdown* dropdown = nullptr);
 
     ~CatButton() override;
+
+    QPushButton* dropdownButton;
 
 private:
     Ui::CatButton *ui;

@@ -29,6 +29,7 @@ public:
 public slots:
     void buttonHandler(CustomButton *but);
     void createHandler(CategoryTypes type);
+    void hideCatHandler(ICategory *category, QPushButton* button);
 
 private:
     Ui::InfoArch *ui;
@@ -40,17 +41,18 @@ private:
     ICategory* activeCategory = nullptr;
     ICategory* activeSubCategory = nullptr;
 
-    void fillCategories();
-    void fillSubCategories();
-    void fillTeams();
+    void fillCategories(bool clean = true);
+    void fillSubCategories(bool clean = true);
+    void fillTeams(bool clean = true);
 
-    void fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable = true,
-                       bool replace = true);
+    void fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable = true, bool replace = true);
 
     std::vector<CustomButton *>
     getCustomButtons(const std::vector<ICategory> &categories, QPushButton *buttonTemplate, bool clickable = true);
 
     std::vector<CatButton *> btnWrapper(const std::vector<CustomButton *>& buttons);
+
+    void updateAllContainers();
 };
 
 #endif

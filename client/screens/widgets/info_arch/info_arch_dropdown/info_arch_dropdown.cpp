@@ -4,8 +4,10 @@
 
 InfoArchDropdown::InfoArchDropdown(QWidget *parent) : QWidget(parent->window()), ui(new Ui::InfoArchDropdown) {
     ui->setupUi(this);
+    this->show();
 
-    this->hide();
+    this->overlay = new ClickCatchOverlay(this);
+    connect(overlay, &ClickCatchOverlay::clicked, this, [this](){delete this;});
 
     auto *effect = new QGraphicsDropShadowEffect(this);
     effect->setBlurRadius(30);
@@ -15,6 +17,7 @@ InfoArchDropdown::InfoArchDropdown(QWidget *parent) : QWidget(parent->window()),
 }
 
 InfoArchDropdown::~InfoArchDropdown() {
+    delete overlay;
     delete ui;
 }
 
@@ -24,13 +27,19 @@ void InfoArchDropdown::updatePos(QPushButton* button) {
     this->move(dropdownX, dropdownY);
 }
 
-void InfoArchDropdown::onDropdownButtonClicked(QPushButton* dropdownButton, CustomButton* catButton) {
-    if (this->isVisible()) {
-        this->hide();
-    } else {
-        this->show();
-        updatePos(dropdownButton);
+void InfoArchDropdown::onCreateCall(bool isHidden, QPushButton *dropdownButton, const std::function<void()> &f) {
+    if(isHidden){
+        ui->hideButton->setText("Show");
+    }else{
+        ui->hideButton->setText("Hide");
     }
+
+    updatePos(dropdownButton);
+
+    connect(ui->hideButton, &QPushButton::clicked, [this, f](){
+        f();
+        delete this;
+    });
 }
 
 

@@ -89,8 +89,7 @@
          <cursorShape>OpenHandCursor</cursorShape>
         </property>
         <property name="styleSheet">
-         <string notr="true">border: none;
-background-color: rgb(255, 255, 255);</string>
+         <string notr="true">border: none;</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -193,8 +192,7 @@ color: #B2B2B2;</string>
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="styleSheet">
-         <string notr="true">border: none;
-background-color: rgb(255, 255, 255);</string>
+         <string notr="true">border: none;</string>
         </property>
         <property name="text">
          <string/>
