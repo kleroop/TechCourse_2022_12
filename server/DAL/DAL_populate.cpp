@@ -6,34 +6,50 @@
 int main()
 {
     char pwd[PHASH_SIZE];
-    if (DALInitEx(true) != DAL_OK) {
+    utils_phash(pwd, "admin");
+    if (DAL::InitEx(true) != DAL::DAL_OK) {
         puts("Couldn't init DAL connection");
         return EXIT_FAILURE;
     }
-    DALUser u;
 
-    utils_phash(pwd, "admin");
+    DAL::User u;
+    auto r = u.Select("id=$1 OR id=$2", { DAL::bind(1), DAL::bind(2) });
+    DAL::User n1("admin", "admin@example.com", pwd, true),
+            n2("test1", "test1@example.com", pwd, false);
+    n1.Create();
+    n2.Create();
+    assert(n2.status == DAL::DAL_OK);
+    n2.username = "admin";
+    n2.Update();
+    assert(n2.status = DAL::DAL_OBJECT_EXISTS);
+    n2.username = "test1_upd";
+    n2.Update();
+    assert(n2.status == DAL::DAL_OK);
+    n2.Select("username = $1", { DAL::bind("test1_upd") });
+    assert(n2.status == DAL::DAL_OK);
+    n2.Delete();
+    assert(n2.status == DAL::DAL_OK);
+    assert(n2.id == DAL_BAD_ID);
 
-    switch (DALUserCreate(&u, "admin", "admin1@example.com", pwd, true)) {
-    case DAL_OK:
-    case DAL_USER_EXISTS:
-        break;
-    default:
-        exit(1);
-    }
+    /* Categories */
+    DAL::Category cat("test1", false);
+    DAL::SubCategory scat("test2", false, &cat);
+    DAL::Team team("test3", false, &scat);
+    cat.Create();
+    scat.Create();
+    team.Create();
+    cat.Select("name = $1", { DAL::bind("test1") });
+    cat.scats[0].isHidden = !cat.scats[0].isHidden;
+    bool thidden = !cat.scats[0].teams[0].isHidden;
+    assert(cat.scats[0].teams.size() == 1);
+    printf("AAA: %d %d\n", thidden, cat.scats[0].teams[0].isHidden);
 
-    assert(DALUserGetByUsername(&u, "admin") == DAL_OK);
-    assert(DALUserGetById(NULL, u.id) == DAL_OK);
-    assert(DALUserGetByEmail(NULL, "admin1@example.com") == DAL_OK
-           ^ DALUserGetByEmail(NULL, "admin@example.com") == DAL_OK);
-    strcpy(u.email, "admin@example.com");
-    assert(DALUserEdit(&u) == DAL_OK);
-    u.id = 0;
-    assert(DALUserEdit(&u) == DAL_NOT_FOUND);
+    cat.scats[0].teams[0].isHidden = thidden;
+    cat.Update();
+    printf("BBB: %d %d\n", thidden, cat.scats[0].teams[0].isHidden);
 
-    assert(DALUserDelete(0) == DAL_NOT_FOUND);
+    cat.Select("name = $1", { DAL::bind("test1") });
 
-    DALQuit();
-    puts(pwd);
-    return EXIT_SUCCESS;
+    printf("CCC: %d %d\n", thidden, cat.scats[0].teams[0].isHidden);
+    DAL::Quit();
 }
