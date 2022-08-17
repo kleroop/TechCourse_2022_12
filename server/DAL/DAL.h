@@ -48,7 +48,7 @@ public:
 class DAL_EXPORT Category : public IDataModel<Category> {
 public:
     inline const string getTable() const override { return "DCategory"; };
-    int32_t id;
+    int32_t id = DAL_BAD_ID;
     string name;
     bool isHidden;
     vector<class SubCategory> scats;
@@ -65,7 +65,7 @@ class DAL_EXPORT SubCategory : public IDataModel<SubCategory> {
 public:
 
     inline const string getTable() const override { return "DSubCategory"; };
-    int32_t id;
+    int32_t id = DAL_BAD_ID;
     string name;
     bool isHidden;
     Category *cat;
@@ -82,7 +82,7 @@ public:
 class DAL_EXPORT Team: public IDataModel<Team> {
 public:
     inline const string getTable() const override { return "DTeam"; };
-    int32_t id;
+    int32_t id = DAL_BAD_ID;
     string name;
     bool isHidden;
     SubCategory *scat;

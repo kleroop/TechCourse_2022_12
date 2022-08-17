@@ -38,18 +38,22 @@ int main()
     cat.Create();
     scat.Create();
     team.Create();
-    cat.Select("name = $1", { DAL::bind("test1") });
-    cat.scats[0].isHidden = !cat.scats[0].isHidden;
-    bool thidden = !cat.scats[0].teams[0].isHidden;
-    assert(cat.scats[0].teams.size() == 1);
-    printf("AAA: %d %d\n", thidden, cat.scats[0].teams[0].isHidden);
 
-    cat.scats[0].teams[0].isHidden = thidden;
+    cat.Select("name = $1", { DAL::bind("test1") });
+    team.Select("name = $1", { DAL::bind("test3") });
+    assert(team.status == DAL::DAL_OK && team.name == "test3");
+
+    DAL::Team *tp = &cat.scats[0].teams[0];
+    bool thidden = !tp->isHidden;
+    tp->isHidden = thidden;
     cat.Update();
-    printf("BBB: %d %d\n", thidden, cat.scats[0].teams[0].isHidden);
 
     cat.Select("name = $1", { DAL::bind("test1") });
+    assert(cat.scats[0].teams.size() == 1);
+    assert(cat.scats[0].teams[0].isHidden == thidden);
+    cat.Delete();
+    cat.Select("name = $1", {DAL::bind("test1")});
+    assert(cat.status == DAL::DAL_NOT_FOUND);
 
-    printf("CCC: %d %d\n", thidden, cat.scats[0].teams[0].isHidden);
     DAL::Quit();
 }

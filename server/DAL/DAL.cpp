@@ -116,10 +116,11 @@ static Statement DeleteQueryBuild(const string &table, string query, Bindings bi
 static Statement SelectQueryBuild(const string &table, string query, Bindings binds)
 {
     Statement select(session);
-    select << "SELECT * FROM " << table << (!query.empty() ? " WHERE " : " ") << query, range(0, 1);
+    select << "SELECT * FROM " << table << (!query.empty() ? " WHERE " : " ") << query;
     for (auto &bind : binds) {
         select, bind;
     }
+    select, range(0, 1);
     return select;
 }
 
@@ -205,13 +206,13 @@ static std::vector<T> executeSelect(T *model, Statement &statement)
     model->status = DAL_OK;
     try {
         size_t i = 0;
-        while (!statement.done()) {
-            statement.execute();
+        while (!statement.done() && statement.execute()) {
             res.push_back(*model);
             i++;
         }
-        if (i == 0)
+        if (i == 0) {
             model->status = DAL_NOT_FOUND;
+        }
     } catch (const Poco::Exception &e) {
         eputs(e.displayText().c_str());
         model->status = DAL_ERROR;
@@ -390,6 +391,8 @@ void Team::Create()
 std::vector<Team> Team::Select(string query, Bindings binds)
 {
     Statement select = SelectQueryBuild(getTable(), query, binds);
+    int32_t cat_id;
+    select, into(this->id), into(this->name), into(this->isHidden), into(cat_id);
     return executeSelect(this, select);
 }
 void Team::Update()
