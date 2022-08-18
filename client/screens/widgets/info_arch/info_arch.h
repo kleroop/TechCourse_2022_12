@@ -4,11 +4,13 @@
 #include <QWidget>
 #include "QPushButton"
 #include "QFrame"
+#include "QPainter"
 
 #include "categories.h"
 #include "cat_button.h"
 #include "info_arch_dropdown.h"
 #include "add_cat_window.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -31,6 +33,9 @@ public slots:
     void createHandler(CategoryTypes type);
     void hideCatHandler(ICategory *category, QPushButton* button);
 
+protected:
+    void paintEvent(QPaintEvent *);
+
 private:
     Ui::InfoArch *ui;
 
@@ -42,8 +47,8 @@ private:
     ICategory* activeSubCategory = nullptr;
 
     void fillCategories(bool clean = true);
-    void fillSubCategories(bool clean = true);
-    void fillTeams(bool clean = true);
+    void fillSubCategories();
+    void fillTeams();
 
     void fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable = true, bool replace = true);
 
@@ -53,6 +58,12 @@ private:
     std::vector<CatButton *> btnWrapper(const std::vector<CustomButton *>& buttons);
 
     void updateAllContainers();
+
+    void LineDrawer(QLayout *leftContainer, QLayout *rightContainer, ICategory* category);
+
+    void setActiveCat(ICategory *category);
+
+    void setActiveSubCat(ICategory* category);
 };
 
 #endif

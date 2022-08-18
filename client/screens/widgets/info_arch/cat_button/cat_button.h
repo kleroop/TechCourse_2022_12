@@ -16,15 +16,16 @@ class CatButton : public QWidget {
 Q_OBJECT
 
 public:
-    explicit CatButton(QWidget *parent, CustomButton* mainButton, InfoArchDropdown* dropdown = nullptr);
+    explicit CatButton(QWidget *parent, CustomButton *mainButton, bool active = false);
 
     ~CatButton() override;
 
     QPushButton* dropdownButton;
 
+    bool isActive = false;
+
 private:
     Ui::CatButton *ui;
-    InfoArchDropdown* dropdown;
     CustomButton* mainButton;
 };
 
