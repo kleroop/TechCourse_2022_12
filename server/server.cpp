@@ -3,7 +3,7 @@
 int Server::main(const std::vector<std::string> &args)
 {
     Poco::Net::HTTPServer server(handlersFactory, serverSocket, serverParams);
-    DALInit();
+    DAL::Init();
     server.start();
 
     std::cout << "Server successfully running on " << server.port() << " port" << "\n";
@@ -11,7 +11,7 @@ int Server::main(const std::vector<std::string> &args)
 
     waitForTerminationRequest();
     server.stop();
-    DALQuit();
+    DAL::Quit();
 
     return 0;
 }

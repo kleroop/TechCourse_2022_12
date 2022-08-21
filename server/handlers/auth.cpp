@@ -32,13 +32,13 @@ void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPS
         return;
     }
 
-    DALUser user;
-    DALStatus status = DALUserGetByEmail(&user, authRequest.email.c_str());
+    DAL::User user;
+    user.Select("email=$1", { DAL::bind(authRequest.email) });
 
     char pwdHash[PHASH_SIZE];
     utils_phash(pwdHash, authRequest.password);
 
-    if (status != DAL_OK || authRequest.email != user.email || strcmp(pwdHash, user.pwdHash) != 0)
+    if (user.status != DAL::DAL_OK || authRequest.email != user.email || strcmp(pwdHash, user.pwdHash.c_str()) != 0)
     {
         responseJson["data"] = { {"message", "User with such credentials doesn't exist"} };
         responseJson["status"] = 401;
