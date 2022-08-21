@@ -1,4 +1,5 @@
 #include "auth.h"
+#include "auth_utils.h"
 
 void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response)
 {
@@ -32,17 +33,9 @@ void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPS
         return;
     }
 
-    DAL::User user;
-    user.Select("email=$1", { DAL::bind(authRequest.email) });
-
-    char pwdHash[PHASH_SIZE];
-    utils_phash(pwdHash, authRequest.password);
-
-    if (user.status != DAL::DAL_OK || authRequest.email != user.email || strcmp(pwdHash, user.pwdHash.c_str()) != 0)
+    if (!userExists(authRequest.email, authRequest.password))
     {
-        responseJson["data"] = { {"message", "User with such credentials doesn't exist"} };
-        responseJson["status"] = 401;
-
+        userNotFound(responseJson);
         ostream << responseJson.dump();
 
         return;
@@ -60,7 +53,7 @@ void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPS
     token.payload().set("email", deserializedRequest.email);
     token.setIssuedAt(Poco::Timestamp());
 
-    Poco::JWT::Signer signer("0123456789ABCDEF0123456789ABCDEF");
+    Poco::JWT::Signer signer(TOKEN_SIGNER);
 
     return signer.sign(token, Poco::JWT::Signer::ALGO_HS256);
 }
