@@ -12,9 +12,9 @@ enum CategoryTypes {
     TEAM
 };
 
-class ICategory : ISerializable {
+class ICategory : public ISerializable {
 public:
-    explicit ICategory(int id, std::string title, bool isHidden, ICategory *parent = nullptr) {
+    explicit ICategory(int id = 0, std::string title = "", bool isHidden = false, ICategory *parent = nullptr) {
         this->id = id;
         this->title = std::move(title);
         this->isHidden = isHidden;

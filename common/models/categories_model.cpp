@@ -19,7 +19,37 @@ json ICategory::serialize()
 }
 
 void ICategory::deserialize(json data)
-{}
+{
+    if(!data.contains("title") || data["title"] == "")
+    {
+        error = "'title' field is required";
+        return;
+    }
+
+    if (!data.contains("isHidden"))
+    {
+        error = "'isHidden' field is required";
+        return;
+    }
+
+    if (!data.contains("children"))
+    {
+        error = "'children' field is required";
+        return;
+    }
+
+    title = data["title"];
+    isHidden = data["isHidden"];
+
+    for (auto& child : data["children"])
+    {
+        ICategory category;
+        category.serialize();
+
+        category.parent = this;
+        children.push_back(category);
+    }
+}
 
 CategoriesTreeResponse::CategoriesTreeResponse(CategoriesTree& _categoriesTree) : categoriesTree(_categoriesTree)
 {}
@@ -41,4 +71,24 @@ json CategoriesTreeResponse::serialize()
 }
 
 void CategoriesTreeResponse::deserialize(json data)
-{}
+{
+    if (data["status"] != 200)
+    {
+        error = data["data"]["message"];
+        return;
+    }
+
+    for (auto& category : data["data"]["categoriesTree"])
+    {
+        ICategory categoryModel;
+        categoryModel.deserialize(category);
+
+        if (categoryModel.error != "")
+        {
+            error = "Deserialization error: " + categoryModel.error;
+            return;
+        }
+
+        categoriesTree.categories.push_back(categoryModel);
+    }
+}
