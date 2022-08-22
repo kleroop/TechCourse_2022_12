@@ -52,8 +52,7 @@ private:
 
     void fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable = true, bool replace = true);
 
-    std::vector<CustomButton *>
-    getCustomButtons(const std::vector<ICategory> &categories, QPushButton *buttonTemplate, bool clickable = true);
+    std::vector<CustomButton *> getCustomButtons(const std::vector<ICategory> &categories, QPushButton *buttonTemplate, bool clickable = true);
 
     std::vector<CatButton *> btnWrapper(const std::vector<CustomButton *>& buttons);
 

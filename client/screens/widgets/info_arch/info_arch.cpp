@@ -172,6 +172,7 @@ void InfoArch::buttonHandler(CustomButton *button) {
     } else if (category->type == CategoryTypes::SUBCATEGORY) {
         setActiveSubCat(category);
     }
+    update();
 }
 
 void InfoArch::createHandler(CategoryTypes type) {
@@ -212,7 +213,7 @@ void InfoArch::paintEvent(QPaintEvent *e) {
 }
 
 void InfoArch::LineDrawer(QLayout *leftContainer, QLayout *rightContainer, ICategory* category) {
-    if(true){
+    if(category){
         QPainter painter(this);
         QPen pen;
         pen.setWidth(1);
@@ -241,12 +242,14 @@ void InfoArch::LineDrawer(QLayout *leftContainer, QLayout *rightContainer, ICate
             midX = abs(rightBtns.front().x() + activeCat.x())/2;
 
 
-            painter.drawLine(activeCat, QPoint(midX, activeCat.y()));
-            painter.drawLine(midX, rightBtns.front().y(), midX, rightBtns.back().y());
+            painter.drawLine(activeCat, QPoint(midX, activeCat.y())); //horizontal from active cat
+            painter.drawLine(midX, rightBtns.front().y(), midX, activeCat.y());  //vertical from first right to active
+
+            if(rightBtns.back().y() > activeCat.y())
+            painter.drawLine(midX, activeCat.y(), midX, rightBtns.back().y());  //vertical from last right to active
 
             for(QPoint p : rightBtns){
-                painter.drawLine(midX, p.y(), p.x(), p.y());
-                //painter.drawPoint(p);
+                painter.drawLine(midX, p.y(), p.x(), p.y()); //horizontal from right btns
             }
         }
     }

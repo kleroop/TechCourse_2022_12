@@ -5,7 +5,6 @@
 UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProfile) {
     ui->setupUi(this);
 
-    /* fixme: no check if parent is NULL */
     this->DropdownMenu = new UserDropdown(this);
 
     connect(ui->dropdownButton, &QPushButton::clicked, DropdownMenu, [this]() {
