@@ -1,4 +1,4 @@
-#ifndef QTWORLD_CATEGORIES_H
+#ifndef QTWORLD_CATEGORIES_UTILS_H
 #define QTWORLD_CATEGORIES_H
 
 #include "handler_includes.h"

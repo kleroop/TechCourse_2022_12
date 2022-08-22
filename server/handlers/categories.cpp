@@ -1,12 +1,16 @@
 #include "categories.h"
 #include "auth_utils.h"
+#include "models/categories_model.h"
+#include "categories_utils.h"
 
 void GetCategories::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response)
 {
     AUTH
 
-    responseJson["data"] = { {"message", "Shit bussin"} };
-    responseJson["status"] = 200;
+    // TODO: add macro for admin only users
 
-    ostream << responseJson.dump(2);
+    CategoriesTree categoriesTree = fromDal();
+    CategoriesTreeResponse categoriesTreeResponse(categoriesTree);
+
+    ostream << categoriesTreeResponse.serialize().dump();
 }
