@@ -2,7 +2,7 @@
 #define QTWORLD_NAVIGATION_H
 
 #include <QWidget>
-#include "buttondecorator.h"
+#include "button_decorator/buttondecorator.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
