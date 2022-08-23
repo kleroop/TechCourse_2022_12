@@ -6,6 +6,7 @@
 #include <QHoverEvent>
 #include <QEvent>
 #include <QPushButton>
+#include "../../header/header.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,13 +28,14 @@ public:
     void mouseButtonPress(QHoverEvent * event);
 
     void setDefaultStyleSheet();
-    void setData(QWidget *parent, QWidget *parentWidget, QString text, QString icon);
+    void setData(QWidget *parent, Header *header, QWidget *parentWidget, QString text, QString icon);
 
     QString text;
     QString icon;
     Hover* hover = nullptr;
     QWidget *parentWidget;
     QWidget *parent;
+    Header* header;
 private:
     Ui::ButtonDecorator *ui;
 };

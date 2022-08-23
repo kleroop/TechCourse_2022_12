@@ -15,7 +15,7 @@ class Navigation : public QWidget
     Q_OBJECT
 
 public:
-    explicit Navigation(QWidget *parent = nullptr);
+    explicit Navigation(QWidget *parent = nullptr, Header* header = nullptr);
     ~Navigation() override;
 
 

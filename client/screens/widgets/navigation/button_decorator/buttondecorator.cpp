@@ -72,15 +72,20 @@ void ButtonDecorator::hoverLeave(QHoverEvent * event)
 void ButtonDecorator::mouseButtonPress(QHoverEvent *event)
 {
     if (activeButton && activeButton != this) activeButton->setDefaultStyleSheet();
-    activeButton = this;
+    if (activeButton != this)
+    {
+        activeButton = this;
+        header->setSectionName(text);
+    }
 }
 
-void ButtonDecorator::setData(QWidget *parent, QWidget *parentWidget, QString text, QString icon)
+void ButtonDecorator::setData(QWidget *parent, Header* header, QWidget *parentWidget, QString text, QString icon)
 {
     this->parent = parent;
     this->parentWidget = parentWidget;
     this->text = std::move(text);
     this->icon = std::move(icon);
+    this->header = header;
 }
 void ButtonDecorator::setDefaultStyleSheet()
 {

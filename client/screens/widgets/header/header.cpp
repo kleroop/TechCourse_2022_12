@@ -10,6 +10,7 @@ Header::Header(QWidget *parent, std::vector<QWidget *> right_widgets)
         w->setParent(this);
     }
     delete ui->profilePlaceholder;
+
 }
 
 Header::~Header()
@@ -20,4 +21,8 @@ Header::~Header()
 QHBoxLayout *Header::getRightSection()
 {
     return ui->right_menu;
+}
+void Header::setSectionName(const QString &text)
+{
+    ui->sectionName->setText(text);
 }

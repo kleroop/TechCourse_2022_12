@@ -20,6 +20,8 @@ public:
     ~Header() override;
     QHBoxLayout *getRightSection();
 
+    void setSectionName(const QString &text);
+
 private:
     Ui::Header *ui;
 };

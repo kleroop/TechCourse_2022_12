@@ -12,7 +12,7 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home) {
     delete ui->headerPlaceholder;
     ui->headerFrame->layout()->addWidget(HeaderWidget);
 
-    this->NavigationWidget = new Navigation(this);
+    this->NavigationWidget = new Navigation(this, HeaderWidget);
     ui->localNavigation->replaceWidget(ui->navigationMock, NavigationWidget);
     delete ui->navigationMock;
 
