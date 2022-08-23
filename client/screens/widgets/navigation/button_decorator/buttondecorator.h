@@ -24,7 +24,9 @@ public:
     bool event(QEvent *) override;
     void hoverEnter(QHoverEvent * event);
     void hoverLeave(QHoverEvent * event);
+    void mouseButtonPress(QHoverEvent * event);
 
+    void setDefaultStyleSheet();
     void setData(QWidget *parent, QWidget *parentWidget, QString text, QString icon);
 
     QString text;

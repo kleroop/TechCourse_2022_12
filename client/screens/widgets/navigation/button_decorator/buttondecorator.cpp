@@ -3,7 +3,7 @@
 #include <utility>
 #include "ui_ButtonDecorator.h"
 
-
+ButtonDecorator * activeButton = nullptr;
 
 ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new Ui::ButtonDecorator)
 {
@@ -30,6 +30,10 @@ bool ButtonDecorator::event(QEvent * e)
         hoverLeave(dynamic_cast<QHoverEvent*>(e));
         return true;
         break;
+    case QEvent::MouseButtonPress:
+        mouseButtonPress(dynamic_cast<QHoverEvent*>(e));
+        return true;
+        break;
     default:
         break;
     }
@@ -49,16 +53,39 @@ void ButtonDecorator::hoverEnter(QHoverEvent * event)
 void ButtonDecorator::hoverLeave(QHoverEvent * event)
 {
     hover->hide();
-    this->setStyleSheet("border-radius: 27%;\n"
-                        "padding: 13px;\n"
-                        "background-color: none;\n"
-                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
-
+    if (activeButton == this)
+    {
+        this->setStyleSheet("border-radius: 27%;\n"
+                            "padding: 13px;\n"
+                            "background-color: none;\n"
+                            "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon_active.png);\n");
+    }
+    else
+    {
+        this->setStyleSheet("border-radius: 27%;\n"
+                            "padding: 13px;\n"
+                            "background-color: none;\n"
+                            "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
+    }
 }
+
+void ButtonDecorator::mouseButtonPress(QHoverEvent *event)
+{
+    if (activeButton && activeButton != this) activeButton->setDefaultStyleSheet();
+    activeButton = this;
+}
+
 void ButtonDecorator::setData(QWidget *parent, QWidget *parentWidget, QString text, QString icon)
 {
     this->parent = parent;
     this->parentWidget = parentWidget;
     this->text = std::move(text);
     this->icon = std::move(icon);
+}
+void ButtonDecorator::setDefaultStyleSheet()
+{
+    this->setStyleSheet("border-radius: 27%;\n"
+                        "padding: 13px;\n"
+                        "background-color: none;\n"
+                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
 }
