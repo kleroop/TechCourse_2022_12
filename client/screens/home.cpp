@@ -1,8 +1,9 @@
 #include "home.h"
 #include "ui_Home.h"
 
-Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
-{
+#include "info_arch.h"
+
+Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home) {
     ui->setupUi(this);
 
     this->HeaderWidget = new Header(this);
@@ -14,14 +15,16 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
     this->NavigationWidget = new Navigation(this);
     ui->localNavigation->replaceWidget(ui->navigationMock, NavigationWidget);
     delete ui->navigationMock;
+
+    auto InfoArchWidget = new InfoArch(this);
+    delete ui->contentMock;
+    ui->contentContainer->layout()->addWidget(InfoArchWidget);
 }
 
-Home::~Home()
-{
+Home::~Home() {
     delete ui;
 }
 
-void Home::resizeEvent(QResizeEvent *event)
-{
+void Home::resizeEvent(QResizeEvent *event) {
     QWidget::resizeEvent(event);
 }

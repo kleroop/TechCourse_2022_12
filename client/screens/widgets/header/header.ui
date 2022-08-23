@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1164</width>
-    <height>222</height>
+    <width>1092</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <widget class="QFrame" name="frame_4">
      <property name="styleSheet">
       <string notr="true">#frame_4{
-	border: 1px solid black;
+	border: 1px solid #EDEDED;
 }</string>
      </property>
      <property name="frameShape">
@@ -52,12 +52,12 @@
          <widget class="QFrame" name="frame_2">
           <property name="minimumSize">
            <size>
-            <width>200</width>
-            <height>0</height>
+            <width>252</width>
+            <height>83</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgba(234,0,36,255);</string>
+           <string notr="true">background: #D72130;</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
@@ -71,13 +71,21 @@
              <property name="font">
               <font>
                <family>Open Sans</family>
-               <pointsize>13</pointsize>
-               <weight>75</weight>
+               <pointsize>-1</pointsize>
                <italic>false</italic>
                <bold>true</bold>
                <underline>false</underline>
                <kerning>true</kerning>
               </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 22px;
+line-height: 28px;
+color: #FFFBFB;
+</string>
              </property>
              <property name="text">
               <string>Sports Hub</string>
@@ -107,7 +115,7 @@
          <widget class="QFrame" name="frame">
           <property name="styleSheet">
            <string notr="true">#frame{
-	border-left: 1px solid black;
+	border-left: 1px solid #EDEDED;
 }</string>
           </property>
           <property name="frameShape">
@@ -165,12 +173,12 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>0</height>
+       <height>70</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">#frame_3{
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid #EDEDED;
 }</string>
      </property>
      <property name="frameShape">
@@ -217,10 +225,20 @@
          <widget class="QLabel" name="sectionName">
           <property name="font">
            <font>
-            <pointsize>16</pointsize>
-            <weight>75</weight>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <italic>false</italic>
             <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Open Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 30px;
+line-height: 41px;
+text-transform: capitalize;
+color: #000000;</string>
           </property>
           <property name="text">
            <string>Home</string>
@@ -312,7 +330,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../QResources.qrc"/>
+  <include location="../../../QResources.qrc"/>
  </resources>
  <connections/>
 </ui>

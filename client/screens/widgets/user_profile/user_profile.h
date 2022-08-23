@@ -14,14 +14,13 @@ class UserProfile : public QWidget {
 Q_OBJECT
 
 public:
-    explicit UserProfile(QWidget *parent = nullptr);
+    explicit UserProfile(QWidget *parent);
 
     ~UserProfile() override;
 
-    UserDropdown *DropdownMenu;
-
 private:
     Ui::UserProfile *ui;
+    UserDropdown *DropdownMenu;
 };
 
 #endif

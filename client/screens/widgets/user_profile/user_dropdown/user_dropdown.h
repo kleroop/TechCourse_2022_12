@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "QPushButton"
+#include "QGraphicsDropShadowEffect"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -14,20 +15,18 @@ class UserDropdown : public QWidget {
 Q_OBJECT
 
 public:
-    explicit UserDropdown(QWidget *parent = nullptr, QPushButton *DropdownButton = nullptr,
-                          QWidget *ButtonParent = nullptr);
+    explicit UserDropdown(QWidget *parent = nullptr);
 
     ~UserDropdown() override;
 
-    void updatePos();
+    void updatePos(QPushButton* button);
 
 public slots:
-    void onDropdownButtonClicked();
+
+    void onDropdownButtonClicked(QPushButton* button);
 
 private:
     Ui::UserDropdown *ui;
-    QPushButton *DropdownButton;
-    QWidget *ButtonParent;
 };
 
 #endif
