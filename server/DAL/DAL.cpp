@@ -6,7 +6,7 @@
 #include <Poco/Exception.h>
 #include <Poco/Data/DataException.h>
 #include <cstring>
-
+#define eputs(s) fprintf(stderr, "%s\n", s)
 using Poco::Data::PostgreSQL::ConnectionException;
 using Poco::Data::PostgreSQL::Connector;
 using Poco::Data::PostgreSQL::PostgreSQLException;
@@ -22,27 +22,9 @@ using Poco::Data::Session;
 using Poco::Data::Statement;
 
 using std::string;
+using namespace DAL;
 
-class DUser
-{
-public:
-    int32_t id;
-    // max length defined by the standard + nul terminator
-    string username, email, pwdHash;
-    bool isAdmin;
-    DALUser toPOD()
-    {
-        DALUser r;
-        r.id = id;
-        strcpy(r.username, username.c_str());
-        strcpy(r.email, email.c_str());
-        strcpy(r.pwdHash, pwdHash.c_str());
-        r.isAdmin = isAdmin;
-        return r;
-    };
-};
-
-DALStatus DALInitEx(bool dropTables)
+Status DAL::InitEx(bool dropTables)
 {
     Connector::registerConnector();
     try {
@@ -50,168 +32,379 @@ DALStatus DALInitEx(bool dropTables)
                 Connector::KEY,
                 "host=localhost port=5432 user=postgres password=admin dbname=test");
     } catch (Data::ConnectionFailedException &e) {
-        puts(e.what());
+        eputs(e.what());
         return DAL_CONNECTION_FAILED;
     }
     if (dropTables) {
         Statement drop(session);
-        drop << "DROP TABLE IF EXISTS DUser CASCADE;";
-        try {
-            drop.execute();
-        } catch (const Poco::Exception &e) {
-            puts(e.displayText().c_str());
-            return DAL_ERROR;
+        for (auto &t : { "DUser", "DCategory", "DSubCategory", "DTeam" }) {
+            drop << "DROP TABLE IF EXISTS " << t << " CASCADE;";
+            try {
+                drop.execute();
+            } catch (const Poco::Exception &e) {
+                eputs(e.displayText().c_str());
+                return DAL_ERROR;
+            }
+            drop.reset(session);
         }
     }
+    string tables[] = {
+        "CREATE TABLE IF NOT EXISTS DUser ("
+        "   id SERIAL PRIMARY KEY,"
+        "   username VARCHAR(32) NOT NULL UNIQUE,"
+        "   email VARCHAR(320) NOT NULL UNIQUE,"
+        "   pwdHash VARCHAR(32) NOT NULL,"
+        "   isAdmin BOOL NOT NULL"
+        ")",
 
+        "CREATE TABLE IF NOT EXISTS DCategory ("
+        "   id SERIAL PRIMARY KEY,"
+        "   name VARCHAR(32) NOT NULL UNIQUE,"
+        "   isHidden BOOL NOT NULL"
+        ")",
+        "CREATE TABLE IF NOT EXISTS DSubCategory ("
+        "   id SERIAL PRIMARY KEY,"
+        "   name VARCHAR(32) NOT NULL UNIQUE,"
+        "   isHidden BOOL NOT NULL,"
+        "   categoryId SERIAL NOT NULL,"
+        "   FOREIGN KEY(categoryId) REFERENCES DCategory(id) ON DELETE CASCADE"
+        ")",
+        "CREATE TABLE IF NOT EXISTS DTeam ("
+        "   id SERIAL PRIMARY KEY,"
+        "   name VARCHAR(32) NOT NULL UNIQUE,"
+        "   isHidden BOOL NOT NULL,"
+        "   subCategoryId SERIAL NOT NULL,"
+        "   FOREIGN KEY(subCategoryId) REFERENCES DSubCategory(id) ON DELETE CASCADE"
+        ")"
+    };
     Statement create(session);
-    create << "CREATE TABLE IF NOT EXISTS DUser ("
-              "    id SERIAL PRIMARY KEY,"
-              "    username VARCHAR(32) NOT NULL UNIQUE,"
-              "    email VARCHAR(320) NOT NULL UNIQUE,"
-              "    pwdHash VARCHAR(32) NOT NULL,"
-              "    isAdmin BOOL NOT NULL"
-              ")";
-    try {
-        create.execute();
-    } catch (const Poco::Exception &e) {
-        puts(e.displayText().c_str());
-        return DAL_ERROR;
+    for (auto &table : tables) {
+        create << table;
+        try {
+            create.execute();
+        } catch (const Poco::Exception &e) {
+            eputs(e.displayText().c_str());
+            return DAL_ERROR;
+        }
+        create.reset(session);
     }
 
     return DAL_OK;
 }
 
-DALStatus DALInit()
+Status DAL::Init()
 {
-    return DALInitEx(false);
+    return InitEx(false);
 }
 
-void DALQuit()
+void DAL::Quit()
 {
     session.close();
     delete session_;
 }
 
-DALStatus DALUserCreate(DALUser *out, const char *username, const char *email, const char *pwdHash,
-                        bool isAdmin)
+static Statement DeleteQueryBuild(const string &table, string query, Bindings binds)
 {
-    DUser du;
+    Statement del(session);
+    del << "DELETE FROM " << table << (!query.empty() ? " WHERE " : " ") << query, range(0, 1);
+    for (auto &bind : binds) {
+        del, bind;
+    }
+    return del;
+}
+
+static Statement SelectQueryBuild(const string &table, string query, Bindings binds)
+{
+    Statement select(session);
+    select << "SELECT * FROM " << table << (!query.empty() ? " WHERE " : " ") << query;
+    for (auto &bind : binds) {
+        select, bind;
+    }
+    select, range(0, 1);
+    return select;
+}
+
+static Statement InsertQueryBuild(const string &table, Bindings binds, int32_t &ret)
+{
     Statement insert(session);
-    insert << "INSERT INTO DUser (username, email, pwdHash, isAdmin) "
-              "VALUES ($1, $2, $3, $4) "
+    string values_placeholder;
+    size_t n = binds.size();
+    for (size_t i = 0; i < n; i++) {
+        values_placeholder += ", $" + std::to_string(i + 1);
+    }
+    insert << "INSERT INTO " << table << " VALUES (DEFAULT" << values_placeholder
+           << ") "
               "ON CONFLICT DO NOTHING "
-              "RETURNING id ",
-            use(username), use(email), use(pwdHash), use(isAdmin), into(du.id);
-    try {
-        if (!insert.execute()) {
-            return DAL_USER_EXISTS;
-        }
-    } catch (const Poco::Exception &e) {
-        puts(e.displayText().c_str());
-        return DAL_ERROR;
-    }
-    if (out) {
-        du.username = username;
-        du.email = email;
-        du.pwdHash = pwdHash;
-        du.isAdmin = isAdmin;
-        *out = du.toPOD();
-    }
-    return DAL_OK;
+              "RETURNING id";
+    for (auto &bind : binds)
+        insert, bind;
+    insert, into(ret);
+    return insert;
 }
 
-DALStatus DALUserGetById(DALUser *out, uint32_t id)
+static Statement InsertQueryBuildNodefault(const string &table, Bindings binds, int32_t &ret)
 {
-    DUser du;
-    Statement select(session);
-    select << "SELECT id, username, email, pwdHash, isAdmin FROM DUser WHERE id=$1", into(du.id),
-            into(du.username), into(du.email), into(du.pwdHash), into(du.isAdmin), use(id);
-    try {
-        if (!select.execute()) {
-            return DAL_NOT_FOUND;
-        }
-
-    } catch (const Poco::Exception &e) {
-        puts(e.displayText().c_str());
-        return DAL_ERROR;
+    Statement insert(session);
+    string values_placeholder;
+    size_t n = binds.size();
+    for (size_t i = 0; i < n; i++) {
+        values_placeholder += ", $" + std::to_string(i + 1);
     }
-    if (out)
-        *out = du.toPOD();
-    return DAL_OK;
+    insert << "INSERT INTO " << table << " VALUES (" << values_placeholder
+           << ") "
+              "ON CONFLICT DO NOTHING "
+              "RETURNING id";
+    for (auto &bind : binds)
+        insert, bind;
+    insert, into(ret);
+    return insert;
 }
 
-DALStatus DALUserGetByUsername(DALUser *out, const char *username)
+static Statement UpdateQueryBuild(const string &table, string set, string query, Bindings binds)
 {
-    DUser du;
-    Statement select(session);
-    select << "SELECT id, username, email, pwdHash, isAdmin FROM DUser WHERE username=$1",
-            into(du.id), into(du.username), into(du.email), into(du.pwdHash), into(du.isAdmin),
-            use(username);
-    try {
-        if (!select.execute()) {
-            return DAL_NOT_FOUND;
-        }
-
-    } catch (const Poco::Exception &e) {
-        puts(e.displayText().c_str());
-        return DAL_ERROR;
-    }
-    if (out)
-        *out = du.toPOD();
-    return DAL_OK;
+    Statement update(session);
+    update << "UPDATE " << table << " SET " << set << (!query.empty() ? " WHERE " : " ") << query;
+    for (auto &bind : binds)
+        update, bind;
+    return update;
 }
 
-DALStatus DALUserGetByEmail(DALUser *out, const char *email)
+template<typename T>
+static void executeInsert(T *model, Statement &statement)
 {
-    DUser du;
-    Statement select(session);
-    select << "SELECT id, username, email, pwdHash, isAdmin FROM DUser WHERE email=$1", into(du.id),
-            into(du.username), into(du.email), into(du.pwdHash), into(du.isAdmin), use(email);
+    puts(statement.toString().c_str());
+    model->status = DAL_OK;
     try {
-        if (!select.execute()) {
-            return DAL_NOT_FOUND;
+        if (!statement.execute()) {
+            model->status = DAL_OBJECT_EXISTS;
         }
-
     } catch (const Poco::Exception &e) {
-        puts(e.displayText().c_str());
-        return DAL_ERROR;
+        eputs(e.displayText().c_str());
+        model->status = DAL_ERROR;
     }
-    if (out)
-        *out = du.toPOD();
-    return DAL_OK;
+}
+template<typename T>
+static void executeDelete(T *model, Statement &statement)
+{
+    puts(statement.toString().c_str());
+    model->status = DAL_OK;
+    try {
+        if (!statement.execute()) {
+            model->status = DAL_NOT_FOUND;
+        }
+    } catch (const Poco::Exception &e) {
+        eputs(e.displayText().c_str());
+        model->status = DAL_ERROR;
+    }
 }
 
-DALStatus DALUserEdit(const DALUser *in)
+template<typename T>
+static std::vector<T> executeSelect(T *model, Statement &statement)
 {
-    Statement select(session);
-    select << "UPDATE DUser SET (username, email, pwdHash, isAdmin) = ($1, $2, $3, $4) "
-              "WHERE id=$5",
-            bind(in->username), bind(in->email), bind(in->pwdHash), bind(in->isAdmin), bind(in->id);
+    std::vector<T> res;
+    puts(statement.toString().c_str());
+    model->status = DAL_OK;
     try {
-        if (!select.execute()) {
-            return DAL_NOT_FOUND;
+        size_t i = 0;
+        while (!statement.done() && statement.execute()) {
+            res.push_back(*model);
+            i++;
         }
-
+        if (i == 0) {
+            model->status = DAL_NOT_FOUND;
+        }
     } catch (const Poco::Exception &e) {
-        puts(e.displayText().c_str());
-        return DAL_ERROR;
+        eputs(e.displayText().c_str());
+        model->status = DAL_ERROR;
     }
-    return DAL_OK;
+    return res;
 }
 
-DALStatus DALUserDelete(uint32_t id)
+template<typename T>
+static void executeUpdate(T *model, Statement &statement)
 {
-    Statement select(session);
-    select << "DELETE FROM DUser WHERE id=$1", use(id);
+    puts(statement.toString().c_str());
+    model->status = DAL_OK;
     try {
-        if (!select.execute()) {
-            return DAL_NOT_FOUND;
+        if (!statement.execute()) {
+            model->status = DAL_OBJECT_EXISTS;
         }
-
-    } catch (const Poco::Exception &e) {
-        puts(e.displayText().c_str());
-        return DAL_ERROR;
+    } catch (const Poco::Data::PostgreSQL::StatementException &e) {
+        eputs(e.displayText().c_str());
+        model->status = DAL_OBJECT_EXISTS;
     }
-    return DAL_OK;
+}
+
+User::User(string username, string email, string pwdHash, bool isAdmin)
+{
+    this->username = username;
+    this->email = email;
+    this->pwdHash = pwdHash;
+    this->isAdmin = isAdmin;
+}
+
+void User::Create()
+{
+    Statement insert = InsertQueryBuild(
+            getTable(),
+            { bind(this->username), bind(this->email), bind(this->pwdHash), bind(this->isAdmin) },
+            this->id);
+
+    executeInsert(this, insert);
+}
+
+std::vector<User> User::Select(string query, Bindings binds)
+{
+    Statement select = SelectQueryBuild(getTable(), query, binds);
+
+    select, into(this->id), into(this->username), into(this->email), into(this->pwdHash),
+            into(this->isAdmin);
+
+    return executeSelect(this, select);
+}
+void User::Update()
+{
+    Statement update = UpdateQueryBuild(
+            getTable(), "username = $1, email = $2, pwdHash = $3, isAdmin = $4", "id = $5",
+            { bind(username), bind(email), bind(pwdHash), bind(isAdmin), bind(id) });
+    executeUpdate(this, update);
+}
+
+void User::Delete()
+{
+    Statement del = DeleteQueryBuild(getTable(), "id = $1", { bind(this->id) });
+    executeDelete(this, del);
+    this->id = DAL_BAD_ID;
+}
+
+Category::Category(string name, bool isHidden)
+{
+    this->name = name;
+    this->isHidden = isHidden;
+}
+void Category::Create()
+{
+    Statement insert =
+            InsertQueryBuild(getTable(), { bind(this->name), bind(this->isHidden) }, this->id);
+
+    executeInsert(this, insert);
+}
+std::vector<Category> Category::Select(string query, Bindings binds)
+{
+    std::vector<Category> res;
+    Statement select = SelectQueryBuild(getTable(), query, binds);
+    select, into(this->id), into(this->name), into(this->isHidden);
+    res = executeSelect(this, select);
+    for (auto &cat : res) {
+        cat.scats = SubCategory().Select("categoryId = $1", { bind(cat.id) });
+        for (auto &scat : scats) {
+            scat.cat = &cat;
+        }
+        *this = cat;
+    }
+    return res;
+}
+
+void Category::Update()
+{
+    Statement update = UpdateQueryBuild(getTable(), "name = $1, isHidden = $2", "id = $3",
+                                        { bind(name), bind(isHidden), bind(id) });
+    executeUpdate(this, update);
+    auto id = this->id; /* fixme: preserve id */
+    this->Delete(); /* delete all child elements */
+    /* re-add this element and its children to db */
+    this->Create();
+    for (auto &scat : scats) {
+        scat.cat = this;
+        scat.Create();
+        for (auto &team : scat.teams) {
+            team.scat = &scat;
+            team.Create();
+        }
+    }
+}
+void Category::Delete()
+{
+    Statement del = DeleteQueryBuild(getTable(), "id = $1", { bind(id) });
+    executeDelete(this, del);
+    this->id = DAL_BAD_ID;
+}
+
+SubCategory::SubCategory(string name, bool isHidden, Category *cat)
+{
+    this->name = name;
+    this->isHidden = isHidden;
+    this->cat = cat;
+}
+void SubCategory::Create()
+{
+    Statement insert = InsertQueryBuild(
+            getTable(), { bind(this->name), bind(this->isHidden), bind(cat->id) }, this->id);
+
+    executeInsert(this, insert);
+}
+std::vector<SubCategory> SubCategory::Select(string query, Bindings binds)
+{
+    std::vector<SubCategory> res;
+    Statement select = SelectQueryBuild(getTable(), query, binds);
+    int32_t cat_id;
+    select, into(this->id), into(this->name), into(this->isHidden), into(cat_id);
+    res = executeSelect(this, select);
+
+    for (auto &scat : res) {
+        scat.teams = Team().Select("subCategoryId = $1", { bind(scat.id) });
+        for (auto &team : teams) {
+            team.scat = &scat;
+        }
+        *this = scat;
+    }
+
+    return res;
+}
+void SubCategory::Update()
+{
+    Statement update =
+            UpdateQueryBuild(getTable(), "name = $1, isHidden = $2, categoryId = $3", "id = $4",
+                             { bind(name), bind(isHidden), bind(cat->id), bind(id) });
+    executeUpdate(this, update);
+}
+void SubCategory::Delete()
+{
+    Statement del = DeleteQueryBuild(getTable(), "id = $1", { bind(id) });
+    executeDelete(this, del);
+    this->id = DAL_BAD_ID;
+}
+
+Team::Team(string name, bool isHidden, SubCategory *scat)
+{
+    this->name = name;
+    this->isHidden = isHidden;
+    this->scat = scat;
+}
+void Team::Create()
+{
+    Statement insert = InsertQueryBuild(
+            getTable(), { bind(this->name), bind(this->isHidden), bind(scat->id) }, this->id);
+
+    executeInsert(this, insert);
+}
+std::vector<Team> Team::Select(string query, Bindings binds)
+{
+    Statement select = SelectQueryBuild(getTable(), query, binds);
+    int32_t cat_id;
+    select, into(this->id), into(this->name), into(this->isHidden), into(cat_id);
+    return executeSelect(this, select);
+}
+void Team::Update()
+{
+    Statement update =
+            UpdateQueryBuild(getTable(), "name = $1, isHidden = $2, subCategoryId = $3", "id = $4",
+                             { bind(name), bind(isHidden), bind(scat->id), bind(id) });
+    executeUpdate(this, update);
+}
+void Team::Delete()
+{
+    Statement del = DeleteQueryBuild(getTable(), "id = $1", { bind(id) });
+    executeDelete(this, del);
+    this->id = DAL_BAD_ID;
 }
