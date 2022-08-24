@@ -10,12 +10,15 @@
 #include "shutdown.h"
 #include "not_found.h"
 #include "auth.h"
+#include "categories.h"
 
 
 enum Handlers {
     RootHandler,
     ShutdownHandler,
     AuthHandler,
+    GetCategoriesHandler,
+    UpdateCategoriesHandler,
     HandlersCount
 };
 
