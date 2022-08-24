@@ -44,10 +44,27 @@ void ICategory::deserialize(json data)
     for (auto& child : data["children"])
     {
         ICategory category;
-        category.serialize();
+        category.deserialize(child);
 
         category.parent = this;
         children.push_back(category);
+    }
+}
+
+void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error)
+{
+    for (auto& category : data)
+    {
+        ICategory categoryModel;
+        categoryModel.deserialize(category);
+
+        if (categoryModel.error != "")
+        {
+            error = "Deserialization error: " + categoryModel.error;
+            return;
+        }
+
+        categoriesTree.categories.push_back(categoryModel);
     }
 }
 
@@ -77,18 +94,23 @@ void CategoriesTreeResponse::deserialize(json data)
         error = data["data"]["message"];
         return;
     }
+    deserializeCategoryTree(data["data"]["categoriesTree"], categoriesTree, error);
+}
 
-    for (auto& category : data["data"]["categoriesTree"])
-    {
-        ICategory categoryModel;
-        categoryModel.deserialize(category);
+UpdateCategoriesRequest::UpdateCategoriesRequest(CategoriesTree &_categoriesTree) : categoriesTree(_categoriesTree)
+{}
 
-        if (categoryModel.error != "")
-        {
-            error = "Deserialization error: " + categoryModel.error;
-            return;
-        }
+json UpdateCategoriesRequest::serialize()
+{
+    std::vector<json> categoriesTreeJson;
 
-        categoriesTree.categories.push_back(categoryModel);
-    }
+    for (auto category : categoriesTree.categories)
+        categoriesTreeJson.push_back(category.serialize());
+
+    return categoriesTreeJson;
+}
+
+void UpdateCategoriesRequest::deserialize(json data)
+{
+    deserializeCategoryTree(data, categoriesTree, error);
 }

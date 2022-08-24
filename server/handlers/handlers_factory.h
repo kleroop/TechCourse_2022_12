@@ -18,6 +18,7 @@ enum Handlers {
     ShutdownHandler,
     AuthHandler,
     GetCategoriesHandler,
+    UpdateCategoriesHandler,
     HandlersCount
 };
 

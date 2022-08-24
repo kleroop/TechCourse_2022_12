@@ -59,10 +59,21 @@ public:
     }
 };
 
+void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error);
+
 class CategoriesTreeResponse : ISerializable {
 public:
     explicit CategoriesTreeResponse(CategoriesTree& _categoriesTree);
 
+    json serialize() override;
+    void deserialize(json data) override;
+
+    CategoriesTree categoriesTree;
+};
+
+class UpdateCategoriesRequest : public ISerializable {
+public:
+    explicit UpdateCategoriesRequest(CategoriesTree& _categoriesTree);
     json serialize() override;
     void deserialize(json data) override;
 
