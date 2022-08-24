@@ -76,6 +76,9 @@
          <height>0</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="mouseTracking">
         <bool>true</bool>
        </property>
@@ -120,6 +123,9 @@ QPushButton:hover{
          <height>0</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
 border-radius: 27%;
@@ -160,7 +166,7 @@ QPushButton:hover{
         </size>
        </property>
        <property name="cursor">
-        <cursorShape>ArrowCursor</cursorShape>
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="mouseTracking">
         <bool>false</bool>
@@ -225,6 +231,9 @@ QPushButton:hover{
          <height>0</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
 border-radius: 27%;
@@ -264,6 +273,9 @@ QPushButton:hover{
          <height>0</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
 border-radius: 27%;
@@ -296,6 +308,9 @@ QPushButton:hover{
          <width>55</width>
          <height>55</height>
         </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
@@ -339,6 +354,9 @@ QPushButton:hover{
          <height>0</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
 border-radius: 27%;
@@ -378,6 +396,9 @@ QPushButton:hover{
          <height>0</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
 border-radius: 27%;
@@ -416,6 +437,9 @@ QPushButton:hover{
          <width>0</width>
          <height>0</height>
         </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
@@ -461,6 +485,9 @@ QPushButton:hover{
          <width>55</width>
          <height>55</height>
         </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{

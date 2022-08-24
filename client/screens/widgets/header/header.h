@@ -20,6 +20,8 @@ public:
     ~Header() override;
     QHBoxLayout *getRightSection();
 
+    QHBoxLayout* getMainNavigationLayout();
+
     void setSectionName(const QString &text);
 
 private:

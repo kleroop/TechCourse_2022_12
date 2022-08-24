@@ -3,7 +3,7 @@
 #include <utility>
 #include "ui_ButtonDecorator.h"
 
-ButtonDecorator * activeButton = nullptr;
+ButtonDecorator * activeButtonDecorator = nullptr;
 
 ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new Ui::ButtonDecorator)
 {
@@ -53,7 +53,7 @@ void ButtonDecorator::hoverEnter(QHoverEvent * event)
 void ButtonDecorator::hoverLeave(QHoverEvent * event)
 {
     hover->hide();
-    if (activeButton == this)
+    if (activeButtonDecorator == this)
     {
         this->setStyleSheet("border-radius: 27%;\n"
                             "padding: 13px;\n"
@@ -71,10 +71,10 @@ void ButtonDecorator::hoverLeave(QHoverEvent * event)
 
 void ButtonDecorator::mouseButtonPress(QHoverEvent *event)
 {
-    if (activeButton && activeButton != this) activeButton->setDefaultStyleSheet();
-    if (activeButton != this)
+    if (activeButtonDecorator && activeButtonDecorator != this) activeButtonDecorator->setDefaultStyleSheet();
+    if (activeButtonDecorator != this)
     {
-        activeButton = this;
+        activeButtonDecorator = this;
         header->setSectionName(text);
     }
 }

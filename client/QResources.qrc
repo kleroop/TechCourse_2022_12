@@ -1,10 +1,13 @@
 <RCC>
   <qresource prefix="/">
-      <file>Resources/image_BG.png</file>
-      <file>Resources/user_prof_pic.png</file>
-      <file>Resources/switch_icon.jpg</file>
-      <file>Resources/dropdownIcon.png</file>
-
+    <file>Resources/navigation_icons/left_scroll_icon.png</file>
+    <file>Resources/navigation_icons/left_scroll_icon_active.png</file>
+    <file>Resources/navigation_icons/right_scroll_icon.png</file>
+    <file>Resources/navigation_icons/right_scroll_icon_active.png</file>
+    <file>Resources/image_BG.png</file>
+    <file>Resources/user_prof_pic.png</file>
+    <file>Resources/switch_icon.jpg</file>
+    <file>Resources/dropdownIcon.png</file>
     <file>Resources/navigation_icons/hover_element.png</file>
     <file>Resources/navigation_icons/advertising_icon_active.png</file>
     <file>Resources/navigation_icons/partners_icon_active.png</file>
@@ -30,12 +33,11 @@
     <file>Resources/image_BG.png</file>
     <file>Resources/navigation_icons/languages_icon.png</file>
     <file>Resources/navigation_icons/languages_icon_active.png</file>
-
-      <file>Resources/fonts/open-sans/OpenSans-Bold.ttf</file>
-      <file>Resources/fonts/open-sans/OpenSans-Regular.ttf</file>
-      <file>Resources/fonts/open-sans/OpenSans-Semibold.ttf</file>
-      <file>Resources/fonts/roboto/RobotoCondensed-Bold.ttf</file>
-      <file>Resources/fonts/roboto/Roboto-Regular.ttf</file>
-      <file>Resources/fonts/roboto/Roboto-Medium.ttf</file>
+    <file>Resources/fonts/open-sans/OpenSans-Bold.ttf</file>
+    <file>Resources/fonts/open-sans/OpenSans-Regular.ttf</file>
+    <file>Resources/fonts/open-sans/OpenSans-Semibold.ttf</file>
+    <file>Resources/fonts/roboto/RobotoCondensed-Bold.ttf</file>
+    <file>Resources/fonts/roboto/Roboto-Regular.ttf</file>
+    <file>Resources/fonts/roboto/Roboto-Medium.ttf</file>
   </qresource>
 </RCC>

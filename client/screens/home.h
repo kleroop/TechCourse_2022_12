@@ -5,6 +5,8 @@
 #include "user_profile.h"
 #include "header.h"
 #include "navigation.h"
+#include "main_navigation.h"
+#include "QEvent"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,6 +22,8 @@ public:
 
     ~Home() override;
 
+    bool event(QEvent *) override;
+
 private slots:
 
     void resizeEvent(QResizeEvent *event) override;
@@ -28,6 +32,10 @@ private:
     Ui::Home *ui;
     Header *HeaderWidget;
     Navigation *NavigationWidget;
+    MainNavigation *MainNavigationWidget;
+
+    MainButton *previousActiveMainButton = nullptr;
+    ButtonDecorator *previousActiveButtonDecorator = nullptr;
 };
 
 #endif

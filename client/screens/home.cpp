@@ -1,9 +1,10 @@
 #include "home.h"
 #include "ui_Home.h"
 
-#include "info_arch.h"
 
-Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home) {
+Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
+{
+
     ui->setupUi(this);
 
     this->HeaderWidget = new Header(this);
@@ -16,15 +17,44 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home) {
     ui->localNavigation->replaceWidget(ui->navigationMock, NavigationWidget);
     delete ui->navigationMock;
 
-    auto InfoArchWidget = new InfoArch(this);
-    delete ui->contentMock;
-    ui->contentContainer->layout()->addWidget(InfoArchWidget);
+    this->MainNavigationWidget = new MainNavigation(HeaderWidget, HeaderWidget);
+    HeaderWidget->getMainNavigationLayout()->addWidget(this->MainNavigationWidget);
+
+    qApp->installEventFilter(prof);
+
 }
 
-Home::~Home() {
+Home::~Home()
+{
     delete ui;
 }
 
-void Home::resizeEvent(QResizeEvent *event) {
+void Home::resizeEvent(QResizeEvent *event)
+{
     QWidget::resizeEvent(event);
+}
+
+bool Home::event(QEvent * e)
+{
+    if ((activeButtonDecorator != nullptr) && (previousActiveButtonDecorator == nullptr))
+    {
+        if (activeMainButton)
+        {
+            activeMainButton->setDefaultStyleSheet();
+            activeMainButton = nullptr;
+            previousActiveMainButton = nullptr;
+        }
+        previousActiveButtonDecorator = activeButtonDecorator;
+    }
+    else if ((activeMainButton != nullptr) && (previousActiveMainButton == nullptr))
+    {
+        if (activeButtonDecorator)
+        {
+            activeButtonDecorator->setDefaultStyleSheet();
+            activeButtonDecorator = nullptr;
+            previousActiveButtonDecorator = nullptr;
+        }
+        previousActiveMainButton = activeMainButton;
+    }
+    return QWidget::event(e);
 }

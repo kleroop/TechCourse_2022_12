@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainButton</class>
+ <widget class="QPushButton" name="MainButton">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>126</width>
+    <height>86</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="font">
+   <font>
+    <family>Open Sans</family>
+    <pointsize>-1</pointsize>
+    <weight>62</weight>
+    <bold>true</bold>
+   </font>
+  </property>
+  <property name="cursor">
+   <cursorShape>PointingHandCursor</cursorShape>
+  </property>
+  <property name="windowTitle">
+   <string>MainButton</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+font-family: 'Open Sans';
+color: #B2B2B2;
+font-weight: 500;
+font-size: 18px;
+border: none;
+text-transform: uppercase;
+}
+
+QPushButton::hover{
+color: #D72130;
+}</string>
+  </property>
+  <property name="text">
+   <string>text</string>
+  </property>
+ </widget>
+ <resources>
+  <include location="../../../../QResources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

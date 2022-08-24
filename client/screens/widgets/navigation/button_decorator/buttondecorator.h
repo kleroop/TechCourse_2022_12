@@ -40,4 +40,6 @@ private:
     Ui::ButtonDecorator *ui;
 };
 
+extern ButtonDecorator * activeButtonDecorator;
+
 #endif // QTWORLD_BUTTONDECORATOR_H
