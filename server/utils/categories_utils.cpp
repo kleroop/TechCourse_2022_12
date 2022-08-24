@@ -9,17 +9,17 @@ CategoriesTree fromDal()
 
     for (const auto& category : categories)
     {
-        Category categoryModel(category.id, category.name, category.isHidden);
+        Category categoryModel(category.name, category.isHidden);
         auto scats = category.scats;
 
         for (const auto& subCategory : scats)
         {
-            SubCategory subCategoryModel(subCategory.id, subCategory.name, subCategory.isHidden, &categoryModel);
+            SubCategory subCategoryModel(subCategory.name, subCategory.isHidden, &categoryModel);
             auto teams = subCategory.teams;
 
             for (const auto& team : teams)
             {
-                Team teamModel(team.id, team.name, team.isHidden, &subCategoryModel);
+                Team teamModel(team.name, team.isHidden, &subCategoryModel);
                 subCategoryModel.children.push_back(teamModel);
             }
 

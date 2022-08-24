@@ -3,9 +3,9 @@
 
 #include <QWidget>
 #include "QPushButton"
-#include "../categories.h"
 #include "../info_arch_dropdown/info_arch_dropdown.h"
 #include "CustomButton.h"
+#include "models/categories_model.h"
 
 
 QT_BEGIN_NAMESPACE

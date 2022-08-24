@@ -14,8 +14,7 @@ enum CategoryTypes {
 
 class ICategory : public ISerializable {
 public:
-    explicit ICategory(int id = 0, std::string title = "", bool isHidden = false, ICategory *parent = nullptr) {
-        this->id = id;
+    explicit ICategory(std::string title = "", bool isHidden = false, ICategory *parent = nullptr) {
         this->title = std::move(title);
         this->isHidden = isHidden;
         this->parent = parent;
@@ -24,7 +23,7 @@ public:
     json serialize() override;
     void deserialize(json data) override;
 
-    int id;
+
     ICategory *parent;
     std::string title;
     std::vector<ICategory> children = {};
@@ -40,21 +39,21 @@ public:
 
 class Category : public ICategory {
 public:
-    Category(int id, std::string title, bool isHidden, ICategory *parent = nullptr) : ICategory(id, std::move(title), isHidden, parent) {
+    Category(std::string title, bool isHidden, ICategory *parent = nullptr) : ICategory(std::move(title), isHidden, parent) {
         this->type = CategoryTypes::CATEGORY;
     }
 };
 
 class SubCategory : public ICategory {
 public:
-    SubCategory(int id, std::string title, bool isHidden, ICategory *parent = nullptr) : ICategory(id, std::move(title), isHidden, parent) {
+    SubCategory(std::string title, bool isHidden, ICategory *parent = nullptr) : ICategory(std::move(title), isHidden, parent) {
         this->type = CategoryTypes::SUBCATEGORY;
     }
 };
 
 class Team : public ICategory {
 public:
-    Team(int id, std::string title, bool isHidden, ICategory *parent = nullptr) : ICategory(id, std::move(title), parent) {
+    Team(std::string title, bool isHidden, ICategory *parent = nullptr) : ICategory(std::move(title), isHidden, parent) {
         this->type = CategoryTypes::TEAM;
     }
 };

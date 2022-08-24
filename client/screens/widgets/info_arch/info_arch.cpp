@@ -1,32 +1,6 @@
 #include "info_arch.h"
 #include "ui_info_arch.h"
 
-#include "QDebug"
-
-CategoriesTree generateCat() {                                       //todo remove, only for testing
-    std::vector<std::string> cats = {"NBA", "NFL", "MLB", "NHL"};
-
-    CategoriesTree categories;
-
-    for (const std::string &title: cats) {
-        Category cat(0, title);
-        std::vector<std::string> subcats(5, "sub" + title);
-        for (const std::string &subtitle: subcats) {
-            SubCategory sub(0, subtitle, &cat);
-            std::vector<std::string> teams(5, "team" + subtitle);
-            for (const std::string &teamtitle: teams) {
-                Team team(0, teamtitle, &sub);
-                sub.children.push_back(team);
-            }
-            cat.children.push_back(sub);
-        }
-        categories.categories.push_back(cat);
-    }
-    categories.categories.push_back(Category(0, "CBB"));
-
-    return categories;
-}
-
 InfoArch::InfoArch(QWidget *parent) : QWidget(parent), ui(new Ui::InfoArch) {
     //todo add scroll on category containers overflow
     ui->setupUi(this);
@@ -35,28 +9,41 @@ InfoArch::InfoArch(QWidget *parent) : QWidget(parent), ui(new Ui::InfoArch) {
     buttonTemplate->hide();
     ui->categoriesFrame->layout()->takeAt(ui->categoriesFrame->layout()->indexOf(buttonTemplate));
 
-    this->catTree = generateCat();
 
-    fillCategories();
+    api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW4ifQ.E9AEDCWuVSrbPKS9CBeG0H4PD56tcqY4PhX5bMWnP4k";
+    api.getCategories([=](const CategoriesTreeResponse &resp) {
+        this->catTree = resp.categoriesTree;
+        for (auto &cat: this->catTree.categories) {
+            cat.type = CategoryTypes::CATEGORY;
+            for (auto &scat: cat.children) {
+                scat.type = CategoryTypes::SUBCATEGORY;
+                scat.parent = &cat;
+                for (auto &team: scat.children) {
+                    team.type = CategoryTypes::TEAM;
+                    team.parent = &scat;
+                }
+            }
+        }
+        fillCategories();
+    });
 
-
-    connect(ui->addCategoryButton, &QPushButton::clicked, this, [this](){ createHandler(CategoryTypes::CATEGORY);});
-    connect(ui->addSubCategoryButton, &QPushButton::clicked, this, [this](){ createHandler(CategoryTypes::SUBCATEGORY);});
-    connect(ui->addTeamButton, &QPushButton::clicked, this, [this](){ createHandler(CategoryTypes::TEAM);});
+    connect(ui->addCategoryButton, &QPushButton::clicked, this, [this]() { createHandler(CategoryTypes::CATEGORY); });
+    connect(ui->addSubCategoryButton, &QPushButton::clicked, this,[this]() { createHandler(CategoryTypes::SUBCATEGORY); });
+    connect(ui->addTeamButton, &QPushButton::clicked, this, [this]() { createHandler(CategoryTypes::TEAM); });
 }
 
 InfoArch::~InfoArch() {
     delete ui;
 }
 
-std::vector<CatButton *> InfoArch::btnWrapper(const std::vector<CustomButton *>& buttons){
+std::vector<CatButton *> InfoArch::btnWrapper(const std::vector<CustomButton *> &buttons) {
     std::vector<CatButton *> result;
 
-    for(CustomButton* btn: buttons){
+    for (CustomButton *btn: buttons) {
         bool isActive = false;
-        if(btn->category == this->activeCategory || btn->category == this->activeSubCategory) isActive = true;
-        auto* tempButton = new CatButton(this, btn, isActive);
-        connect(tempButton->dropdownButton, &QPushButton::clicked, this, [this, btn, tempButton]{
+        if (btn->category == this->activeCategory || btn->category == this->activeSubCategory) isActive = true;
+        auto *tempButton = new CatButton(this, btn, isActive);
+        connect(tempButton->dropdownButton, &QPushButton::clicked, this, [this, btn, tempButton] {
             this->hideCatHandler(btn->category, tempButton->dropdownButton);
         });
         result.push_back(tempButton);
@@ -85,11 +72,10 @@ InfoArch::getCustomButtons(const std::vector<ICategory> &categories, QPushButton
     return result;
 }
 
-std::vector<QWidget*> getLayoutWidgets(QLayout *container) {  //todo move to utils
+std::vector<QWidget *> getLayoutWidgets(QLayout *container) {  //todo move to utils
     QLayoutItem *item;
-    std::vector<QWidget*> result;
-    for(int i = 0; i < container->count(); i++)
-    {
+    std::vector<QWidget *> result;
+    for (int i = 0; i < container->count(); i++) {
         item = container->itemAt(i);
         result.push_back(item->widget());
     }
@@ -104,7 +90,7 @@ void clearLayout(QLayout *container) {  //todo move to utils
     }
 }
 
-void InfoArch::setActiveCat(ICategory* category) {
+void InfoArch::setActiveCat(ICategory *category) {
     this->activeCategory = category;
     setActiveSubCat(nullptr);
     clearLayout(ui->subCategoriesFrame->layout());
@@ -115,7 +101,7 @@ void InfoArch::setActiveCat(ICategory* category) {
     fillSubCategories();
 }
 
-void InfoArch::setActiveSubCat(ICategory* category) {
+void InfoArch::setActiveSubCat(ICategory *category) {
     this->activeSubCategory = category;
     clearLayout(ui->teamsFrame->layout());
     ui->addTeamButton->hide();
@@ -130,7 +116,7 @@ void InfoArch::updateAllContainers() {
 }
 
 void InfoArch::fillCategories(bool clean) {
-    if(clean){
+    if (clean) {
         setActiveCat(nullptr);
     }
     fillContainer(ui->categoriesFrame->layout(), catTree.categories);
@@ -138,7 +124,7 @@ void InfoArch::fillCategories(bool clean) {
 
 void InfoArch::fillSubCategories() {
     ICategory *category = this->activeCategory;
-    if(category){
+    if (category) {
         ui->addSubCategoryButton->show();
         fillContainer(ui->subCategoriesFrame->layout(), category->children);
     }
@@ -146,13 +132,14 @@ void InfoArch::fillSubCategories() {
 
 void InfoArch::fillTeams() {
     ICategory *category = this->activeSubCategory;
-    if(category){
+    if (category) {
         ui->addTeamButton->show();
         fillContainer(ui->teamsFrame->layout(), category->children, false);
     }
 }
 
-void InfoArch::fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable, bool replace) {//todo maybe move to utils
+void InfoArch::fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable,
+                             bool replace) {//todo maybe move to utils
     std::vector<CatButton *> wrappedButtons = btnWrapper(getCustomButtons(categories, buttonTemplate, clickable));
 
     if (replace) {
@@ -179,22 +166,30 @@ void InfoArch::createHandler(CategoryTypes type) {
     this->addCatDialog = new AddCatDialog(this);
 
     addCatDialog->onCreateCall([=](const std::string &name) {
-        if(!name.empty()){
-            if(type == CategoryTypes::CATEGORY){
-                this->catTree.categories.insert(catTree.categories.begin(), Category(NAN, name));
-                fillCategories();
-            }else if(type == CategoryTypes::SUBCATEGORY){
-                this->activeCategory->children.insert(activeCategory->children.begin(), SubCategory(NAN, name));
-                fillSubCategories();
-            }else if(type == CategoryTypes::TEAM){
-                this->activeSubCategory->children.insert(activeSubCategory->children.begin(), Team(NAN, name));
-                fillTeams();
+        if (!name.empty()) {
+            if (type == CategoryTypes::CATEGORY) {
+                this->catTree.categories.insert
+                        (catTree.categories.begin(), Category(name, false, nullptr));
+                //fillCategories();
+            } else if (type == CategoryTypes::SUBCATEGORY) {
+                this->activeCategory->children.insert
+                        (activeCategory->children.begin(), SubCategory(name, false, this->activeCategory));
+                //fillSubCategories();
+            } else if (type == CategoryTypes::TEAM) {
+                this->activeSubCategory->children.insert
+                        (activeSubCategory->children.begin(), Team(name, false, this->activeSubCategory));
+                //fillTeams();
             }
         }
+
+        api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
+            updateAllContainers();
+        });
     });
+    update();
 }
 
-void InfoArch::hideCatHandler(ICategory* category, QPushButton* button){
+void InfoArch::hideCatHandler(ICategory *category, QPushButton *button) {
     this->dropdown = new InfoArchDropdown(this);
 
     dropdown->onCreateCall(category->isHidden, button, [=]() {
@@ -203,8 +198,13 @@ void InfoArch::hideCatHandler(ICategory* category, QPushButton* button){
         } else {
             category->isHidden = true;
         }
-        updateAllContainers();
+        //updateAllContainers();
+
+        api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
+            updateAllContainers();
+        });
     });
+    update();
 }
 
 void InfoArch::paintEvent(QPaintEvent *e) {
@@ -212,8 +212,8 @@ void InfoArch::paintEvent(QPaintEvent *e) {
     LineDrawer(ui->subCategoriesFrame->layout(), ui->teamsFrame->layout(), this->activeSubCategory);
 }
 
-void InfoArch::LineDrawer(QLayout *leftContainer, QLayout *rightContainer, ICategory* category) {
-    if(category){
+void InfoArch::LineDrawer(QLayout *leftContainer, QLayout *rightContainer, ICategory *category) {
+    if (category) {
         QPainter painter(this);
         QPen pen;
         pen.setWidth(1);
@@ -225,30 +225,30 @@ void InfoArch::LineDrawer(QLayout *leftContainer, QLayout *rightContainer, ICate
         QPoint activeCat;
         int midX;
 
-        std::vector<QWidget*> rightWidgets = getLayoutWidgets(rightContainer);
-        std::vector<QWidget*> leftWidgets = getLayoutWidgets(leftContainer);
+        std::vector<QWidget *> rightWidgets = getLayoutWidgets(rightContainer);
+        std::vector<QWidget *> leftWidgets = getLayoutWidgets(leftContainer);
 
-        if(!rightWidgets.empty() && !leftWidgets.empty()){
-            for(QWidget* w : rightWidgets){
+        if (!rightWidgets.empty() && !leftWidgets.empty()) {
+            for (QWidget *w: rightWidgets) {
                 rightBtns.emplace_back(w->mapTo(this, QPoint(0, 0)).x(),
-                                       w->mapTo(this, QPoint(0, 0)).y() + w->height()/2);
+                                       w->mapTo(this, QPoint(0, 0)).y() + w->height() / 2);
             }
             for (QWidget *w: leftWidgets)
                 if (dynamic_cast<CatButton *>(w)->isActive) {
                     activeCat = QPoint(w->mapTo(this, QPoint(0, 0)).x() + w->width(),
-                                       w->mapTo(this, QPoint(0, 0)).y() + w->height()/2);
+                                       w->mapTo(this, QPoint(0, 0)).y() + w->height() / 2);
                 };
 
-            midX = abs(rightBtns.front().x() + activeCat.x())/2;
+            midX = abs(rightBtns.front().x() + activeCat.x()) / 2;
 
 
             painter.drawLine(activeCat, QPoint(midX, activeCat.y())); //horizontal from active cat
             painter.drawLine(midX, rightBtns.front().y(), midX, activeCat.y());  //vertical from first right to active
 
-            if(rightBtns.back().y() > activeCat.y())
-            painter.drawLine(midX, activeCat.y(), midX, rightBtns.back().y());  //vertical from last right to active
+            if (rightBtns.back().y() > activeCat.y())
+                painter.drawLine(midX, activeCat.y(), midX, rightBtns.back().y());  //vertical from last right to active
 
-            for(QPoint p : rightBtns){
+            for (QPoint p: rightBtns) {
                 painter.drawLine(midX, p.y(), p.x(), p.y()); //horizontal from right btns
             }
         }
