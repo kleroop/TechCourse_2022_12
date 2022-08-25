@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QGraphicsDropShadowEffect>
 #include <click_catch_overlay.h>
+#include <functional>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class AddCatDialog; }
