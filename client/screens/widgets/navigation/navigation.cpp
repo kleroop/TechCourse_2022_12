@@ -20,3 +20,33 @@ Navigation::~Navigation()
 {
     delete ui;
 }
+QWidget * Navigation::getMainNavigationWidget()
+{
+    return ui->mainNavigationWidget;
+}
+void Navigation::setHideButton()
+{
+    ui->surveysButton->hide();
+    ui->architectureButton->hide();
+    ui->advertisingButton->hide();
+    ui->partnersButton->hide();
+    ui->teamsButton->hide();
+    ui->usersButton->hide();
+    ui->socialButton->hide();
+    ui->footerButton->hide();
+    ui->languagesButton->hide();
+    ui->bannersButton->hide();
+}
+void Navigation::setShowButton()
+{
+    ui->surveysButton->show();
+    ui->architectureButton->show();
+    ui->advertisingButton->show();
+    ui->partnersButton->show();
+    ui->teamsButton->show();
+    ui->usersButton->show();
+    ui->socialButton->show();
+    ui->footerButton->show();
+    ui->languagesButton->show();
+    ui->bannersButton->show();
+}

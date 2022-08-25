@@ -26,3 +26,7 @@ UserProfile::~UserProfile() {
     delete ui;
     delete DropdownMenu;
 }
+QPushButton *UserProfile::getSwitchButton()
+{
+    return ui->switchButton;
+}

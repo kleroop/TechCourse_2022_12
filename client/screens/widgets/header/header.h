@@ -24,6 +24,9 @@ public:
 
     void setSectionName(const QString &text);
 
+    void switchUserView();
+    void switchAdminView();
+
 private:
     Ui::Header *ui;
 };

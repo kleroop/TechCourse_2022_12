@@ -22,7 +22,10 @@ public:
 
     ~Home() override;
 
+    bool eventFilter(QObject *, QEvent *) override;
     bool event(QEvent *) override;
+    void switchUserView();
+    void switchAdminView();
 
 private slots:
 
@@ -33,9 +36,12 @@ private:
     Header *HeaderWidget;
     Navigation *NavigationWidget;
     MainNavigation *MainNavigationWidget;
+    UserProfile* userProfile;
 
     MainButton *previousActiveMainButton = nullptr;
     ButtonDecorator *previousActiveButtonDecorator = nullptr;
+
+    bool isAdminSwiched;
 };
 
 #endif

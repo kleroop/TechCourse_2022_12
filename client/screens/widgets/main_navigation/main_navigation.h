@@ -19,12 +19,16 @@ public:
     ~MainNavigation() override;
 
     void addNewButton(const QString &text);
+
+    QVector<MainButton *> getMainButtonVector();
+
+    void upDate();
+
 //    void deleteButton(MainButton* mainButton);
 private:
-    QVector<MainButton*> mainButtonVector;
+    QVector<MainButton *> mainButtonVector;
     Ui::MainNavigation *ui;
     Header *header;
-
 };
 
 #endif // QTWORLD_MAIN_NAVIGATION_H

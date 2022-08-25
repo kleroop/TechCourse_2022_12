@@ -29,3 +29,13 @@ QHBoxLayout *Header::getMainNavigationLayout()
 {
     return ui->mainNavigationLayout;
 }
+void Header::switchUserView()
+{
+    ui->categories->hide();
+    ui->frame_3->hide();
+}
+void Header::switchAdminView()
+{
+    ui->categories->show();
+    ui->frame_3->show();
+}

@@ -1,7 +1,6 @@
 #include "home.h"
 #include "ui_Home.h"
 
-
 Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 {
 
@@ -9,6 +8,7 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 
     this->HeaderWidget = new Header(this);
     auto prof = new UserProfile(this->HeaderWidget);
+    this->userProfile = prof;
     this->HeaderWidget->getRightSection()->addWidget(prof);
     delete ui->headerPlaceholder;
     ui->headerFrame->layout()->addWidget(HeaderWidget);
@@ -20,8 +20,9 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
     this->MainNavigationWidget = new MainNavigation(HeaderWidget, HeaderWidget);
     HeaderWidget->getMainNavigationLayout()->addWidget(this->MainNavigationWidget);
 
-    qApp->installEventFilter(prof);
+    qApp->installEventFilter(this);
 
+    isAdminSwiched = true;
 }
 
 Home::~Home()
@@ -34,9 +35,37 @@ void Home::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
-bool Home::event(QEvent * e)
+void Home::switchUserView()
 {
-    if ((activeButtonDecorator != nullptr) && (previousActiveButtonDecorator == nullptr))
+    HeaderWidget->switchUserView();
+    NavigationWidget->setHideButton();
+    QWidget *mainWidget = NavigationWidget->getMainNavigationWidget();
+    QVector<MainButton *> mainVector = MainNavigationWidget->getMainButtonVector();
+    if (!mainWidget)
+    {
+        mainWidget = new QWidget;
+        mainWidget->setLayout(new QVBoxLayout);
+    }
+
+    for (auto w:mainVector)
+    {
+        mainWidget->layout()->addWidget(w);
+    }
+}
+
+void Home::switchAdminView()
+{
+    HeaderWidget->switchAdminView();
+    NavigationWidget->setShowButton();
+
+    NavigationWidget->getMainNavigationWidget()->hide();
+
+    ui->localNavigation->addWidget(MainNavigationWidget);
+}
+
+bool Home::event(QEvent *event)
+{
+    if (activeButtonDecorator && previousActiveButtonDecorator == nullptr)
     {
         if (activeMainButton)
         {
@@ -46,15 +75,34 @@ bool Home::event(QEvent * e)
         }
         previousActiveButtonDecorator = activeButtonDecorator;
     }
-    else if ((activeMainButton != nullptr) && (previousActiveMainButton == nullptr))
+    else if (activeMainButton && previousActiveMainButton == nullptr)
     {
-        if (activeButtonDecorator)
-        {
+        if (activeButtonDecorator) {
             activeButtonDecorator->setDefaultStyleSheet();
             activeButtonDecorator = nullptr;
             previousActiveButtonDecorator = nullptr;
         }
         previousActiveMainButton = activeMainButton;
     }
-    return QWidget::event(e);
+    return QWidget::event(event);
+}
+
+bool Home::eventFilter(QObject *watched, QEvent *event)
+{
+
+    if (event->type() == QEvent::MouseButtonPress && watched == userProfile->getSwitchButton())
+    {
+        if (isAdminSwiched)
+        {
+            switchUserView();
+            isAdminSwiched = false;
+        }
+        else
+        {
+            switchAdminView();
+            isAdminSwiched = true;
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
 }

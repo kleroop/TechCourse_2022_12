@@ -6,11 +6,8 @@ MainNavigation::MainNavigation(QWidget *parent, Header *header) : QWidget(parent
 {
     ui->setupUi(this);
     this->header = header;
-    QHBoxLayout *layout = qobject_cast<QHBoxLayout*>(this->layout());
 
-//    mainButtonVector.push_front(new MainButton(this, "Home"));
-//    mainButtonVector.push_front(new MainButton(this, "NBA"));
-//    mainButtonVector.push_front(new MainButton(this, "NFL"));
+    QHBoxLayout *layout = qobject_cast<QHBoxLayout*>(this->layout());
 
     addNewButton("Home");
     addNewButton("NBA");
@@ -19,8 +16,6 @@ MainNavigation::MainNavigation(QWidget *parent, Header *header) : QWidget(parent
     for (auto w : mainButtonVector) {
         layout->addWidget(w);
     }
-
-
 
     this->show();
 
@@ -35,6 +30,16 @@ void MainNavigation::addNewButton(const QString &text)
 {
     this->mainButtonVector.push_front(new MainButton(this, this->header, text));
 }
+QVector<MainButton *> MainNavigation::getMainButtonVector()
+{
+    return this->mainButtonVector;
+}
+
+void MainNavigation::upDate()
+{
+    int a = 2;
+}
+
 //void MainNavigation::deleteButton(MainButton* mainButton)
 //{
 //    int length = mainButtonVector.length();
