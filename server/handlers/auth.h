@@ -1,4 +1,4 @@
-#ifndef QTWORLD_AUTH_H
+#ifndef QTWORLD_AUTH_UTILS_H
 #define QTWORLD_AUTH_H
 
 #include <streambuf>
@@ -8,7 +8,7 @@
 #include "models/auth_model.h"
 #include "poco_request.h"
 #include "phash.h"
-#include "../DAL/DAL.h"
+#include "DAL.h"
 
 using namespace nlohmann;
 

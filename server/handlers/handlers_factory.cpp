@@ -13,6 +13,8 @@ HandlersFactory::HandlersFactory()
 {
     routes["/"] = Handlers::RootHandler;
     routes["/auth"] = Handlers::AuthHandler;
+    routes["/categories/get"] = Handlers::GetCategoriesHandler;
+    routes["/categories/update"] = Handlers::UpdateCategoriesHandler;
     routes["/shutdown"] = Handlers::ShutdownHandler;
 }
 
@@ -26,6 +28,10 @@ Poco::Net::HTTPRequestHandler * HandlersFactory::getHandler(Handlers handler)
             return new Root();
         case Handlers::AuthHandler:
             return new Auth();
+        case Handlers::GetCategoriesHandler:
+            return new GetCategories();
+        case Handlers::UpdateCategoriesHandler:
+            return new UpdateCategories();
         case Handlers::ShutdownHandler:
             return new Shutdown();
         default:

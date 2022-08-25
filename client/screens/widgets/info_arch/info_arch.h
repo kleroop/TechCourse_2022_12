@@ -6,11 +6,11 @@
 #include "QFrame"
 #include "QPainter"
 
-#include "categories.h"
 #include "cat_button.h"
 #include "info_arch_dropdown.h"
 #include "add_cat_window.h"
-
+#include "api.h"
+#include "models/categories_model.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -38,6 +38,7 @@ protected:
 
 private:
     Ui::InfoArch *ui;
+    Api api;
 
     CategoriesTree catTree;
     QPushButton *buttonTemplate;

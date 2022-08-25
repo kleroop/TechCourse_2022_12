@@ -36,11 +36,14 @@ Api::~Api()
     delete manager;
 }
 
-void Api::makeRequest(string path, json inp, const std::function<void(const json &)> &f)
+void Api::makeRequest(string path, json inp, string token, const std::function<void(const json &)> &f)
 {
     QNetworkRequest request(QUrl(QString::fromStdString("http://localhost:5000" + path)));
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    string headerData = "Bearer " + token;
+    request.setRawHeader("Authorization", QByteArray::fromStdString(headerData));
 
     QNetworkReply *reply = manager->post(request, toQtByteArray(inp));
 
@@ -54,9 +57,46 @@ void Api::makeRequest(string path, json inp, const std::function<void(const json
 void Api::login(string email, string password, const std::function<void(const AuthResponse &)> &f)
 {
     AuthRequest m(email, password);
-    makeRequest("/auth", m.serialize(), [=](const json &inp) {
+    makeRequest("/auth", m.serialize(), "", [=](const json &inp) {
         AuthResponse r;
         r.deserialize(inp);
         f(r);
     });
 }
+
+void Api::getCategories(const std::function<void(const CategoriesTreeResponse &)> &f) {
+    nlohmann::json j;
+    makeRequest("/categories/get", j, this->token, [=](const json &inp) {
+        CategoriesTree categoriesTree;
+        CategoriesTreeResponse r(categoriesTree);
+        r.deserialize(inp);
+        f(r);
+    });
+}
+
+void Api::updateCategories(CategoriesTree &categoriesTree, const std::function<void(const CategoriesTreeResponse &)> &f) {
+    UpdateCategoriesRequest request(categoriesTree);
+    makeRequest("/categories/update", request.serialize(), this->token, [=](const json &inp) {
+        CategoriesTree categoriesTree;
+        CategoriesTreeResponse r(categoriesTree);
+        r.deserialize(inp);
+        f(r);
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

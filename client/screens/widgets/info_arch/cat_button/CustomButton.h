@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "QPushButton"
-#include "../categories.h"
+#include "models/categories_model.h"
 
 class CustomButton : public QPushButton {
 Q_OBJECT
