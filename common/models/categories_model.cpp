@@ -5,7 +5,6 @@
 json ICategory::serialize()
 {
     json response;
-    response["id"] = id;
     response["title"] = title;
     response["isHidden"] = isHidden;
 

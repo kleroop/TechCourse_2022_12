@@ -20,4 +20,5 @@ target_link_libraries(client PRIVATE
         nlohmann_json::nlohmann_json
         common
         client::utils client::api client::widgets)
+
 windeployqt(client)

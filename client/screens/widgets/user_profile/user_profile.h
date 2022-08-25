@@ -18,6 +18,8 @@ public:
 
     ~UserProfile() override;
 
+    QPushButton* getSwitchButton();
+
     UserDropdown *DropdownMenu;
 
 private:
