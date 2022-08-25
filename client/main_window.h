@@ -19,6 +19,10 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
 
     ~MainWindow() override;
+
+public slots:
+    void onLoginSuccess();
+
 private:
     Ui::MainWindow *ui;
 

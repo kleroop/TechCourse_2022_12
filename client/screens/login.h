@@ -22,6 +22,9 @@ private:
     Ui::Login *ui;
     Api api;
 
+signals:
+    void onLoginSuccess();
+
 private slots:
 
     void onLoginBackButtonClicked();

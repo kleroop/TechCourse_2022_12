@@ -62,7 +62,8 @@ void Login::onLoginButtonClicked() {
             ui->passwordForm->setStyleSheet(errorFormStyle);
         } else {
             ui->tokenText->setText(QString::fromStdString(resp.token));
-            ui->stackedWidget->setCurrentIndex(1);
+            onLoginSuccess();
+            //ui->stackedWidget->setCurrentIndex(1);
         }
     });
 }
