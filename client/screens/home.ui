@@ -106,9 +106,7 @@
                                                 </string>
            </property>
            <property name="text">
-            <string>List
-                                                    of menu
-                                                    items</string>
+            <string>List of menu items</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

@@ -33,6 +33,7 @@
     <file>Resources/image_BG.png</file>
     <file>Resources/navigation_icons/languages_icon.png</file>
     <file>Resources/navigation_icons/languages_icon_active.png</file>
+
     <file>Resources/fonts/open-sans/OpenSans-Bold.ttf</file>
     <file>Resources/fonts/open-sans/OpenSans-Regular.ttf</file>
     <file>Resources/fonts/open-sans/OpenSans-Semibold.ttf</file>

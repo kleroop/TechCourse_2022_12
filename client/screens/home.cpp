@@ -1,9 +1,9 @@
 #include "home.h"
 #include "ui_Home.h"
+#include "info_arch.h"
 
 Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 {
-
     ui->setupUi(this);
 
     this->HeaderWidget = new Header(this);
@@ -16,6 +16,9 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
     this->NavigationWidget = new Navigation(this, HeaderWidget);
     ui->localNavigation->replaceWidget(ui->navigationMock, NavigationWidget);
     delete ui->navigationMock;
+
+    auto InfoArchWidget = new InfoArch(this);
+    ui->stackedWidget->addWidget(InfoArchWidget);
 
     this->MainNavigationWidget = new MainNavigation(HeaderWidget, HeaderWidget);
     HeaderWidget->getMainNavigationLayout()->addWidget(this->MainNavigationWidget);
