@@ -5,6 +5,8 @@
 #include "user_profile.h"
 #include "header.h"
 #include "navigation.h"
+#include "main_navigation.h"
+#include "QEvent"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,6 +22,11 @@ public:
 
     ~Home() override;
 
+    bool eventFilter(QObject *, QEvent *) override;
+    bool event(QEvent *) override;
+    void switchUserView();
+    void switchAdminView();
+
 private slots:
 
     void resizeEvent(QResizeEvent *event) override;
@@ -28,6 +35,13 @@ private:
     Ui::Home *ui;
     Header *HeaderWidget;
     Navigation *NavigationWidget;
+    MainNavigation *MainNavigationWidget;
+    UserProfile* userProfile;
+
+    MainButton *previousActiveMainButton = nullptr;
+    ButtonDecorator *previousActiveButtonDecorator = nullptr;
+
+    bool isAdminSwiched;
 };
 
 #endif

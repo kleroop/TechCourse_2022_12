@@ -3,7 +3,7 @@
 #include <utility>
 #include "ui_ButtonDecorator.h"
 
-
+ButtonDecorator * activeButtonDecorator = nullptr;
 
 ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new Ui::ButtonDecorator)
 {
@@ -14,6 +14,7 @@ ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new 
 
 ButtonDecorator::~ButtonDecorator()
 {
+    if (hover) delete hover;
     delete ui;
 }
 
@@ -27,6 +28,10 @@ bool ButtonDecorator::event(QEvent * e)
         break;
     case QEvent::HoverLeave:
         hoverLeave(dynamic_cast<QHoverEvent*>(e));
+        return true;
+        break;
+    case QEvent::MouseButtonPress:
+        mouseButtonPress(dynamic_cast<QHoverEvent*>(e));
         return true;
         break;
     default:
@@ -48,16 +53,44 @@ void ButtonDecorator::hoverEnter(QHoverEvent * event)
 void ButtonDecorator::hoverLeave(QHoverEvent * event)
 {
     hover->hide();
-    this->setStyleSheet("border-radius: 27%;\n"
-                        "padding: 13px;\n"
-                        "background-color: none;\n"
-                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
-
+    if (activeButtonDecorator == this)
+    {
+        this->setStyleSheet("border-radius: 27%;\n"
+                            "padding: 13px;\n"
+                            "background-color: none;\n"
+                            "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon_active.png);\n");
+    }
+    else
+    {
+        this->setStyleSheet("border-radius: 27%;\n"
+                            "padding: 13px;\n"
+                            "background-color: none;\n"
+                            "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
+    }
 }
-void ButtonDecorator::setDate(QWidget *parent, QWidget *parentWidget, QString text, QString icon)
+
+void ButtonDecorator::mouseButtonPress(QHoverEvent *event)
+{
+    if (activeButtonDecorator && activeButtonDecorator != this) activeButtonDecorator->setDefaultStyleSheet();
+    if (activeButtonDecorator != this)
+    {
+        activeButtonDecorator = this;
+        header->setSectionName(text);
+    }
+}
+
+void ButtonDecorator::setData(QWidget *parent, Header* header, QWidget *parentWidget, QString text, QString icon)
 {
     this->parent = parent;
     this->parentWidget = parentWidget;
     this->text = std::move(text);
     this->icon = std::move(icon);
+    this->header = header;
+}
+void ButtonDecorator::setDefaultStyleSheet()
+{
+    this->setStyleSheet("border-radius: 27%;\n"
+                        "padding: 13px;\n"
+                        "background-color: none;\n"
+                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
 }

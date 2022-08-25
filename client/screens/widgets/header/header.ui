@@ -21,8 +21,8 @@
     <widget class="QFrame" name="frame_4">
      <property name="styleSheet">
       <string notr="true">#frame_4{
-	border: 1px solid #EDEDED;
-}</string>
+       border: 1px solid #EDEDED;
+       }</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -72,20 +72,19 @@
               <font>
                <family>Open Sans</family>
                <pointsize>-1</pointsize>
+               <weight>75</weight>
                <italic>false</italic>
                <bold>true</bold>
-               <underline>false</underline>
-               <kerning>true</kerning>
               </font>
              </property>
              <property name="styleSheet">
               <string notr="true">font-family: 'Open Sans';
-font-style: normal;
-font-weight: 600;
-font-size: 22px;
-line-height: 28px;
-color: #FFFBFB;
-</string>
+               font-style: normal;
+               font-weight: 600;
+               font-size: 22px;
+               line-height: 28px;
+               color: #FFFBFB;
+              </string>
              </property>
              <property name="text">
               <string>Sports Hub</string>
@@ -115,8 +114,8 @@ color: #FFFBFB;
          <widget class="QFrame" name="frame">
           <property name="styleSheet">
            <string notr="true">#frame{
-	border-left: 1px solid #EDEDED;
-}</string>
+            border-left: 1px solid #EDEDED;
+            }</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
@@ -178,8 +177,8 @@ color: #FFFBFB;
      </property>
      <property name="styleSheet">
       <string notr="true">#frame_3{
-	border-bottom: 1px solid #EDEDED;
-}</string>
+       border-bottom: 1px solid #EDEDED;
+       }</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -227,18 +226,19 @@ color: #FFFBFB;
            <font>
             <family>Open Sans</family>
             <pointsize>-1</pointsize>
+            <weight>87</weight>
             <italic>false</italic>
             <bold>true</bold>
            </font>
           </property>
           <property name="styleSheet">
            <string notr="true">font-family: 'Open Sans';
-font-style: normal;
-font-weight: 700;
-font-size: 30px;
-line-height: 41px;
-text-transform: capitalize;
-color: #000000;</string>
+            font-style: normal;
+            font-weight: 700;
+            font-size: 30px;
+            line-height: 41px;
+            text-transform: capitalize;
+            color: #000000;</string>
           </property>
           <property name="text">
            <string>Home</string>
@@ -284,8 +284,8 @@ color: #000000;</string>
     <widget class="QFrame" name="categories">
      <property name="styleSheet">
       <string notr="true">QLabel{
- color: gray;
-}</string>
+       color: gray;
+       }</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -294,33 +294,78 @@ color: #000000;</string>
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>HOME</string>
+       <widget class="QPushButton" name="leftScrollButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+          image: url(:/Resources/navigation_icons/left_scroll_icon.png);
+          padding: 5px;
+          border: none;
+          }
+
+          QPushButton::hover{
+          image: url(:/Resources/navigation_icons/left_scroll_icon_active.png);
+          }</string>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>NBA</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="mainNavigationLayout"/>
       </item>
       <item>
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>NFL</string>
+       <widget class="QPushButton" name="rightScrollButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+          image: url(:/Resources/navigation_icons/right_scroll_icon.png);
+          padding: 5px;
+          border: none;
+          }
+
+          QPushButton::hover{
+          image: url(:/Resources/navigation_icons/right_scroll_icon_active.png);
+          }</string>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>

@@ -21,3 +21,21 @@ QHBoxLayout *Header::getRightSection()
 {
     return ui->right_menu;
 }
+void Header::setSectionName(const QString &text)
+{
+    ui->sectionName->setText(text);
+}
+QHBoxLayout *Header::getMainNavigationLayout()
+{
+    return ui->mainNavigationLayout;
+}
+void Header::switchUserView()
+{
+    ui->categories->hide();
+    ui->frame_3->hide();
+}
+void Header::switchAdminView()
+{
+    ui->categories->show();
+    ui->frame_3->show();
+}
