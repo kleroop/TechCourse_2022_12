@@ -1,6 +1,7 @@
 #include "add_cat_window.h"
 #include "ui_add_cat_window.h"
 
+bool isAddButtonClicked = false;
 
 AddCatDialog::AddCatDialog(QWidget *parent) : QWidget(parent->window()), ui(new Ui::AddCatDialog) {
     ui->setupUi(this);
@@ -34,6 +35,7 @@ void AddCatDialog::onCreateCall(const std::function<void(std::string)> &f) {
 
     connect(ui->addButton, &QPushButton::clicked, [this, f](){
         f(ui->nameForm->text().toStdString());
+        isAddButtonClicked = true;
         delete this;
     });
 }

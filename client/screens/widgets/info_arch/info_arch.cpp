@@ -52,7 +52,8 @@ std::vector<CatButton *> InfoArch::btnWrapper(const std::vector<CustomButton *> 
     return result;
 }
 
-std::vector<CustomButton *> InfoArch::getCustomButtons(const std::vector<ICategory> &categories, QPushButton *btnTemplate, bool clickable) {
+std::vector<CustomButton *> InfoArch::getCustomButtons(const std::vector<ICategory> &categories, QPushButton *btnTemplate, bool clickable)
+{
     std::vector<CustomButton *> result;
 
     for (const ICategory &category: categories) {
@@ -172,12 +173,15 @@ void InfoArch::createHandler(CategoryTypes type) {
             if (type == CategoryTypes::CATEGORY) {
                 this->catTree.categories.insert
                         (catTree.categories.begin(), Category(name, false, nullptr));
+                //fillCategories();
             } else if (type == CategoryTypes::SUBCATEGORY) {
                 this->activeCategory->children.insert
                         (activeCategory->children.begin(), SubCategory(name, false, this->activeCategory));
+                //fillSubCategories();
             } else if (type == CategoryTypes::TEAM) {
                 this->activeSubCategory->children.insert
                         (activeSubCategory->children.begin(), Team(name, false, this->activeSubCategory));
+                //fillTeams();
             }
         }
 
@@ -191,7 +195,11 @@ void InfoArch::hideCatHandler(ICategory *category, QPushButton *button) {
     this->dropdown = new InfoArchDropdown(this);
 
     dropdown->onCreateCall(category->isHidden, button, [=]() {
-        category->isHidden = !category->isHidden;
+        if (category->isHidden) {
+            category->isHidden = false;
+        } else {
+            category->isHidden = true;
+        }
 
         api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
             updateAllContainers();

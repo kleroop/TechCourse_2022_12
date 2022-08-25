@@ -26,7 +26,9 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
     ui->stackedWidget->setCurrentIndex(3);
 
     this->MainNavigationWidget = new MainNavigation(HeaderWidget, HeaderWidget);
-    HeaderWidget->getMainNavigationLayout()->addWidget(this->MainNavigationWidget);
+    auto *layout = new QHBoxLayout;
+    HeaderWidget->getScrollAreaWidget()->setLayout(layout);
+    layout->addWidget(this->MainNavigationWidget);
 
     qApp->installEventFilter(this);
 
@@ -41,35 +43,37 @@ Home::~Home()
 void Home::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
+
 }
 
-void Home::switchUserView()
-{
-    HeaderWidget->switchUserView();
-    NavigationWidget->setHideButton();
-    QWidget *mainWidget = NavigationWidget->getMainNavigationWidget();
-    QVector<MainButton *> mainVector = MainNavigationWidget->getMainButtonVector();
-    if (!mainWidget)
-    {
-        mainWidget = new QWidget;
-        mainWidget->setLayout(new QVBoxLayout);
-    }
-
-    for (auto w:mainVector)
-    {
-        mainWidget->layout()->addWidget(w);
-    }
-}
-
-void Home::switchAdminView()
-{
-    HeaderWidget->switchAdminView();
-    NavigationWidget->setShowButton();
-
-    NavigationWidget->getMainNavigationWidget()->hide();
-
-    ui->localNavigation->addWidget(MainNavigationWidget);
-}
+//void Home::switchUserView()
+//{
+//    HeaderWidget->switchUserView();
+//    NavigationWidget->setHideButton();
+//    QWidget *mainWidget = NavigationWidget->getMainNavigationWidget();
+//    QVector<MainButton *> mainVector = MainNavigationWidget->getMainButtonVector();
+//    mainWidget->setFixedHeight(600);
+//    if (!mainWidget)
+//    {
+//        mainWidget = new QWidget;
+//        mainWidget->setLayout(new QVBoxLayout);
+//    }
+//
+//    for (auto w:mainVector)
+//    {
+//        mainWidget->layout()->addWidget(w);
+//    }
+//}
+//
+//void Home::switchAdminView()
+//{
+//    HeaderWidget->switchAdminView();
+//    NavigationWidget->setShowButton();
+//
+//    NavigationWidget->getMainNavigationWidget()->hide();
+//
+//    ui->localNavigation->addWidget(MainNavigationWidget);
+//}
 
 bool Home::event(QEvent *event)
 {
@@ -85,31 +89,96 @@ bool Home::event(QEvent *event)
     }
     else if (activeMainButton && previousActiveMainButton == nullptr)
     {
-        if (activeButtonDecorator) {
+        if (activeButtonDecorator)
+        {
             activeButtonDecorator->setDefaultStyleSheet();
             activeButtonDecorator = nullptr;
             previousActiveButtonDecorator = nullptr;
         }
         previousActiveMainButton = activeMainButton;
     }
+
     return QWidget::event(event);
 }
 
 bool Home::eventFilter(QObject *watched, QEvent *event)
 {
 
-    if (event->type() == QEvent::MouseButtonPress && watched == userProfile->getSwitchButton())
+// to do
+//    if (event->type() == QEvent::MouseButtonPress && watched == userProfile->getSwitchButton())
+//    {
+//        if (isAdminSwiched)
+//        {
+//            switchUserView();
+//            isAdminSwiched = false;
+//        }
+//        else
+//        {
+//            switchAdminView();
+//            isAdminSwiched = true;
+//        }
+//    }
+
+    if (event->type() == QEvent::MouseButtonPress && watched == HeaderWidget->getSaveButton())
     {
-        if (isAdminSwiched)
+        MainNavigationWidget->updateCategories();
+        activeMainButton = nullptr;
+    }
+
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[0]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[1]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[2]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[3]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[4]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[5]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[6]) ui->stackedWidget->setCurrentIndex(2);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[7]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[8]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[9]) ui->stackedWidget->setCurrentIndex(0);
+
+
+    // scroll right button action
+    if (event->type() == QEvent::MouseButtonPress && watched == HeaderWidget->getRightScrollButton())
+    {
+        int scrollWidth = HeaderWidget->getScrollArea()->width();
+        int x_first = MainNavigationWidget->x() - 11;
+        int last = MainNavigationWidget->mainButtonVector.last()->x() + MainNavigationWidget->mainButtonVector.last()->width();
+        int scrollAreaWidth = last - scrollWidth + x_first;
+
+        if (scrollAreaWidth >= 70)
         {
-            switchUserView();
-            isAdminSwiched = false;
+            HeaderWidget->getScrollAreaWidget()->scroll(-70,0);
+            MainNavigationWidget->scrollPosition = x_first - 70;
         }
-        else
+        else if (scrollAreaWidth > 0)
         {
-            switchAdminView();
-            isAdminSwiched = true;
+            HeaderWidget->getScrollAreaWidget()->scroll(-scrollAreaWidth,0);
+            MainNavigationWidget->scrollPosition = x_first - scrollAreaWidth;
         }
+    }
+
+    // scroll left button action
+    if (event->type() == QEvent::MouseButtonPress && watched == HeaderWidget->getLeftScrollButton())
+    {
+        int x_first = MainNavigationWidget->x() - 11;
+
+        if (x_first <= -70)
+        {
+            HeaderWidget->getScrollAreaWidget()->scroll(70,0);
+            MainNavigationWidget->scrollPosition = x_first + 70;
+        }
+        else if (x_first <= 0)
+        {
+            HeaderWidget->getScrollAreaWidget()->scroll(-x_first,0);
+            MainNavigationWidget->scrollPosition = 0;
+        }
+    }
+
+    int n = MainNavigationWidget->x() - 11;
+    if (n != MainNavigationWidget->scrollPosition && clickedActiveButton)
+    {
+        HeaderWidget->getScrollAreaWidget()->scroll(MainNavigationWidget->scrollPosition,0);
+        clickedActiveButton = false;
     }
 
     return QObject::eventFilter(watched, event);

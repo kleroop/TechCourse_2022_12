@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "button_decorator/buttondecorator.h"
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,7 +24,9 @@ public:
     void setHideButton();
     void setShowButton();
 
+    ButtonDecorator* buttonDecoratorArray[10];
 private:
+
     Ui::Navigation *ui;
 };
 

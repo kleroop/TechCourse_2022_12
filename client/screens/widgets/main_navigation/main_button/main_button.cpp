@@ -1,18 +1,22 @@
 #include "main_button.h"
 #include "ui_main_button.h"
-#include <QHoverEvent>
+#include <QMouseEvent>
+
 
 MainButton * activeMainButton = nullptr;
+bool clickedActiveButton = false;
 
-MainButton::MainButton(QWidget *parent, Header *header, const QString& text) : QPushButton(parent), ui(new Ui::MainButton)
+MainButton::MainButton(QWidget *parent, Header *header, const QString& text, bool isHidden) : QPushButton(parent), ui(new Ui::MainButton)
 {
     ui->setupUi(this);
 
+    this->isHidden = isHidden;
     this->text = text;
-    this->setText(text);
-    this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    this->show();
     this->header = header;
+    this->setFixedWidth(text.size() * 12 + 40);
+    this->setText(this->text);
+    if (isHidden) this->hide();
+    else this->show();
 }
 
 MainButton::~MainButton()
@@ -24,15 +28,15 @@ bool MainButton::event(QEvent * e)
     switch(e->type())
     {
     case QEvent::MouseButtonPress:
-        mouseButtonPress(dynamic_cast<QHoverEvent*>(e));
+        mouseButtonPress();
         return true;
-        break;
     default:
         break;
     }
     return QPushButton::event(e);
 }
-void MainButton::mouseButtonPress(QHoverEvent *event)
+
+void MainButton::mouseButtonPress()
 {
     if (activeMainButton && activeMainButton != this) activeMainButton->setDefaultStyleSheet();
     if (activeMainButton != this)
@@ -40,9 +44,9 @@ void MainButton::mouseButtonPress(QHoverEvent *event)
         activeMainButton = this;
         header->setSectionName(text);
         this->setActiveStyleSheet();
+        clickedActiveButton = true;
     }
 }
-
 
 void MainButton::setDefaultStyleSheet()
 {

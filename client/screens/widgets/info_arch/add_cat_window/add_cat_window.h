@@ -26,5 +26,6 @@ private:
     Ui::AddCatDialog *ui;
 };
 
+extern bool isAddButtonClicked;
 
 #endif

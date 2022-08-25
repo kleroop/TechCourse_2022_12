@@ -24,8 +24,10 @@ public:
 
     bool eventFilter(QObject *, QEvent *) override;
     bool event(QEvent *) override;
+    // to do
     void switchUserView();
     void switchAdminView();
+    //
 
 private slots:
 

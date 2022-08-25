@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1062</width>
-    <height>819</height>
+    <width>1115</width>
+    <height>913</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,7 +106,9 @@
                                                 </string>
            </property>
            <property name="text">
-            <string>List of menu items</string>
+            <string>List
+                                                    of menu
+                                                    items</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -121,28 +123,16 @@
           <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>30</number>
+          <number>66</number>
          </property>
          <property name="topMargin">
-          <number>5</number>
+          <number>21</number>
          </property>
          <property name="rightMargin">
-          <number>40</number>
+          <number>125</number>
          </property>
-         <item alignment="Qt::AlignLeft">
+         <item>
           <widget class="QStackedWidget" name="stackedWidget">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>334</width>
-             <height>0</height>
-            </size>
-           </property>
            <property name="currentIndex">
             <number>0</number>
            </property>
