@@ -19,6 +19,7 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 
     auto InfoArchWidget = new InfoArch(this);
     ui->stackedWidget->addWidget(InfoArchWidget);
+    ui->stackedWidget->setCurrentIndex(2);
 
     this->MainNavigationWidget = new MainNavigation(HeaderWidget, HeaderWidget);
     HeaderWidget->getMainNavigationLayout()->addWidget(this->MainNavigationWidget);

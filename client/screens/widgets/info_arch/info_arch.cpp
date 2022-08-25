@@ -120,6 +120,7 @@ void InfoArch::fillCategories(bool clean) {
         setActiveCat(nullptr);
     }
     fillContainer(ui->categoriesFrame->layout(), catTree.categories);
+    update();
 }
 
 void InfoArch::fillSubCategories() {
@@ -128,6 +129,7 @@ void InfoArch::fillSubCategories() {
         ui->addSubCategoryButton->show();
         fillContainer(ui->subCategoriesFrame->layout(), category->children);
     }
+    update();
 }
 
 void InfoArch::fillTeams() {
@@ -136,6 +138,7 @@ void InfoArch::fillTeams() {
         ui->addTeamButton->show();
         fillContainer(ui->teamsFrame->layout(), category->children, false);
     }
+    update();
 }
 
 void InfoArch::fillContainer(QLayout *container, const std::vector<ICategory> &categories, bool clickable,
@@ -186,7 +189,6 @@ void InfoArch::createHandler(CategoryTypes type) {
             updateAllContainers();
         });
     });
-    update();
 }
 
 void InfoArch::hideCatHandler(ICategory *category, QPushButton *button) {
@@ -198,13 +200,11 @@ void InfoArch::hideCatHandler(ICategory *category, QPushButton *button) {
         } else {
             category->isHidden = true;
         }
-        //updateAllContainers();
 
         api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
             updateAllContainers();
         });
     });
-    update();
 }
 
 void InfoArch::paintEvent(QPaintEvent *e) {
