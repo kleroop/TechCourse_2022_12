@@ -50,6 +50,46 @@ void ICategory::deserialize(json data)
     }
 }
 
+json Team::serialize()
+{
+    json response;
+    response["title"] = title;
+    response["isHidden"] = isHidden;
+    response["location"] = location;
+    response["dateCreated"] = dateCreated;
+    response["children"] = json();
+
+    return response;
+}
+
+void Team::deserialize(json data)
+{
+    if(!data.contains("title") || data["title"] == "")
+    {
+        error = "'title' field is required";
+        return;
+    }
+
+    if (!data.contains("isHidden"))
+    {
+        error = "'isHidden' field is required";
+        return;
+    }
+
+    if (!data.contains("children"))
+    {
+        error = "'children' field is required";
+        return;
+    }
+
+    title = data["title"];
+    isHidden = data["isHidden"];
+    location = data["location"];
+    dateCreated = data["dateCreated"];
+}
+
+
+
 void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error)
 {
     for (auto& category : data)

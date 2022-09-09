@@ -23,7 +23,6 @@ public:
     json serialize() override;
     void deserialize(json data) override;
 
-
     ICategory *parent;
     std::string title;
     std::vector<ICategory> children = {};
@@ -53,9 +52,17 @@ public:
 
 class Team : public ICategory {
 public:
-    Team(std::string title, bool isHidden, ICategory *parent = nullptr) : ICategory(std::move(title), isHidden, parent) {
+    Team(std::string title, bool isHidden, ICategory *parent = nullptr, std::string location = "", std::string dateCreated = "")
+    : ICategory(std::move(title), isHidden, parent) {
         this->type = CategoryTypes::TEAM;
+        this->location = std::move(location);
+        this->dateCreated = std::move(dateCreated);
     }
+    std::string location;
+    std::string dateCreated;
+
+    json serialize() override;
+    void deserialize(json data) override;
 };
 
 void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error);

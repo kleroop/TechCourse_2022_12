@@ -13,7 +13,7 @@ using namespace nlohmann;
 #define TOKEN_SIGNER "0123456789ABCDEF0123456789ABCDEF"
 
 #define AUTH                                                                                       \
-    do {                                                                                           \
+    {                                                                                           \
         prepareServerResponse(response);                                                           \
         std::ostream &ostream = response.send();                                                   \
         json responseJson;                                                                         \
@@ -52,7 +52,7 @@ using namespace nlohmann;
             ostream << responseJson.dump();                                                        \
             return;                                                                                \
         }                                                                                          \
-    } while (0)
+    }
 
 bool userExists(std::string &email, std::string &password);
 
