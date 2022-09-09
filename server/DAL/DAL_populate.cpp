@@ -3,11 +3,17 @@
 #undef NDEBUG
 #include <cassert>
 
-int main()
+int main(int argc, char **argv)
 {
     char pwd[PHASH_SIZE];
     utils_phash(pwd, "admin");
-    if (DAL::InitEx(true) != DAL::DAL_OK) {
+    if (argc != 6) {
+        puts("Can't connect to db, required command line options are: host port username dbname "
+             "password");
+        return EXIT_FAILURE;
+    }
+    char *host = argv[1], *port = argv[2], *username = argv[3], *dbname = argv[4], *password = argv[5];
+    if (DAL::InitEx(host, port, username, dbname, password, true) != DAL::DAL_OK) {
         puts("Couldn't init DAL connection");
         return EXIT_FAILURE;
     }
@@ -52,7 +58,7 @@ int main()
     assert(cat.scats[0].teams.size() == 1);
     assert(cat.scats[0].teams[0].isHidden == thidden);
     cat.Delete();
-    cat.Select("name = $1", {DAL::bind("test1")});
+    cat.Select("name = $1", { DAL::bind("test1") });
     assert(cat.status == DAL::DAL_NOT_FOUND);
 
     DAL::Quit();
