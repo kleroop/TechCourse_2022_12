@@ -5,6 +5,7 @@
 #include <models/categories_model.h>
 #include <nlohmann/json.hpp>
 #include <QNetworkAccessManager>
+#include <functional>
 
 using nlohmann::json;
 using std::string;

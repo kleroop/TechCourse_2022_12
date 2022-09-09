@@ -24,13 +24,15 @@ using Poco::Data::Statement;
 using std::string;
 using namespace DAL;
 
-Status DAL::InitEx(bool dropTables)
+Status DAL::InitEx(string host, string port, string username, string dbname, string password,
+                   bool dropTables)
 {
     Connector::registerConnector();
     try {
-        session_ = new Data::Session(
-                Connector::KEY,
-                "host=localhost port=5432 user=postgres password=admin dbname=test");
+        session_ =
+                new Data::Session(Connector::KEY,
+                                  "host=" + host + " port=" + port + " user="
+                                          + username + " dbname=" + dbname + " password=" + password);
     } catch (Data::ConnectionFailedException &e) {
         eputs(e.what());
         return DAL_CONNECTION_FAILED;
@@ -92,9 +94,9 @@ Status DAL::InitEx(bool dropTables)
     return DAL_OK;
 }
 
-Status DAL::Init()
+Status DAL::Init(string host, string port, string username, string dbname, string password)
 {
-    return InitEx(false);
+    return InitEx(host, port, username, dbname, password, false);
 }
 
 void DAL::Quit()

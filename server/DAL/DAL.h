@@ -95,9 +95,10 @@ public:
     void Delete() override;
 };
 
-DAL_EXPORT Status Init();
+DAL_EXPORT Status Init(string host, string port, string username, string dbname, string password);
 
-DAL_EXPORT Status InitEx(bool dropTables);
+DAL_EXPORT Status InitEx(string host, string port, string username, string dbname, string password,
+                         bool dropTables);
 
 DAL_EXPORT void Quit();
 
