@@ -28,6 +28,8 @@ public:
     std::vector<ICategory> children = {};
     CategoryTypes type;
     bool isHidden = false;
+    std::string location;
+    std::string dateCreated;
     //todo add position
 };
 
@@ -52,15 +54,12 @@ public:
 
 class Team : public ICategory {
 public:
-    Team(std::string title, bool isHidden, ICategory *parent = nullptr, std::string location = "", std::string dateCreated = "")
+    Team(std::string title, bool isHidden, ICategory *parent, std::string location, std::string dateCreated)
     : ICategory(std::move(title), isHidden, parent) {
         this->type = CategoryTypes::TEAM;
         this->location = std::move(location);
         this->dateCreated = std::move(dateCreated);
     }
-    std::string location;
-    std::string dateCreated;
-
     json serialize() override;
     void deserialize(json data) override;
 };

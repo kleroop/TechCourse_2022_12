@@ -8,6 +8,11 @@ json ICategory::serialize()
     response["title"] = title;
     response["isHidden"] = isHidden;
 
+    if (type == CategoryTypes::TEAM){
+        response["location"] = location;
+        response["dateCreated"] = dateCreated;
+    }
+
     std::vector<json> children_json;
 
     for (auto child : children)
@@ -40,6 +45,14 @@ void ICategory::deserialize(json data)
     title = data["title"];
     isHidden = data["isHidden"];
 
+    if (data.contains("location")){
+        location = data["location"];
+    }
+
+    if (data.contains("dateCreated")){
+        dateCreated = data["dateCreated"];
+    }
+
     for (auto& child : data["children"])
     {
         ICategory category;
@@ -55,8 +68,7 @@ json Team::serialize()
     json response;
     response["title"] = title;
     response["isHidden"] = isHidden;
-    response["location"] = location;
-    response["dateCreated"] = dateCreated;
+
     response["children"] = json();
 
     return response;
@@ -84,8 +96,7 @@ void Team::deserialize(json data)
 
     title = data["title"];
     isHidden = data["isHidden"];
-    location = data["location"];
-    dateCreated = data["dateCreated"];
+
 }
 
 

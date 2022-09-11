@@ -402,7 +402,7 @@ std::vector<Team> Team::Select(string query, Bindings binds)
 {
     Statement select = SelectQueryBuild(getTable(), query, binds);
     int32_t cat_id;
-    select, into(this->id), into(this->name), into(this->isHidden), into(cat_id);
+    select, into(this->id), into(this->name), into(this->isHidden), into(cat_id), into(this->location), into(this->dateCreated);
     return executeSelect(this, select);
 }
 void Team::Update()
