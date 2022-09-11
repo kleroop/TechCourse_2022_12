@@ -2,12 +2,12 @@
 
 int Server::main(const std::vector<std::string> &argv)
 {
-    if (argv.size() != 6) {
+    if (argv.size() != 5) {
         puts("Can't connect to db, required command line options are: host port username dbname "
              "password");
         return EXIT_FAILURE;
     }
-    string host = argv[1], port = argv[2], username = argv[3], dbname = argv[4], password = argv[5];
+    string host = argv[0], port = argv[1], username = argv[2], dbname = argv[3], password = argv[4];
     Poco::Net::HTTPServer server(handlersFactory, serverSocket, serverParams);
     if (DAL::Init(host, port, username, dbname, password) != DAL::DAL_OK) {
         puts("Couldn't init DAL connection");
