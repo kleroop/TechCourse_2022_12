@@ -86,8 +86,10 @@ public:
     string name;
     bool isHidden;
     SubCategory *scat;
+    string location;
+    string dateCreated;
 
-    Team(string name, bool isHidden, SubCategory *scat);
+    Team(string name, bool isHidden, SubCategory *scat, string location, string dateCreated);
     Team() = default;
     void Create() override;
     vector<Team> Select(string query, Bindings binds) override;
