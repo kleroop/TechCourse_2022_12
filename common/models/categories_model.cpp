@@ -8,6 +8,11 @@ json ICategory::serialize()
     response["title"] = title;
     response["isHidden"] = isHidden;
 
+    if (type == CategoryTypes::TEAM){
+        response["location"] = location;
+        response["dateCreated"] = dateCreated;
+    }
+
     std::vector<json> children_json;
 
     for (auto child : children)
@@ -40,6 +45,14 @@ void ICategory::deserialize(json data)
     title = data["title"];
     isHidden = data["isHidden"];
 
+    if (data.contains("location")){
+        location = data["location"];
+    }
+
+    if (data.contains("dateCreated")){
+        dateCreated = data["dateCreated"];
+    }
+
     for (auto& child : data["children"])
     {
         ICategory category;
@@ -49,6 +62,44 @@ void ICategory::deserialize(json data)
         children.push_back(category);
     }
 }
+
+json Team::serialize()
+{
+    json response;
+    response["title"] = title;
+    response["isHidden"] = isHidden;
+
+    response["children"] = json();
+
+    return response;
+}
+
+void Team::deserialize(json data)
+{
+    if(!data.contains("title") || data["title"] == "")
+    {
+        error = "'title' field is required";
+        return;
+    }
+
+    if (!data.contains("isHidden"))
+    {
+        error = "'isHidden' field is required";
+        return;
+    }
+
+    if (!data.contains("children"))
+    {
+        error = "'children' field is required";
+        return;
+    }
+
+    title = data["title"];
+    isHidden = data["isHidden"];
+
+}
+
+
 
 void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error)
 {
