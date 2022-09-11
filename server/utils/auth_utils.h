@@ -13,43 +13,43 @@ using namespace nlohmann;
 #define TOKEN_SIGNER "0123456789ABCDEF0123456789ABCDEF"
 
 #define AUTH                                                                                       \
-        prepareServerResponse(response);                                                           \
-        std::ostream &ostream = response.send();                                                   \
-        json responseJson;                                                                         \
+    prepareServerResponse(response);                                                               \
+    std::ostream &ostream = response.send();                                                       \
+    json responseJson;                                                                             \
                                                                                                    \
-        if (!request.hasCredentials()) {                                                           \
-            unauthorized(responseJson);                                                            \
+    if (!request.hasCredentials()) {                                                               \
+        unauthorized(responseJson);                                                                \
+        ostream << responseJson.dump();                                                            \
+                                                                                                   \
+        return;                                                                                    \
+    }                                                                                              \
+                                                                                                   \
+    Poco::JWT::Signer signer(TOKEN_SIGNER);                                                        \
+                                                                                                   \
+    std::string scheme, authInfo;                                                                  \
+    request.getCredentials(scheme, authInfo);                                                      \
+                                                                                                   \
+    try {                                                                                          \
+        Poco::JWT::Token token = signer.verify(authInfo);                                          \
+        if (token.getExpiration() == Poco::Timestamp()) {                                          \
+            tokenExpired(responseJson);                                                            \
+            ostream << responseJson.dump();                                                        \
+        }                                                                                          \
+                                                                                                   \
+        auto email = token.payload().getValue<std::string>("email");                               \
+        auto password = token.getSubject();                                                        \
+                                                                                                   \
+        if (!userExists(email, password)) {                                                        \
+            userNotFound(responseJson);                                                            \
             ostream << responseJson.dump();                                                        \
                                                                                                    \
             return;                                                                                \
         }                                                                                          \
                                                                                                    \
-        Poco::JWT::Signer signer(TOKEN_SIGNER);                                                    \
-                                                                                                   \
-        std::string scheme, authInfo;                                                              \
-        request.getCredentials(scheme, authInfo);                                                  \
-                                                                                                   \
-        try {                                                                                      \
-            Poco::JWT::Token token = signer.verify(authInfo);                                      \
-            if (token.getExpiration() == Poco::Timestamp()) {                                      \
-                tokenExpired(responseJson);                                                        \
-                ostream << responseJson.dump();                                                    \
-            }                                                                                      \
-                                                                                                   \
-            auto email = token.payload().getValue<std::string>("email");                           \
-            auto password = token.getSubject();                                                    \
-                                                                                                   \
-            if (!userExists(email, password)) {                                                    \
-                userNotFound(responseJson);                                                        \
-                ostream << responseJson.dump();                                                    \
-                                                                                                   \
-                return;                                                                            \
-            }                                                                                      \
-                                                                                                   \
-        } catch (Poco::JWT::JWTException) {                                                        \
-            invalidToken(responseJson);                                                            \
-            ostream << responseJson.dump();                                                        \
-            return;                                                                                \
+    } catch (Poco::JWT::JWTException) {                                                            \
+        invalidToken(responseJson);                                                                \
+        ostream << responseJson.dump();                                                            \
+        return;                                                                                    \
     }
 
 bool userExists(std::string &email, std::string &password);
