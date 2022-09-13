@@ -54,7 +54,7 @@ public:
 
 class Team : public ICategory {
 public:
-    Team(std::string title, bool isHidden, ICategory *parent, std::string location, std::string dateCreated)
+    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "", std::string dateCreated = "")
     : ICategory(std::move(title), isHidden, parent) {
         this->type = CategoryTypes::TEAM;
         this->location = std::move(location);
