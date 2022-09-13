@@ -1,6 +1,7 @@
 #include "home.h"
 #include "ui_Home.h"
 #include "info_arch.h"
+#include "teams.h"
 
 Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 {
@@ -19,7 +20,10 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 
     auto InfoArchWidget = new InfoArch(this);
     ui->stackedWidget->addWidget(InfoArchWidget);
-    ui->stackedWidget->setCurrentIndex(2);
+
+    auto TeamsWidget = new Teams(this);
+    ui->stackedWidget->addWidget(TeamsWidget);
+    ui->stackedWidget->setCurrentIndex(3);
 
     this->MainNavigationWidget = new MainNavigation(HeaderWidget, HeaderWidget);
     HeaderWidget->getMainNavigationLayout()->addWidget(this->MainNavigationWidget);
