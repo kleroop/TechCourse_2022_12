@@ -2,7 +2,9 @@
 #define QTWORLD_SERIALIZABLE_H
 
 #include <nlohmann/json.hpp>
-
+#include <string>
+#include <ctime>
+using string = std::string;
 using namespace nlohmann;
 
 class ISerializable
