@@ -29,10 +29,9 @@ Status DAL::InitEx(string host, string port, string username, string dbname, str
 {
     Connector::registerConnector();
     try {
-        session_ =
-                new Data::Session(Connector::KEY,
-                                  "host=" + host + " port=" + port + " user="
-                                          + username + " dbname=" + dbname + " password=" + password);
+        session_ = new Data::Session(Connector::KEY,
+                                     "host=" + host + " port=" + port + " user=" + username
+                                             + " dbname=" + dbname + " password=" + password);
     } catch (Data::ConnectionFailedException &e) {
         eputs(e.what());
         return DAL_CONNECTION_FAILED;
@@ -76,8 +75,8 @@ Status DAL::InitEx(string host, string port, string username, string dbname, str
         "   name VARCHAR(32) NOT NULL UNIQUE,"
         "   isHidden BOOL NOT NULL,"
         "   subCategoryId SERIAL NOT NULL,"
-        "   location VARCHAR(32),"
-        "   dateCreated VARCHAR(32),"
+        "   location VARCHAR(32) NOT NULL,"
+        "   dateCreated TIMESTAMP NOT NULL,"
         "   FOREIGN KEY(subCategoryId) REFERENCES DSubCategory(id) ON DELETE CASCADE"
         ")"
     };
@@ -379,7 +378,8 @@ void SubCategory::Delete()
     this->id = DAL_BAD_ID;
 }
 
-Team::Team(string name, bool isHidden, SubCategory *scat, string location, string dateCreated)
+Team::Team(string name, bool isHidden, SubCategory *scat, string location,
+           Poco::DateTime dateCreated)
 {
     this->name = name;
     this->isHidden = isHidden;
@@ -389,12 +389,10 @@ Team::Team(string name, bool isHidden, SubCategory *scat, string location, strin
 }
 void Team::Create()
 {
-    Statement insert = InsertQueryBuild(getTable(), {
-        bind(this->name),
-        bind(this->isHidden),
-        bind(scat->id),
-        bind(this->location),
-        bind(this->dateCreated)}, this->id);
+    Statement insert = InsertQueryBuild(getTable(),
+                                        { bind(this->name), bind(this->isHidden), bind(scat->id),
+                                          bind(this->location), bind(this->dateCreated) },
+                                        this->id);
 
     executeInsert(this, insert);
 }
@@ -402,7 +400,8 @@ std::vector<Team> Team::Select(string query, Bindings binds)
 {
     Statement select = SelectQueryBuild(getTable(), query, binds);
     int32_t cat_id;
-    select, into(this->id), into(this->name), into(this->isHidden), into(cat_id), into(this->location), into(this->dateCreated);
+    select, into(this->id), into(this->name), into(this->isHidden), into(cat_id),
+            into(this->location), into(this->dateCreated);
     return executeSelect(this, select);
 }
 void Team::Update()
@@ -414,14 +413,8 @@ void Team::Update()
                                         "location = $4, "
                                         "dateCreated = $5",
                                         "id = $6",
-                                {
-                                        bind(name),
-                                        bind(isHidden),
-                                        bind(scat->id),
-                                        bind(location),
-                                        bind(dateCreated),
-                                        bind(id)
-                                     });
+                                        { bind(name), bind(isHidden), bind(scat->id),
+                                          bind(location), bind(dateCreated), bind(id) });
     executeUpdate(this, update);
 }
 void Team::Delete()
