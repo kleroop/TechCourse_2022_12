@@ -21,6 +21,9 @@ Login::Login(QWidget *parent) : QWidget(parent), ui(new Ui::Login) {
     connect(ui->loginBackButton, &QPushButton::clicked, this, &Login::onLoginBackButtonClicked);
 
     ui->loginBgImg->setFixedWidth(resizeImgWidth("://Resources/image_BG.png", ui->loginBgImg));//todo make it work
+
+    ui->emailForm->setText("admin@example.com");
+    ui->passwordForm->setText("admin");
 }
 
 Login::~Login() {

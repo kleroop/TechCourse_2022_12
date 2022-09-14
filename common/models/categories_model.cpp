@@ -164,3 +164,14 @@ void UpdateCategoriesRequest::deserialize(json data)
 {
     deserializeCategoryTree(data, categoriesTree, error);
 }
+
+void CategoriesTree::getLists() {
+    for (auto &cat: this->categories) {
+        for (auto &scat: cat.children) {
+            this->subcategories.push_back(scat);
+            for (auto &team: scat.children) {
+                this->teams.push_back(team);
+            }
+        }
+    }
+}

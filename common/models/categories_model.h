@@ -33,11 +33,6 @@ public:
     //todo add position
 };
 
-class CategoriesTree {
-public:
-    std::vector<ICategory> categories;
-};
-
 class Category : public ICategory {
 public:
     Category(std::string title, bool isHidden, ICategory *parent = nullptr) : ICategory(std::move(title), isHidden, parent) {
@@ -62,6 +57,14 @@ public:
     }
     json serialize() override;
     void deserialize(json data) override;
+};
+
+class CategoriesTree {
+public:
+    std::vector<ICategory> categories;
+    void getLists();
+    std::vector<ICategory> teams;
+    std::vector<ICategory> subcategories;
 };
 
 void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error);
