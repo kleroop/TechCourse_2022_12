@@ -23,7 +23,7 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 
     auto TeamsWidget = new Teams(this);
     ui->stackedWidget->addWidget(TeamsWidget);
-    ui->stackedWidget->setCurrentIndex(2);
+    ui->stackedWidget->setCurrentIndex(3);
 
     this->MainNavigationWidget = new MainNavigation(HeaderWidget, HeaderWidget);
     HeaderWidget->getMainNavigationLayout()->addWidget(this->MainNavigationWidget);
