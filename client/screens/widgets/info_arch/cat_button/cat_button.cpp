@@ -29,4 +29,3 @@ CatButton::CatButton(QWidget *parent, CustomButton *mainButton, bool active) : Q
 CatButton::~CatButton() {
     delete ui;
 }
-

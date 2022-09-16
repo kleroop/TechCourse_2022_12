@@ -10,16 +10,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->stackedWidget->addWidget(&login);
     ui->stackedWidget->addWidget(&home);
 
-    ui->stackedWidget->setCurrentIndex(0);
-
-    connect(&login, &Login::onLoginSuccess, this, &MainWindow::onLoginSuccess);
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
 
 MainWindow::~MainWindow() {
     delete ui;
-}
-
-void MainWindow::onLoginSuccess() {
-    ui->stackedWidget->setCurrentIndex(1);
 }

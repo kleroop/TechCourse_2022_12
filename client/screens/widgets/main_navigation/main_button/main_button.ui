@@ -38,6 +38,7 @@ font-weight: 500;
 font-size: 18px;
 border: none;
 text-transform: uppercase;
+text-align: left;
 }
 
 QPushButton::hover{

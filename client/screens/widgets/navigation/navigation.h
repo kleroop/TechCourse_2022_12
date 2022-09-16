@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "button_decorator/buttondecorator.h"
 #include <QVector>
+#include "api.h"
+#include "models/categories_model.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,7 +28,8 @@ public:
 
     ButtonDecorator* buttonDecoratorArray[10];
 private:
-
+    Api api;
+    CategoriesTree catTree;
     Ui::Navigation *ui;
 };
 

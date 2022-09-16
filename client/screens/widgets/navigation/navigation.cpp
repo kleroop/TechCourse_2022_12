@@ -30,15 +30,15 @@ QWidget * Navigation::getMainNavigationWidget()
 }
 void Navigation::setHideButton()
 {
-    int len = sizeof(buttonDecoratorArray) / sizeof(buttonDecoratorArray[0]);
-    for (int i = 0; i < len; ++i) {
-        buttonDecoratorArray[i]->hide();
+    for (auto w: buttonDecoratorArray) {
+        w->hide();
     }
+    ui->line->hide();
 }
 void Navigation::setShowButton()
 {
-    int len = sizeof(buttonDecoratorArray) / sizeof(buttonDecoratorArray[0]);
-    for (int i = 0; i < len; ++i) {
-        buttonDecoratorArray[i]->show();
+    for (auto w: buttonDecoratorArray) {
+        w->show();
     }
+    ui->line->show();
 }

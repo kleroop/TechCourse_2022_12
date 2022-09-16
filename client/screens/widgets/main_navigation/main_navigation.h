@@ -17,16 +17,17 @@ QT_END_NAMESPACE
 class MainNavigation : public QWidget
 {
 public:
-    explicit MainNavigation(QWidget *parent = nullptr, Header *header = nullptr);
+    explicit MainNavigation(QWidget *parent = nullptr, Header *header = nullptr, bool _isAdminSwiched = true);
     ~MainNavigation() override;
 
     MainButton* addNewButton(const QString &text, bool isHidden);
 
     QVector<MainButton *> getMainButtonVector();
-    void updateCategories();
+    void updateCategoriesAdminView();
+    void updateCategoriesUserView();
     QVector<MainButton *> mainButtonVector;
 
-    int scrollPosition = 0;
+    int scrollPosition;
 
 private:
     Ui::MainNavigation *ui;
@@ -34,6 +35,7 @@ private:
     CategoriesTree catTree;
 //    void deleteButton(MainButton* mainButton);
     Header *header;
+    bool isAdminSwiched;
 };
 
 #endif // QTWORLD_MAIN_NAVIGATION_H

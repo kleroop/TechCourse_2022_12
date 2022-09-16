@@ -57,6 +57,7 @@ void MainButton::setDefaultStyleSheet()
                         "font-size: 18px;\n"
                         "border: none;\n"
                         "text-transform: uppercase;\n"
+                        "text-align: left;\n"
                         "}\n"
                         "QPushButton::hover{\n"
                         "color: #D72130;\n"
@@ -71,5 +72,6 @@ void MainButton::setActiveStyleSheet()
                         "font-size: 18px;\n"
                         "border: none;\n"
                         "text-transform: uppercase;\n"
+                        "text-align: left;\n"
                         "}\n");
 }
