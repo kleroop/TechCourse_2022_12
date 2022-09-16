@@ -27,7 +27,8 @@ public:
     CategoryTypes type;
     bool isHidden = false;
     std::string location;
-    struct tm dateCreated;
+    struct tm dateCreated = {};
+
     // todo add position
 };
 
@@ -54,8 +55,7 @@ public:
 class Team : public ICategory
 {
 public:
-    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "",
-         struct tm dateCreated = {})
+    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "", struct tm dateCreated = {})
         : ICategory(std::move(title), isHidden, parent)
     {
         this->type = CategoryTypes::TEAM;
@@ -71,8 +71,8 @@ class CategoriesTree {
 public:
     std::vector<ICategory> categories;
     void getLists();
-    std::vector<ICategory> teams;
-    std::vector<ICategory> subcategories;
+    std::vector<ICategory*> teams;
+    std::vector<ICategory*> subcategories;
 };
 
 void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error);
@@ -98,5 +98,7 @@ public:
 
     CategoriesTree categoriesTree;
 };
+
+struct tm fixDate(struct tm date);
 
 #endif

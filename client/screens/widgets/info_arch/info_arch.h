@@ -11,6 +11,7 @@
 #include "add_cat_window.h"
 #include "api.h"
 #include "models/categories_model.h"
+#include "uiUtils.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

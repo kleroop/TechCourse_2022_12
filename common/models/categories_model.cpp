@@ -2,8 +2,24 @@
 
 #include <utility>
 
+struct tm fixDate(struct tm date)
+{
+    if(date.tm_year == 0 && date.tm_sec == 0 && date.tm_hour == 0){
+    date.tm_year = 2022;
+    date.tm_mon = 1;
+    date.tm_mday = 1;
+    date.tm_hour = 1;
+    date.tm_min = 1;
+    date.tm_sec = 1;
+    }
+
+    return date;
+};
+
+
 static inline string serialize_iso8601(struct tm tt)
 {
+    tt = fixDate(tt);
     char timestamp[] = "YYYY-MM-ddTHH:mm:ss.SSS+00:00Z";
     sprintf(timestamp, "%04d-%02d-%02dT%02d:%02d:%06.03fZ", 1970 + tt.tm_year, 1 + tt.tm_mon,
             tt.tm_mday, tt.tm_hour, tt.tm_min, (double)tt.tm_sec);
@@ -22,6 +38,9 @@ static inline struct tm deserialize_iso8601(string s)
     tt.tm_sec = (int)seconds;
     tt.tm_mon -= 1;
     tt.tm_year -= 1970;
+
+    tt = fixDate(tt);
+
     return tt;
 };
 
@@ -181,9 +200,9 @@ void UpdateCategoriesRequest::deserialize(json data)
 void CategoriesTree::getLists() {
     for (auto &cat: this->categories) {
         for (auto &scat: cat.children) {
-            this->subcategories.push_back(scat);
+            this->subcategories.push_back(&scat);
             for (auto &team: scat.children) {
-                this->teams.push_back(team);
+                this->teams.push_back(&team);
             }
         }
     }

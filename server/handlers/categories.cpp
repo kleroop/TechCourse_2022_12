@@ -54,6 +54,7 @@ void UpdateCategories::handleRequest(Poco::Net::HTTPServerRequest &request, Poco
             for (auto& team : subCategory.children)
             {
                 ICategory teamm = team;
+                team.dateCreated = fixDate(team.dateCreated);
                 DAL::Team teamDAL(team.title, team.isHidden, &subCategoryDAL, team.location, Poco::DateTime(team.dateCreated));
                 teamDAL.Create();
             }

@@ -9,21 +9,9 @@ InfoArch::InfoArch(QWidget *parent) : QWidget(parent), ui(new Ui::InfoArch) {
     buttonTemplate->hide();
     ui->categoriesFrame->layout()->takeAt(ui->categoriesFrame->layout()->indexOf(buttonTemplate));
 
-
     api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW4ifQ.E9AEDCWuVSrbPKS9CBeG0H4PD56tcqY4PhX5bMWnP4k";
     api.getCategories([=](const CategoriesTreeResponse &resp) {
         this->catTree = resp.categoriesTree;
-        for (auto &cat: this->catTree.categories) {
-            cat.type = CategoryTypes::CATEGORY;
-            for (auto &scat: cat.children) {
-                scat.type = CategoryTypes::SUBCATEGORY;
-                scat.parent = &cat;
-                for (auto &team: scat.children) {
-                    team.type = CategoryTypes::TEAM;
-                    team.parent = &scat;
-                }
-            }
-        }
         fillCategories();
     });
 
@@ -69,24 +57,6 @@ std::vector<CustomButton *> InfoArch::getCustomButtons(const std::vector<ICatego
         result.push_back(tempButton);
     }
     return result;
-}
-
-std::vector<QWidget *> getLayoutWidgets(QLayout *container) {  //todo move to utils
-    QLayoutItem *item;
-    std::vector<QWidget *> result;
-    for (int i = 0; i < container->count(); i++) {
-        item = container->itemAt(i);
-        result.push_back(item->widget());
-    }
-    return result;
-}
-
-void clearLayout(QLayout *container) {  //todo move to utils
-    QLayoutItem *item;
-    while ((item = container->takeAt(0)) != nullptr) {
-        delete item->widget();
-        delete item;
-    }
 }
 
 void InfoArch::setActiveCat(ICategory *category) {

@@ -70,6 +70,19 @@ void Api::getCategories(const std::function<void(const CategoriesTreeResponse &)
         CategoriesTree categoriesTree;
         CategoriesTreeResponse r(categoriesTree);
         r.deserialize(inp);
+
+        for (auto &cat: r.categoriesTree.categories) {
+            cat.type = CategoryTypes::CATEGORY;
+            for (auto &scat: cat.children) {
+                scat.type = CategoryTypes::SUBCATEGORY;
+                scat.parent = &cat;
+                for (auto &team: scat.children) {
+                    team.type = CategoryTypes::TEAM;
+                    team.parent = &scat;
+                }
+            }
+        }
+
         f(r);
     });
 }
