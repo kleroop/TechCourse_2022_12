@@ -45,7 +45,8 @@ public:
     void Delete() override;
 };
 
-class DAL_EXPORT Category : public IDataModel<Category> {
+class DAL_EXPORT Category : public IDataModel<Category>
+{
 public:
     inline const string getTable() const override { return "DCategory"; };
     int32_t id = DAL_BAD_ID;
@@ -61,9 +62,9 @@ public:
     void Delete() override;
 };
 
-class DAL_EXPORT SubCategory : public IDataModel<SubCategory> {
+class DAL_EXPORT SubCategory : public IDataModel<SubCategory>
+{
 public:
-
     inline const string getTable() const override { return "DSubCategory"; };
     int32_t id = DAL_BAD_ID;
     string name;
@@ -79,15 +80,19 @@ public:
     void Delete() override;
 };
 
-class DAL_EXPORT Team: public IDataModel<Team> {
+class DAL_EXPORT Team : public IDataModel<Team>
+{
 public:
     inline const string getTable() const override { return "DTeam"; };
     int32_t id = DAL_BAD_ID;
     string name;
     bool isHidden;
     SubCategory *scat;
+    string location;
+    Poco::DateTime dateCreated;
 
-    Team(string name, bool isHidden, SubCategory *scat);
+    Team(string name, bool isHidden, SubCategory *scat, string location,
+         Poco::DateTime dateCreated);
     Team() = default;
     void Create() override;
     vector<Team> Select(string query, Bindings binds) override;

@@ -19,7 +19,7 @@ CategoriesTree fromDal()
 
             for (const auto& team : teams)
             {
-                Team teamModel(team.name, team.isHidden, &subCategoryModel);
+                Team teamModel(team.name, team.isHidden, &subCategoryModel, team.location, team.dateCreated.makeTM());
                 subCategoryModel.children.push_back(teamModel);
             }
 

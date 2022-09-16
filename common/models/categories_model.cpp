@@ -1,12 +1,47 @@
 #include "categories_model.h"
 
-#include <utility>
+#include <cstdio>
+
+static inline string serialize_iso8601(struct tm tt)
+{
+    char timestamp[] = "YYYY-MM-ddTHH:mm:ss.SSSZ";
+    if ((size_t)snprintf(timestamp, sizeof(timestamp), "%04d-%02d-%02dT%02d:%02d:%06.03fZ",
+                         1970 + tt.tm_year, 1 + tt.tm_mon, tt.tm_mday, tt.tm_hour, tt.tm_min,
+                         (double)tt.tm_sec)
+        >= sizeof(timestamp)) {
+        fprintf(stderr, "[%s]: Invalid iso8601 values in struct tm: {%d, %d, %d, %d, %d, %d}\n",
+                __func__, tt.tm_sec, tt.tm_min, tt.tm_hour, tt.tm_mday, tt.tm_mon, tt.tm_year);
+        return "";
+    }
+    return timestamp;
+}
+
+static inline struct tm deserialize_iso8601(string s)
+{
+    struct tm tt = { 0 };
+    double seconds;
+
+    if (sscanf(s.c_str(), "%04d-%02d-%02dT%02d:%02d:%lfZ", &tt.tm_year, &tt.tm_mon, &tt.tm_mday,
+               &tt.tm_hour, &tt.tm_min, &seconds)
+        != 6) {
+        fprintf(stderr, "[%s] Bad iso8601 datetime: \"%s\"\n", __func__, s.c_str());
+        return { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    }
+    tt.tm_sec = (int)seconds;
+    tt.tm_mon -= 1;
+    tt.tm_year -= 1970;
+    return tt;
+};
 
 json ICategory::serialize()
 {
     json response;
     response["title"] = title;
     response["isHidden"] = isHidden;
+    if (type == CategoryTypes::TEAM) {
+        response["location"] = location;
+        response["dateCreated"] = serialize_iso8601(dateCreated);
+    }
 
     std::vector<json> children_json;
 
@@ -19,20 +54,17 @@ json ICategory::serialize()
 
 void ICategory::deserialize(json data)
 {
-    if(!data.contains("title") || data["title"] == "")
-    {
+    if (!data.contains("title") || data["title"] == "") {
         error = "'title' field is required";
         return;
     }
 
-    if (!data.contains("isHidden"))
-    {
+    if (!data.contains("isHidden")) {
         error = "'isHidden' field is required";
         return;
     }
 
-    if (!data.contains("children"))
-    {
+    if (!data.contains("children")) {
         error = "'children' field is required";
         return;
     }
@@ -40,8 +72,15 @@ void ICategory::deserialize(json data)
     title = data["title"];
     isHidden = data["isHidden"];
 
-    for (auto& child : data["children"])
-    {
+    if (data.contains("location")) {
+        location = data["location"];
+    }
+
+    if (data.contains("dateCreated")) {
+        dateCreated = deserialize_iso8601(data["dateCreated"]);
+    }
+
+    for (auto &child : data["children"]) {
         ICategory category;
         category.deserialize(child);
 
@@ -50,15 +89,45 @@ void ICategory::deserialize(json data)
     }
 }
 
-void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error)
+json Team::serialize()
 {
-    for (auto& category : data)
-    {
+    json response;
+    response["title"] = title;
+    response["isHidden"] = isHidden;
+
+    response["children"] = json();
+
+    return response;
+}
+
+void Team::deserialize(json data)
+{
+    if (!data.contains("title") || data["title"] == "") {
+        error = "'title' field is required";
+        return;
+    }
+
+    if (!data.contains("isHidden")) {
+        error = "'isHidden' field is required";
+        return;
+    }
+
+    if (!data.contains("children")) {
+        error = "'children' field is required";
+        return;
+    }
+
+    title = data["title"];
+    isHidden = data["isHidden"];
+}
+
+void deserializeCategoryTree(json &data, CategoriesTree &categoriesTree, std::string &error)
+{
+    for (auto &category : data) {
         ICategory categoryModel;
         categoryModel.deserialize(category);
 
-        if (categoryModel.error != "")
-        {
+        if (categoryModel.error != "") {
             error = "Deserialization error: " + categoryModel.error;
             return;
         }
@@ -67,8 +136,10 @@ void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::st
     }
 }
 
-CategoriesTreeResponse::CategoriesTreeResponse(CategoriesTree& _categoriesTree) : categoriesTree(_categoriesTree)
-{}
+CategoriesTreeResponse::CategoriesTreeResponse(CategoriesTree &_categoriesTree)
+    : categoriesTree(_categoriesTree)
+{
+}
 
 json CategoriesTreeResponse::serialize()
 {
@@ -88,16 +159,17 @@ json CategoriesTreeResponse::serialize()
 
 void CategoriesTreeResponse::deserialize(json data)
 {
-    if (data["status"] != 200)
-    {
+    if (data["status"] != 200) {
         error = data["data"]["message"];
         return;
     }
     deserializeCategoryTree(data["data"]["categoriesTree"], categoriesTree, error);
 }
 
-UpdateCategoriesRequest::UpdateCategoriesRequest(CategoriesTree &_categoriesTree) : categoriesTree(_categoriesTree)
-{}
+UpdateCategoriesRequest::UpdateCategoriesRequest(CategoriesTree &_categoriesTree)
+    : categoriesTree(_categoriesTree)
+{
+}
 
 json UpdateCategoriesRequest::serialize()
 {

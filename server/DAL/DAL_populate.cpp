@@ -12,7 +12,8 @@ int main(int argc, char **argv)
              "password");
         return EXIT_FAILURE;
     }
-    char *host = argv[1], *port = argv[2], *username = argv[3], *dbname = argv[4], *password = argv[5];
+    char *host = argv[1], *port = argv[2], *username = argv[3], *dbname = argv[4],
+         *password = argv[5];
     if (DAL::InitEx(host, port, username, dbname, password, true) != DAL::DAL_OK) {
         puts("Couldn't init DAL connection");
         return EXIT_FAILURE;
@@ -40,7 +41,7 @@ int main(int argc, char **argv)
     /* Categories */
     DAL::Category cat("test1", false);
     DAL::SubCategory scat("test2", false, &cat);
-    DAL::Team team("test3", false, &scat);
+    DAL::Team team("test3", false, &scat, "Dallas", Poco::DateTime(2022, 11, 11));
     cat.Create();
     scat.Create();
     team.Create();

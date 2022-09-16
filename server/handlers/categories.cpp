@@ -53,7 +53,7 @@ void UpdateCategories::handleRequest(Poco::Net::HTTPServerRequest &request, Poco
 
             for (auto& team : subCategory.children)
             {
-                DAL::Team teamDAL(team.title, team.isHidden, &subCategoryDAL);
+                DAL::Team teamDAL(team.title, team.isHidden, &subCategoryDAL, team.location, team.dateCreated);
                 teamDAL.Create();
             }
         }
