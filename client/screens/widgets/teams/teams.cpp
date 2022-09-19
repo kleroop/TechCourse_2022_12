@@ -9,6 +9,17 @@ static const std::vector<std::string> locations{
     "Missouri", "Montana",         "Nebraska"
 };
 
+static const QString EditButtonStyle = "background: transparent;\n"
+                                       "color: rgb(215, 33, 48);\n"
+                                       "font: 63 12pt \"Open Sans\";";
+
+static const QString DeleteButtonStyle = "background-color: transparent;\n"
+                                         "qproperty-icon: url(\" \"); /* empty image */\n"
+                                         "qproperty-iconSize: 21px 21px;\n"
+                                         "background-image: url(:/Resources/trash_icon.png);\n"
+                                         "background-repeat: no-repeat;\n"
+                                         "background-position: center center;";
+
 Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams)
 {
     ui->setupUi(this);
@@ -66,7 +77,16 @@ void Teams::fillTable()
         ui->tableWidget->setItem(row, 3, new LeftAlignItem(QString::fromStdString(team->parent->title)));
         ui->tableWidget->setItem(row, 4, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
 
-        ui->tableWidget->setRowHeight(row, ui->tableWidget->rowHeight(row) + 15);
+        auto editButton = new QPushButton("Edit");
+        editButton->setStyleSheet(EditButtonStyle);
+
+        auto deleteButton = new QPushButton();
+        deleteButton->setStyleSheet(DeleteButtonStyle);
+
+        ui->tableWidget->setCellWidget(row, 5, editButton);
+        ui->tableWidget->setCellWidget(row, 6, deleteButton);
+
+        ui->tableWidget->setRowHeight(row, ui->tableWidget->rowHeight(row) + 15); // to make padding
     }
 }
 

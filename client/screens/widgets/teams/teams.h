@@ -24,7 +24,6 @@ class Teams : public QWidget
 
 public:
     explicit Teams(QWidget *parent = nullptr);
-
     ~Teams() override;
 
 public slots:

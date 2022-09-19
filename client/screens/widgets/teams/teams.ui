@@ -398,7 +398,7 @@ QTableWidget::item {
       <bool>true</bool>
      </property>
      <property name="columnCount">
-      <number>6</number>
+      <number>7</number>
      </property>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>
@@ -406,8 +406,14 @@ QTableWidget::item {
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>170</number>
      </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>10</number>
+     </attribute>
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>30</number>
      </attribute>
      <attribute name="verticalHeaderShowSortIndicator" stdset="0">
       <bool>true</bool>
@@ -438,6 +444,11 @@ QTableWidget::item {
      <column>
       <property name="text">
        <string>SUBCATEGORY</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string/>
       </property>
      </column>
      <column>
