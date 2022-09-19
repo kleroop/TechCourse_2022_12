@@ -2,9 +2,10 @@
 #include "ui_main_button.h"
 #include <QHoverEvent>
 
-MainButton * activeMainButton = nullptr;
+MainButton *activeMainButton = nullptr;
 
-MainButton::MainButton(QWidget *parent, Header *header, const QString& text) : QPushButton(parent), ui(new Ui::MainButton)
+MainButton::MainButton(QWidget *parent, Header *header, const QString &text)
+    : QPushButton(parent), ui(new Ui::MainButton)
 {
     ui->setupUi(this);
 
@@ -19,12 +20,11 @@ MainButton::~MainButton()
 {
     delete ui;
 }
-bool MainButton::event(QEvent * e)
+bool MainButton::event(QEvent *e)
 {
-    switch(e->type())
-    {
+    switch (e->type()) {
     case QEvent::MouseButtonPress:
-        mouseButtonPress(dynamic_cast<QHoverEvent*>(e));
+        mouseButtonPress(dynamic_cast<QHoverEvent *>(e));
         return true;
         break;
     default:
@@ -34,15 +34,14 @@ bool MainButton::event(QEvent * e)
 }
 void MainButton::mouseButtonPress(QHoverEvent *event)
 {
-    if (activeMainButton && activeMainButton != this) activeMainButton->setDefaultStyleSheet();
-    if (activeMainButton != this)
-    {
+    if (activeMainButton && activeMainButton != this)
+        activeMainButton->setDefaultStyleSheet();
+    if (activeMainButton != this) {
         activeMainButton = this;
         header->setSectionName(text);
         this->setActiveStyleSheet();
     }
 }
-
 
 void MainButton::setDefaultStyleSheet()
 {

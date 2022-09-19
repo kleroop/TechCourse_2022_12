@@ -1,15 +1,14 @@
 #include "user_profile.h"
 #include "ui_user_profile.h"
 
-
-UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProfile) {
+UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProfile)
+{
     ui->setupUi(this);
 
     this->DropdownMenu = new UserDropdown(this);
 
-    connect(ui->dropdownButton, &QPushButton::clicked, DropdownMenu, [this]() {
-        this->DropdownMenu->onDropdownButtonClicked(ui->dropdownButton);
-    });
+    connect(ui->dropdownButton, &QPushButton::clicked, DropdownMenu,
+            [this]() { this->DropdownMenu->onDropdownButtonClicked(ui->dropdownButton); });
 
     connect(ui->switchButton, &QPushButton::clicked, DropdownMenu, [=]() {
         if (ui->userStatus->isVisible()) {
@@ -22,7 +21,8 @@ UserProfile::UserProfile(QWidget *parent) : QWidget(parent), ui(new Ui::UserProf
     });
 }
 
-UserProfile::~UserProfile() {
+UserProfile::~UserProfile()
+{
     delete ui;
     delete DropdownMenu;
 }

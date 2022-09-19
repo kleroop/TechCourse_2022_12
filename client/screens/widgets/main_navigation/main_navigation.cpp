@@ -2,12 +2,13 @@
 #include "ui_main_navigation.h"
 #include "QBoxLayout"
 
-MainNavigation::MainNavigation(QWidget *parent, Header *header) : QWidget(parent), ui(new Ui::MainNavigation)
+MainNavigation::MainNavigation(QWidget *parent, Header *header)
+    : QWidget(parent), ui(new Ui::MainNavigation)
 {
     ui->setupUi(this);
     this->header = header;
 
-    QHBoxLayout *layout = qobject_cast<QHBoxLayout*>(this->layout());
+    QHBoxLayout *layout = qobject_cast<QHBoxLayout *>(this->layout());
 
     addNewButton("Home");
     addNewButton("NBA");
@@ -18,7 +19,6 @@ MainNavigation::MainNavigation(QWidget *parent, Header *header) : QWidget(parent
     }
 
     this->show();
-
 }
 
 MainNavigation::~MainNavigation()
@@ -40,16 +40,16 @@ void MainNavigation::upDate()
     int a = 2;
 }
 
-//void MainNavigation::deleteButton(MainButton* mainButton)
+// void MainNavigation::deleteButton(MainButton* mainButton)
 //{
-//    int length = mainButtonVector.length();
-//    if (!length) return;
+//     int length = mainButtonVector.length();
+//     if (!length) return;
 //
-//    for (int i = 0; i < length; i++)
-//    {
-//        if (mainButtonVector[i] == mainButton)
-//        {
-//            mainButtonVector.removeAt(i);
-//        }
-//    }
-//}
+//     for (int i = 0; i < length; i++)
+//     {
+//         if (mainButtonVector[i] == mainButton)
+//         {
+//             mainButtonVector.removeAt(i);
+//         }
+//     }
+// }

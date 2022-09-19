@@ -4,32 +4,34 @@
 #include "categories_utils.h"
 #include "poco_request.h"
 
-void GetCategories::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response)
+void GetCategories::handleRequest(Poco::Net::HTTPServerRequest &request,
+                                  Poco::Net::HTTPServerResponse &response)
 {
     AUTH
 
-    // TODO: add macro for admin only users
+            // TODO: add macro for admin only users
 
-    CategoriesTree categoriesTree = fromDal();
+            CategoriesTree categoriesTree = fromDal();
     CategoriesTreeResponse categoriesTreeResponse(categoriesTree);
 
     ostream << categoriesTreeResponse.serialize().dump();
 }
 
-void UpdateCategories::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response)
+void UpdateCategories::handleRequest(Poco::Net::HTTPServerRequest &request,
+                                     Poco::Net::HTTPServerResponse &response)
 {
     AUTH
 
-    CategoriesTree categoriesTree;
+            CategoriesTree categoriesTree;
     UpdateCategoriesRequest updateCategoriesRequest(categoriesTree);
 
     json requestData = toJson(request.stream());
     updateCategoriesRequest.deserialize(requestData);
 
-    if (updateCategoriesRequest.error != "")
-    {
+    if (updateCategoriesRequest.error != "") {
         responseJson["status"] = 400;
-        responseJson["data"] = { { "message", "Deserialization error: " + updateCategoriesRequest.error } };
+        responseJson["data"] = { { "message",
+                                   "Deserialization error: " + updateCategoriesRequest.error } };
 
         ostream << responseJson.dump();
         return;
@@ -38,24 +40,22 @@ void UpdateCategories::handleRequest(Poco::Net::HTTPServerRequest &request, Poco
     DAL::Category cDAL;
     auto categoriesDAL = cDAL.Select("", {});
 
-    for (auto& categoryDAL : categoriesDAL)
+    for (auto &categoryDAL : categoriesDAL)
         categoryDAL.Delete();
 
-    for (auto& category : updateCategoriesRequest.categoriesTree.categories)
-    {
+    for (auto &category : updateCategoriesRequest.categoriesTree.categories) {
         DAL::Category categoryDAL(category.title, category.isHidden);
         categoryDAL.Create();
 
-        for (auto& subCategory : category.children)
-        {
+        for (auto &subCategory : category.children) {
             DAL::SubCategory subCategoryDAL(subCategory.title, subCategory.isHidden, &categoryDAL);
             subCategoryDAL.Create();
 
-            for (auto& team : subCategory.children)
-            {
+            for (auto &team : subCategory.children) {
                 ICategory teamm = team;
                 team.dateCreated = fixDate(team.dateCreated);
-                DAL::Team teamDAL(team.title, team.isHidden, &subCategoryDAL, team.location, Poco::DateTime(team.dateCreated));
+                DAL::Team teamDAL(team.title, team.isHidden, &subCategoryDAL, team.location,
+                                  Poco::DateTime(team.dateCreated));
                 teamDAL.Create();
             }
         }

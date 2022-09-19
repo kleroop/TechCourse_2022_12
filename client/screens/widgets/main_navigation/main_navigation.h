@@ -24,7 +24,7 @@ public:
 
     void upDate();
 
-//    void deleteButton(MainButton* mainButton);
+    //    void deleteButton(MainButton* mainButton);
 private:
     QVector<MainButton *> mainButtonVector;
     Ui::MainNavigation *ui;

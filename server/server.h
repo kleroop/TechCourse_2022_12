@@ -21,10 +21,10 @@ public:
 
 private:
     Poco::Net::ServerSocket serverSocket;
-    Poco::Net::HTTPServerParams* serverParams;
-    HandlersFactory* handlersFactory;
+    Poco::Net::HTTPServerParams *serverParams;
+    HandlersFactory *handlersFactory;
 
-    int main(const std::vector<std::string>& args) override;
+    int main(const std::vector<std::string> &args) override;
 };
 
 #endif

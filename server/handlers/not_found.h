@@ -7,7 +7,8 @@ using namespace nlohmann;
 
 class NotFound : public Poco::Net::HTTPRequestHandler
 {
-    void handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response) override;
+    void handleRequest(Poco::Net::HTTPServerRequest &request,
+                       Poco::Net::HTTPServerResponse &response) override;
 };
 
 #endif

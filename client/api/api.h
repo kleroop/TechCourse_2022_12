@@ -18,13 +18,15 @@ public:
 
     void getCategories(const std::function<void(const CategoriesTreeResponse &)> &f);
 
-    void updateCategories(CategoriesTree &categoriesTree, const std::function<void(const CategoriesTreeResponse &)> &f);
+    void updateCategories(CategoriesTree &categoriesTree,
+                          const std::function<void(const CategoriesTreeResponse &)> &f);
 
     string token;
 
 private:
     QNetworkAccessManager *manager;
-    void makeRequest(string path, json inp, string token, const std::function<void(const json &)> &f);
+    void makeRequest(string path, json inp, string token,
+                     const std::function<void(const json &)> &f);
 };
 
 #endif // API_H

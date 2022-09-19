@@ -11,13 +11,15 @@
 #include "models/categories_model.h"
 #include "uiUtils.h"
 
-
 QT_BEGIN_NAMESPACE
-namespace Ui { class Teams; }
+namespace Ui {
+class Teams;
+}
 QT_END_NAMESPACE
 
-class Teams : public QWidget {
-Q_OBJECT
+class Teams : public QWidget
+{
+    Q_OBJECT
 
 public:
     explicit Teams(QWidget *parent = nullptr);
@@ -30,14 +32,14 @@ public slots:
 private:
     Api api;
     CategoriesTree catTree;
-    ICategory* activeTeam = nullptr;
+    ICategory *activeTeam = nullptr;
 
     void fillTable();
     void fillComboBox(QComboBox *box, std::vector<std::string> items, bool clean = true);
 
     void init();
 
-    std::vector<std::string> getNames(std::vector<ICategory*> categories);
+    std::vector<std::string> getNames(std::vector<ICategory *> categories);
     std::vector<std::string> getNames(std::vector<ICategory> categories);
 
     void setEditingTeam(ICategory *team);
@@ -45,9 +47,6 @@ private:
     void applyChanges();
 
     Ui::Teams *ui;
-
-
 };
-
 
 #endif

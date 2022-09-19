@@ -32,8 +32,8 @@ public:
     // todo add position
 };
 
-
-class Category : public ICategory {
+class Category : public ICategory
+{
 public:
     Category(std::string title, bool isHidden, ICategory *parent = nullptr)
         : ICategory(std::move(title), isHidden, parent)
@@ -55,7 +55,8 @@ public:
 class Team : public ICategory
 {
 public:
-    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "", struct tm dateCreated = {})
+    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "",
+         struct tm dateCreated = {})
         : ICategory(std::move(title), isHidden, parent)
     {
         this->type = CategoryTypes::TEAM;
@@ -66,17 +67,16 @@ public:
     void deserialize(json data) override;
 };
 
-
-class CategoriesTree {
+class CategoriesTree
+{
 public:
     std::vector<ICategory> categories;
-    void getLists();
-    std::vector<ICategory*> teams;
-    std::vector<ICategory*> subcategories;
+    void updateLists();
+    std::vector<ICategory *> teams;
+    std::vector<ICategory *> subcategories;
 };
 
-void deserializeCategoryTree(json& data, CategoriesTree& categoriesTree, std::string& error);
-
+void deserializeCategoryTree(json &data, CategoriesTree &categoriesTree, std::string &error);
 
 class CategoriesTreeResponse : ISerializable
 {

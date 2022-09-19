@@ -3,7 +3,6 @@
 #include "info_arch.h"
 #include "teams.h"
 
-
 Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 {
     ui->setupUi(this);
@@ -50,14 +49,12 @@ void Home::switchUserView()
     NavigationWidget->setHideButton();
     QWidget *mainWidget = NavigationWidget->getMainNavigationWidget();
     QVector<MainButton *> mainVector = MainNavigationWidget->getMainButtonVector();
-    if (!mainWidget)
-    {
+    if (!mainWidget) {
         mainWidget = new QWidget;
         mainWidget->setLayout(new QVBoxLayout);
     }
 
-    for (auto w:mainVector)
-    {
+    for (auto w : mainVector) {
         mainWidget->layout()->addWidget(w);
     }
 }
@@ -74,18 +71,14 @@ void Home::switchAdminView()
 
 bool Home::event(QEvent *event)
 {
-    if (activeButtonDecorator && previousActiveButtonDecorator == nullptr)
-    {
-        if (activeMainButton)
-        {
+    if (activeButtonDecorator && previousActiveButtonDecorator == nullptr) {
+        if (activeMainButton) {
             activeMainButton->setDefaultStyleSheet();
             activeMainButton = nullptr;
             previousActiveMainButton = nullptr;
         }
         previousActiveButtonDecorator = activeButtonDecorator;
-    }
-    else if (activeMainButton && previousActiveMainButton == nullptr)
-    {
+    } else if (activeMainButton && previousActiveMainButton == nullptr) {
         if (activeButtonDecorator) {
             activeButtonDecorator->setDefaultStyleSheet();
             activeButtonDecorator = nullptr;
@@ -99,15 +92,11 @@ bool Home::event(QEvent *event)
 bool Home::eventFilter(QObject *watched, QEvent *event)
 {
 
-    if (event->type() == QEvent::MouseButtonPress && watched == userProfile->getSwitchButton())
-    {
-        if (isAdminSwiched)
-        {
+    if (event->type() == QEvent::MouseButtonPress && watched == userProfile->getSwitchButton()) {
+        if (isAdminSwiched) {
             switchUserView();
             isAdminSwiched = false;
-        }
-        else
-        {
+        } else {
             switchAdminView();
             isAdminSwiched = true;
         }

@@ -17,20 +17,21 @@ class MainButton : public QPushButton
     Q_OBJECT
 
 public:
-    explicit MainButton(QWidget *parent = nullptr, Header *header = nullptr, const QString& text = nullptr);
+    explicit MainButton(QWidget *parent = nullptr, Header *header = nullptr,
+                        const QString &text = nullptr);
     ~MainButton() override;
 
     bool event(QEvent *) override;
-    void mouseButtonPress(QHoverEvent * event);
+    void mouseButtonPress(QHoverEvent *event);
     void setDefaultStyleSheet();
     void setActiveStyleSheet();
 
 private:
     Ui::MainButton *ui;
     QString text;
-    Header* header;
+    Header *header;
 };
 
-extern MainButton * activeMainButton;
+extern MainButton *activeMainButton;
 
 #endif // QTWORLD_MAIN_BUTTON_H

@@ -5,7 +5,8 @@
 #include <QLayoutItem>
 #include <QLayout>
 
-static std::vector<QWidget *> getLayoutWidgets(QLayout *container) {
+static std::vector<QWidget *> getLayoutWidgets(QLayout *container)
+{
     QLayoutItem *item;
     std::vector<QWidget *> result;
     for (int i = 0; i < container->count(); i++) {
@@ -15,7 +16,8 @@ static std::vector<QWidget *> getLayoutWidgets(QLayout *container) {
     return result;
 }
 
-static void clearLayout(QLayout *container) {
+static void clearLayout(QLayout *container)
+{
     QLayoutItem *item;
     while ((item = container->takeAt(0)) != nullptr) {
         delete item->widget();

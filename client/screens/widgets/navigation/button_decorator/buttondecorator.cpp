@@ -3,7 +3,7 @@
 #include <utility>
 #include "ui_ButtonDecorator.h"
 
-ButtonDecorator * activeButtonDecorator = nullptr;
+ButtonDecorator *activeButtonDecorator = nullptr;
 
 ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new Ui::ButtonDecorator)
 {
@@ -14,24 +14,24 @@ ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new 
 
 ButtonDecorator::~ButtonDecorator()
 {
-    if (hover) delete hover;
+    if (hover)
+        delete hover;
     delete ui;
 }
 
-bool ButtonDecorator::event(QEvent * e)
+bool ButtonDecorator::event(QEvent *e)
 {
-    switch(e->type())
-    {
+    switch (e->type()) {
     case QEvent::HoverEnter:
-        hoverEnter(dynamic_cast<QHoverEvent*>(e));
+        hoverEnter(dynamic_cast<QHoverEvent *>(e));
         return true;
         break;
     case QEvent::HoverLeave:
-        hoverLeave(dynamic_cast<QHoverEvent*>(e));
+        hoverLeave(dynamic_cast<QHoverEvent *>(e));
         return true;
         break;
     case QEvent::MouseButtonPress:
-        mouseButtonPress(dynamic_cast<QHoverEvent*>(e));
+        mouseButtonPress(dynamic_cast<QHoverEvent *>(e));
         return true;
         break;
     default:
@@ -40,46 +40,47 @@ bool ButtonDecorator::event(QEvent * e)
     return QPushButton::event(e);
 }
 
-void ButtonDecorator::hoverEnter(QHoverEvent * event)
+void ButtonDecorator::hoverEnter(QHoverEvent *event)
 {
     hover = new Hover(parentWidget, this, this->parent, text);
     hover->show();
     this->setStyleSheet("border-radius: 27%;\n"
                         "padding: 13px;\n"
                         "background: #f9f9fb;\n"
-                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon_active.png);\n");
+                        "image: url(:/Resources/navigation_icons/"
+                        + this->icon + "_icon_active.png);\n");
 }
 
-void ButtonDecorator::hoverLeave(QHoverEvent * event)
+void ButtonDecorator::hoverLeave(QHoverEvent *event)
 {
     hover->hide();
-    if (activeButtonDecorator == this)
-    {
+    if (activeButtonDecorator == this) {
         this->setStyleSheet("border-radius: 27%;\n"
                             "padding: 13px;\n"
                             "background-color: none;\n"
-                            "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon_active.png);\n");
-    }
-    else
-    {
+                            "image: url(:/Resources/navigation_icons/"
+                            + this->icon + "_icon_active.png);\n");
+    } else {
         this->setStyleSheet("border-radius: 27%;\n"
                             "padding: 13px;\n"
                             "background-color: none;\n"
-                            "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
+                            "image: url(:/Resources/navigation_icons/"
+                            + this->icon + "_icon.png);\n");
     }
 }
 
 void ButtonDecorator::mouseButtonPress(QHoverEvent *event)
 {
-    if (activeButtonDecorator && activeButtonDecorator != this) activeButtonDecorator->setDefaultStyleSheet();
-    if (activeButtonDecorator != this)
-    {
+    if (activeButtonDecorator && activeButtonDecorator != this)
+        activeButtonDecorator->setDefaultStyleSheet();
+    if (activeButtonDecorator != this) {
         activeButtonDecorator = this;
         header->setSectionName(text);
     }
 }
 
-void ButtonDecorator::setData(QWidget *parent, Header* header, QWidget *parentWidget, QString text, QString icon)
+void ButtonDecorator::setData(QWidget *parent, Header *header, QWidget *parentWidget, QString text,
+                              QString icon)
 {
     this->parent = parent;
     this->parentWidget = parentWidget;
@@ -92,5 +93,6 @@ void ButtonDecorator::setDefaultStyleSheet()
     this->setStyleSheet("border-radius: 27%;\n"
                         "padding: 13px;\n"
                         "background-color: none;\n"
-                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
+                        "image: url(:/Resources/navigation_icons/"
+                        + this->icon + "_icon.png);\n");
 }
