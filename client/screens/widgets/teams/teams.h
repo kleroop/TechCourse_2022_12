@@ -6,6 +6,7 @@
 #include "QFrame"
 #include "QComboBox"
 #include "QHBoxLayout"
+#include "QTableWidgetItem"
 
 #include "api.h"
 #include "models/categories_model.h"
@@ -47,6 +48,15 @@ private:
     void applyChanges();
 
     Ui::Teams *ui;
+};
+
+class LeftAlignItem : public QTableWidgetItem
+{
+public:
+    LeftAlignItem(const QString& text) : QTableWidgetItem(text)
+    {
+        setTextAlignment(Qt::AlignLeft);
+    }
 };
 
 #endif

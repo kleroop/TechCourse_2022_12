@@ -357,14 +357,48 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QHeaderView::section {
+    font-family: &quot;url(:/Resources/fonts/open-sans/OpenSans-Semibold.ttf)&quot;;
+	font-weight: 500;
+	font-size: 12px;
+	color: rgb(67, 76, 93);
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+QTableWidget {
+	padding-left: 35;
+	padding-right: 20;
+	padding-top: 15;
+	border: none;
+}
+
+QTableWidget::item {
+ 	font-family: &quot;url(:/Resources/fonts/open-sans/OpenSans-Semibold.ttf)&quot;;
+	font-weight: 400;
+	font-size: 16px;
+	color: rgb(43, 47, 67);
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	border-bottom: 1px solid rgb(212, 217, 226);
+	padding-top: 15;
+	padding-bottom: 15;
+ }</string>
+     </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showGrid">
+      <bool>true</bool>
      </property>
      <property name="sortingEnabled">
       <bool>true</bool>
      </property>
      <property name="columnCount">
-      <number>7</number>
+      <number>6</number>
      </property>
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>
@@ -411,15 +445,12 @@
        <string/>
       </property>
      </column>
-     <column>
-      <property name="text">
-       <string/>
-      </property>
-     </column>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../QResources.qrc"/>
+ </resources>
  <connections/>
 </ui>

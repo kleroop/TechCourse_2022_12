@@ -13,6 +13,13 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams)
 {
     ui->setupUi(this);
 
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget->setFocusPolicy(Qt::NoFocus);
+    ui->tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->tableWidget->setShowGrid(false);
+    ui->tableWidget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    ui->tableWidget->verticalHeader()->setVisible(false);
+
     api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
                 "eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW"
                 "4ifQ.E9AEDCWuVSrbPKS9CBeG0H4PD56tcqY4PhX5bMWnP4k";
@@ -53,11 +60,13 @@ void Teams::fillTable()
         std::ostringstream dateAdded;
         dateAdded << std::put_time(&team->dateCreated, "%d/%m/%Y");
 
-        ui->tableWidget->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(team->title)));
-        ui->tableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(team->location)));
-        ui->tableWidget->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(dateAdded.str())));
-        ui->tableWidget->setItem(row, 3, new QTableWidgetItem(QString::fromStdString(team->parent->title)));
-        ui->tableWidget->setItem(row, 4, new QTableWidgetItem(QString::fromStdString(team->parent->parent->title)));
+        ui->tableWidget->setItem(row, 0, new LeftAlignItem(QString::fromStdString(team->title)));
+        ui->tableWidget->setItem(row, 1, new LeftAlignItem(QString::fromStdString(team->location)));
+        ui->tableWidget->setItem(row, 2, new LeftAlignItem(QString::fromStdString(dateAdded.str())));
+        ui->tableWidget->setItem(row, 3, new LeftAlignItem(QString::fromStdString(team->parent->title)));
+        ui->tableWidget->setItem(row, 4, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
+
+        ui->tableWidget->setRowHeight(row, ui->tableWidget->rowHeight(row) + 15);
     }
 }
 
