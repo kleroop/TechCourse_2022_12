@@ -136,18 +136,18 @@ void Teams::applyChanges() {
 
         if (activeSub->title != activeTeam->parent->title) {
             ICategory *oldParent = activeTeam->parent;
+            ICategory *newParent = activeSub;
 
-            activeTeam->parent = activeSub;
+            ptrdiff_t indexInParent = activeTeam - &oldParent->children[0];
+            ICategory team = oldParent->children[indexInParent];
 
-//            activeSub->children.insert(v2.end(), std::make_move_iterator(v1.begin() + 7),
-//                      std::make_move_iterator(v1.end()));
-//
-//            v1.erase(v1.begin() + 7, v1.end());
-//            activeSub->children.push_back(*activeTeam);
-//            activeTeam = &activeSub->children.back();
+            oldParent->children.erase(oldParent->children.begin() + indexInParent);
 
-//            auto it = std::find(myVec.begin(), myVec.end(), obj37);
-//            if (it != myVec.end()) { myVec.erase(it); }
+            newParent->children.push_back(team);
+            activeTeam = &newParent->children.back();
+            activeTeam->parent = newParent;
+
+            catTree.getLists();
         }
     }
 
