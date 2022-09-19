@@ -44,6 +44,7 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams) {
     });
     fillComboBox(ui->locCBox, locations);
     connect(ui->applyButton, &QPushButton::clicked, this, [this]() { applyChanges(); });
+    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::syncComboBox);
 }
 
 Teams::~Teams() {
@@ -52,6 +53,8 @@ Teams::~Teams() {
 
 void Teams::init() {
     catTree.getLists();
+    fillComboBox(ui->catCBox, getNames(catTree.categories));
+    syncComboBox(ui->catCBox->currentIndex());
     setEditingTeam(catTree.teams.back());
 }
 
@@ -83,11 +86,8 @@ void Teams::setEditingTeam(ICategory *team) {
 
     ui->locCBox->setCurrentText(team->location.c_str());
     ui->catCBox->setCurrentText(team->parent->parent->title.c_str());
-
-    fillComboBox(ui->catCBox, getNames(catTree.categories));
-    fillComboBox(ui->subCBox, getNames(team->parent->parent->children));
+    syncComboBox(ui->catCBox->currentIndex());
     ui->subCBox->setCurrentText(team->parent->title.c_str());
-
     ui->teamNameForm->setText(QString::fromStdString(activeTeam->title));
 }
 
@@ -98,6 +98,11 @@ void Teams::fillComboBox(QComboBox *box, std::vector<std::string> items, bool cl
         list.push_back(QString::fromStdString(item));
     }
     box->addItems(list);
+}
+
+void Teams::syncComboBox(int index) {
+    ICategory* active = &catTree.categories[index];
+    fillComboBox(ui->subCBox, getNames(active->children));
 }
 
 std::vector<std::string> Teams::getNames(std::vector<ICategory *> categories) {
@@ -125,7 +130,30 @@ void Teams::applyChanges() {
     activeTeam->location = location_inbox;
     activeTeam->title = name_inbox;
 
+    if (!ui->subCBox->currentText().isEmpty()) {
+        ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
+        ICategory *activeSub = &activeCat->children[ui->subCBox->currentIndex()];
+
+        if (activeSub->title != activeTeam->parent->title) {
+            ICategory *oldParent = activeTeam->parent;
+
+            activeTeam->parent = activeSub;
+
+//            activeSub->children.insert(v2.end(), std::make_move_iterator(v1.begin() + 7),
+//                      std::make_move_iterator(v1.end()));
+//
+//            v1.erase(v1.begin() + 7, v1.end());
+//            activeSub->children.push_back(*activeTeam);
+//            activeTeam = &activeSub->children.back();
+
+//            auto it = std::find(myVec.begin(), myVec.end(), obj37);
+//            if (it != myVec.end()) { myVec.erase(it); }
+        }
+    }
+
     fillTable();
 }
+
+
 
 

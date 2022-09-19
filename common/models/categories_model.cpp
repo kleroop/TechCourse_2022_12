@@ -198,10 +198,14 @@ void UpdateCategoriesRequest::deserialize(json data)
 }
 
 void CategoriesTree::getLists() {
+    this->subcategories.clear();
+    this->teams.clear();
     for (auto &cat: this->categories) {
         for (auto &scat: cat.children) {
+            scat.parent = &cat;
             this->subcategories.push_back(&scat);
             for (auto &team: scat.children) {
+                team.parent = &scat;
                 this->teams.push_back(&team);
             }
         }

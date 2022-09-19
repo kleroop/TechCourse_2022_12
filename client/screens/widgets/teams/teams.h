@@ -24,6 +24,9 @@ public:
 
     ~Teams() override;
 
+public slots:
+    void syncComboBox(int index);
+
 private:
     Api api;
     CategoriesTree catTree;
