@@ -44,25 +44,20 @@ void Teams::init()
 
 void Teams::fillTable()
 {
-    clearLayout(ui->tableFrame->layout());
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(static_cast<int>(catTree.teams.size()));
 
-    for (auto team : catTree.teams) {
-        auto *box = new QHBoxLayout(this);
+    for (int row = 0; row < static_cast<int>(catTree.teams.size()); ++row) {
+        auto team = catTree.teams[row];
 
-        auto *name = new QLabel(QString::fromStdString(team->title));
-        auto *loc = new QLabel(QString::fromStdString(team->location));
-        auto *cat = new QLabel(QString::fromStdString(team->parent->parent->title));
-        auto *sub = new QLabel(QString::fromStdString(team->parent->title));
+        std::ostringstream dateAdded;
+        dateAdded << std::put_time(&team->dateCreated, "%d/%m/%Y");
 
-        box->layout()->addWidget(name);
-        box->layout()->addWidget(loc);
-        box->layout()->addWidget(cat);
-        box->layout()->addWidget(sub);
-
-        auto *temp = new QWidget();
-        temp->setLayout(box);
-
-        ui->tableFrame->layout()->addWidget(temp);
+        ui->tableWidget->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(team->title)));
+        ui->tableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(team->location)));
+        ui->tableWidget->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(dateAdded.str())));
+        ui->tableWidget->setItem(row, 3, new QTableWidgetItem(QString::fromStdString(team->parent->title)));
+        ui->tableWidget->setItem(row, 4, new QTableWidgetItem(QString::fromStdString(team->parent->parent->title)));
     }
 }
 
