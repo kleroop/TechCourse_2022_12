@@ -20,8 +20,6 @@ public:
 
     ~MainWindow() override;
 
-public slots:
-    void onLoginSuccess();
 
 private:
     Ui::MainWindow *ui;
