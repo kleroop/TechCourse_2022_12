@@ -12,7 +12,6 @@
 #include "auth.h"
 #include "categories.h"
 
-
 enum Handlers {
     RootHandler,
     ShutdownHandler,
@@ -33,8 +32,7 @@ public:
 private:
     std::map<std::string, Handlers> routes;
 
-    Poco::Net::HTTPRequestHandler* getHandler(Handlers handler);
+    Poco::Net::HTTPRequestHandler *getHandler(Handlers handler);
 };
-
 
 #endif

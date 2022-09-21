@@ -1,31 +1,30 @@
 #include "auth.h"
 #include "auth_utils.h"
 
-void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response)
+void Auth::handleRequest(Poco::Net::HTTPServerRequest &request,
+                         Poco::Net::HTTPServerResponse &response)
 {
     prepareServerResponse(response);
-    std::ostream& ostream = response.send();
+    std::ostream &ostream = response.send();
 
     json responseJson;
 
-    if (request.getMethod() != "POST")
-    {
+    if (request.getMethod() != "POST") {
         responseJson["status"] = 405;
-        responseJson["data"] = { {"message", "Method not allowed"} };
+        responseJson["data"] = { { "message", "Method not allowed" } };
         ostream << responseJson.dump();
 
         return;
     }
 
-    //TODO: add check if request payload wasn't valid json
+    // TODO: add check if request payload wasn't valid json
     json requestData = toJson(request.stream());
 
     AuthRequest authRequest;
     authRequest.deserialize(requestData);
 
-    if (!authRequest.error.empty())
-    {
-        responseJson["data"] = { {"message", authRequest.error} };
+    if (!authRequest.error.empty()) {
+        responseJson["data"] = { { "message", authRequest.error } };
         responseJson["status"] = 400;
 
         ostream << responseJson.dump();
@@ -33,8 +32,7 @@ void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPS
         return;
     }
 
-    if (!userExists(authRequest.email, authRequest.password))
-    {
+    if (!userExists(authRequest.email, authRequest.password)) {
         userNotFound(responseJson);
         ostream << responseJson.dump();
 
@@ -45,7 +43,7 @@ void Auth::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPS
     ostream << authResponse.serialize().dump();
 }
 
- std::string Auth::makeToken(AuthRequest& deserializedRequest)
+std::string Auth::makeToken(AuthRequest &deserializedRequest)
 {
     Poco::JWT::Token token;
     token.setType("JWT");

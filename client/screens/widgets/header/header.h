@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QFrame>
+#include <QPushButton>
+#include <QScrollArea>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,12 +20,16 @@ class Header : public QWidget
 public:
     explicit Header(QWidget *parent = nullptr, std::vector<QWidget *> right_widgets = {});
     ~Header() override;
-    QHBoxLayout *getRightSection();
 
-    QHBoxLayout* getMainNavigationLayout();
+    QHBoxLayout *getRightSection();
+    QWidget *getScrollAreaWidget();
+    QScrollArea *getScrollArea();
+    QPushButton *getSaveButton();
+    QPushButton *getRightScrollButton();
+    QPushButton *getLeftScrollButton();
+    QFrame *getCategories();
 
     void setSectionName(const QString &text);
-
     void switchUserView();
     void switchAdminView();
 

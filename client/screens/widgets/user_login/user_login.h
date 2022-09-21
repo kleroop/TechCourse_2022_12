@@ -5,12 +5,13 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-    class UserLogin;
+class UserLogin;
 }
 QT_END_NAMESPACE
 
-class UserLogin : public QWidget {
-Q_OBJECT
+class UserLogin : public QWidget
+{
+    Q_OBJECT
 
 public:
     explicit UserLogin(QWidget *parent = nullptr);
@@ -18,10 +19,10 @@ public:
     ~UserLogin() override;
 
 signals:
-    //void dropdownButtonClicked();
+    // void dropdownButtonClicked();
 
 private slots:
-    //void onDropdownButtonClicked();
+    // void onDropdownButtonClicked();
 
 private:
     Ui::UserLogin *ui;

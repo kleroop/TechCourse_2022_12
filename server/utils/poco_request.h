@@ -6,6 +6,6 @@
 
 using namespace nlohmann;
 
-json toJson(std::istream& data);
+json toJson(std::istream &data);
 
 #endif

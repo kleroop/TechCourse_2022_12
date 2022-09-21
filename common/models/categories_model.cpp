@@ -4,18 +4,17 @@
 
 struct tm fixDate(struct tm date)
 {
-    if(date.tm_year == 0 && date.tm_sec == 0 && date.tm_hour == 0){
-    date.tm_year = 2022;
-    date.tm_mon = 1;
-    date.tm_mday = 1;
-    date.tm_hour = 1;
-    date.tm_min = 1;
-    date.tm_sec = 1;
+    if (date.tm_year == 0 && date.tm_sec == 0 && date.tm_hour == 0) {
+        date.tm_year = 2022;
+        date.tm_mon = 1;
+        date.tm_mday = 1;
+        date.tm_hour = 1;
+        date.tm_min = 1;
+        date.tm_sec = 1;
     }
 
     return date;
 };
-
 
 static inline string serialize_iso8601(struct tm tt)
 {
@@ -197,14 +196,15 @@ void UpdateCategoriesRequest::deserialize(json data)
     deserializeCategoryTree(data, categoriesTree, error);
 }
 
-void CategoriesTree::getLists() {
+void CategoriesTree::updateLists()
+{
     this->subcategories.clear();
     this->teams.clear();
-    for (auto &cat: this->categories) {
-        for (auto &scat: cat.children) {
+    for (auto &cat : this->categories) {
+        for (auto &scat : cat.children) {
             scat.parent = &cat;
             this->subcategories.push_back(&scat);
-            for (auto &team: scat.children) {
+            for (auto &team : scat.children) {
                 team.parent = &scat;
                 this->teams.push_back(&team);
             }

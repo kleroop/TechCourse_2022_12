@@ -6,19 +6,20 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-    class UserProfile;
+class UserProfile;
 }
 QT_END_NAMESPACE
 
-class UserProfile : public QWidget {
-Q_OBJECT
+class UserProfile : public QWidget
+{
+    Q_OBJECT
 
 public:
     explicit UserProfile(QWidget *parent = nullptr);
 
     ~UserProfile() override;
 
-    QPushButton* getSwitchButton();
+    QPushButton *getSwitchButton();
 
     UserDropdown *DropdownMenu;
 

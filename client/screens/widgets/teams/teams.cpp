@@ -2,86 +2,101 @@
 #include "ui_Teams.h"
 
 static const std::vector<std::string> locations{
-        "",
-        "Alabama",
-        "Alaska",
-        "Arizona",
-        "Arkansas",
-        "California",
-        "Colorado",
-        "Connecticut",
-        "Delaware",
-        "Florida",
-        "Georgia",
-        "Hawaii",
-        "Idaho",
-        "IllinoisIndiana",
-        "Iowa",
-        "Kansas",
-        "Kentucky",
-        "Louisiana",
-        "Maine",
-        "Maryland",
-        "Massachusetts",
-        "Michigan",
-        "Minnesota",
-        "Mississippi",
-        "Missouri",
-        "Montana",
-        "Nebraska"
+    "",         "Alabama",         "Alaska",        "Arizona",  "Arkansas",  "California",
+    "Colorado", "Connecticut",     "Delaware",      "Florida",  "Georgia",   "Hawaii",
+    "Idaho",    "IllinoisIndiana", "Iowa",          "Kansas",   "Kentucky",  "Louisiana",
+    "Maine",    "Maryland",        "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+    "Missouri", "Montana",         "Nebraska"
 };
 
-Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams) {
+static const QString EditButtonStyle = "background: transparent;\n"
+                                       "color: rgb(215, 33, 48);\n"
+                                       "font: 63 12pt \"Open Sans\";";
+
+static const QString DeleteButtonStyle = "background-color: transparent;\n"
+                                         "qproperty-icon: url(\" \"); /* empty image */\n"
+                                         "qproperty-iconSize: 21px 21px;\n"
+                                         "background-image: url(:/Resources/trash_icon.png);\n"
+                                         "background-repeat: no-repeat;\n"
+                                         "background-position: center center;";
+
+Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams)
+{
     ui->setupUi(this);
 
-    api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW4ifQ.E9AEDCWuVSrbPKS9CBeG0H4PD56tcqY4PhX5bMWnP4k";
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableWidget->setFocusPolicy(Qt::NoFocus);
+    ui->tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->tableWidget->setShowGrid(false);
+    ui->tableWidget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    ui->tableWidget->verticalHeader()->setVisible(false);
+
+    api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+                "eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW"
+                "4ifQ.E9AEDCWuVSrbPKS9CBeG0H4PD56tcqY4PhX5bMWnP4k";
     api.getCategories([=](const CategoriesTreeResponse &resp) {
         this->catTree = resp.categoriesTree;
-        if (!catTree.categories.empty()){
+        if (!catTree.categories.empty()) {
             init();
             fillTable();
         }
     });
     fillComboBox(ui->locCBox, locations);
     connect(ui->applyButton, &QPushButton::clicked, this, [this]() { applyChanges(); });
+    connect(ui->createTeamButton, &QPushButton::clicked, this, [this]() { createTeem(); });
+    connect(ui->cancelButton, &QPushButton::clicked, this, [this]() { cancel(); });
     connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::syncComboBox);
+    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::checkApplyIsEnabled);
+    connect(ui->teamNameForm, SIGNAL(textChanged(const QString &)), this, SLOT(checkApplyIsEnabled()));
+
+    isCreateTeamActive = false;
 }
 
-Teams::~Teams() {
+Teams::~Teams()
+{
     delete ui;
 }
 
-void Teams::init() {
-    catTree.getLists();
+void Teams::init()
+{
+    catTree.updateLists();
     fillComboBox(ui->catCBox, getNames(catTree.categories));
     syncComboBox(ui->catCBox->currentIndex());
     setEditingTeam(catTree.teams.back());
 }
 
-void Teams::fillTable() {
-    clearLayout(ui->tableFrame->layout());
+void Teams::fillTable()
+{
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(static_cast<int>(catTree.teams.size()));
 
-    for (auto team : catTree.teams){
-        auto* box = new QHBoxLayout(this);
+    for (int row = 0; row < static_cast<int>(catTree.teams.size()); ++row) {
+        auto team = catTree.teams[row];
 
-        auto* name = new QLabel(QString::fromStdString(team->title));
-        auto* loc = new QLabel(QString::fromStdString(team->location));
-        auto* cat = new QLabel(QString::fromStdString(team->parent->parent->title));
-        auto* sub = new QLabel(QString::fromStdString(team->parent->title));
+        std::ostringstream dateAdded;
+        dateAdded << std::put_time(&team->dateCreated, "%d/%m/%Y");
 
-        box->layout()->addWidget(name);
-        box->layout()->addWidget(loc);
-        box->layout()->addWidget(cat);
-        box->layout()->addWidget(sub);
+        ui->tableWidget->setItem(row, 0, new LeftAlignItem(QString::fromStdString(team->title)));
+        ui->tableWidget->setItem(row, 1, new LeftAlignItem(QString::fromStdString(team->location)));
+        ui->tableWidget->setItem(row, 2, new LeftAlignItem(QString::fromStdString(dateAdded.str())));
+        ui->tableWidget->setItem(row, 3, new LeftAlignItem(QString::fromStdString(team->parent->title)));
+        ui->tableWidget->setItem(row, 4, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
 
-        auto * temp = new QWidget();
-        temp->setLayout(box);
+        auto editButton = new QPushButton("Edit");
+        editButton->setStyleSheet(EditButtonStyle);
 
-        ui->tableFrame->layout()->addWidget(temp);
+        auto deleteButton = new QPushButton();
+        deleteButton->setStyleSheet(DeleteButtonStyle);
+
+        ui->tableWidget->setCellWidget(row, 5, editButton);
+        ui->tableWidget->setCellWidget(row, 6, deleteButton);
+
+        ui->tableWidget->setRowHeight(row, ui->tableWidget->rowHeight(row) + 15); // to make padding
     }
 }
 
-void Teams::setEditingTeam(ICategory *team) {
+void Teams::setEditingTeam(ICategory *team)
+{
     activeTeam = team;
 
     ui->locCBox->setCurrentText(team->location.c_str());
@@ -91,69 +106,110 @@ void Teams::setEditingTeam(ICategory *team) {
     ui->teamNameForm->setText(QString::fromStdString(activeTeam->title));
 }
 
-void Teams::fillComboBox(QComboBox *box, std::vector<std::string> items, bool clean) {
+
+void Teams::fillComboBox(QComboBox *box, std::vector<std::string> items, bool clean)
+{
     QStringList list;
-    if (clean) box->clear();
-    for (const auto& item : items){
+    if (clean)
+        box->clear();
+    for (const auto &item : items) {
         list.push_back(QString::fromStdString(item));
     }
     box->addItems(list);
 }
 
-void Teams::syncComboBox(int index) {
-    ICategory* active = &catTree.categories[index];
+void Teams::syncComboBox(int index)
+{
+    ICategory *active = &catTree.categories[index];
     fillComboBox(ui->subCBox, getNames(active->children));
 }
 
-std::vector<std::string> Teams::getNames(std::vector<ICategory *> categories) {
+std::vector<std::string> Teams::getNames(std::vector<ICategory *> categories)
+{
     std::vector<std::string> names;
-    for (auto cat : categories){
+    for (auto cat : categories) {
         names.push_back(cat->title);
     }
     return names;
 }
 
-std::vector<std::string> Teams::getNames(std::vector<ICategory> categories) {
+std::vector<std::string> Teams::getNames(std::vector<ICategory> categories)
+{
     std::vector<std::string> names;
-    for (auto cat : categories){
+    for (auto cat : categories) {
         names.push_back(cat.title);
     }
     return names;
 }
 
-void Teams::applyChanges() {
+void Teams::applyChanges()
+{
     std::string location_inbox = ui->locCBox->currentText().toStdString();
     std::string cat_inbox = ui->catCBox->currentText().toStdString();
     std::string sub_inbox = ui->subCBox->currentText().toStdString();
     std::string name_inbox = ui->teamNameForm->text().toStdString();
-
-    activeTeam->location = location_inbox;
-    activeTeam->title = name_inbox;
-
-    if (!ui->subCBox->currentText().isEmpty()) {
-        ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
-        ICategory *activeSub = &activeCat->children[ui->subCBox->currentIndex()];
-
-        if (activeSub->title != activeTeam->parent->title) {
-            ICategory *oldParent = activeTeam->parent;
-            ICategory *newParent = activeSub;
-
-            ptrdiff_t indexInParent = activeTeam - &oldParent->children[0];
-            ICategory team = oldParent->children[indexInParent];
-
-            oldParent->children.erase(oldParent->children.begin() + indexInParent);
-
-            newParent->children.push_back(team);
-            activeTeam = &newParent->children.back();
-            activeTeam->parent = newParent;
-
-            catTree.getLists();
+    if (isCreateTeamActive) {
+        for (auto w: catTree.subcategories) {
+            if (w->title == ui->subCBox->currentText().toStdString()) {
+                activeSubCategory = w;
+            }
         }
+        this->activeSubCategory->children.insert(
+                activeSubCategory->children.begin(),
+                Team(name_inbox, false, this->activeSubCategory, location_inbox));
+        api.updateCategories(this->catTree,
+                             [=](const CategoriesTreeResponse &resp) {     api.getCategories([=](const CategoriesTreeResponse &resp) {
+                                                                           this->catTree = resp.categoriesTree;
+                                                                           if (!catTree.categories.empty()) {
+                                                                               catTree.updateLists();
+                                                                               fillTable();
+                                                                           }
+                                                                       }); });
     }
+    else {
+        activeTeam->location = location_inbox;
+        activeTeam->title = name_inbox;
 
-    fillTable();
+        if (!ui->subCBox->currentText().isEmpty()) {
+            ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
+            ICategory *activeSub = &activeCat->children[ui->subCBox->currentIndex()];
+
+            if (activeSub->title != activeTeam->parent->title) {
+                ICategory *oldParent = activeTeam->parent;
+                ICategory *newParent = activeSub;
+
+                ptrdiff_t indexInParent = activeTeam - &oldParent->children[0];
+                ICategory team = oldParent->children[indexInParent];
+
+                oldParent->children.erase(oldParent->children.begin() + indexInParent);
+
+                newParent->children.push_back(team);
+                activeTeam = &newParent->children.back();
+                activeTeam->parent = newParent;
+            }
+
+        }
+        catTree.updateLists();
+        fillTable();
+    }
 }
+void Teams::createTeem()
+{
+    ui->applyButton->setEnabled(false);
+    ui->locCBox->setCurrentIndex(0);
+    ui->catCBox->setCurrentIndex(0);
+    ui->subCBox->setCurrentIndex(0);
+    ui->teamNameForm->clear();
 
-
-
+    isCreateTeamActive = true;
+}
+void Teams::checkApplyIsEnabled()
+{
+    bool isEnabled = !ui->teamNameForm->text().isEmpty() && !ui->subCBox->currentText().isEmpty();
+    ui->applyButton->setEnabled(isEnabled);
+}
+void Teams::cancel()
+{
+    isCreateTeamActive = false;
+}
 

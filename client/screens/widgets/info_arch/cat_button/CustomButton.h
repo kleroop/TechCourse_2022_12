@@ -5,11 +5,14 @@
 #include "QPushButton"
 #include "models/categories_model.h"
 
-class CustomButton : public QPushButton {
-Q_OBJECT
+class CustomButton : public QPushButton
+{
+    Q_OBJECT
 
 public:
-    explicit CustomButton(QWidget *parent = nullptr, QPushButton *original = nullptr, ICategory *category = nullptr) {
+    explicit CustomButton(QWidget *parent = nullptr, QPushButton *original = nullptr,
+                          ICategory *category = nullptr)
+    {
         this->setParent(parent);
         this->setText(QString::fromStdString(category->title));
         this->setMinimumSize(original->minimumSize());
