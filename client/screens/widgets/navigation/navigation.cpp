@@ -16,8 +16,8 @@ Navigation::Navigation(QWidget *parent, Header* header) : QWidget(parent), ui(ne
     (buttonDecoratorArray[9] = ui->advertisingButton)->setData(this, header, parent, "Advertising", "advertising");
 
     // only for this time
-    ui->architectureButton->mouseButtonPress();
-    ui->architectureButton->hoverLeave();
+    ui->teamsButton->mouseButtonPress();
+    ui->teamsButton->hoverLeave();
 }
 
 Navigation::~Navigation()

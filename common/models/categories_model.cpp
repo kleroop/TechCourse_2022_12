@@ -1,18 +1,27 @@
 #include "categories_model.h"
 
-#include <cstdio>
+#include <utility>
+
+struct tm fixDate(struct tm date)
+{
+    if (date.tm_year == 0 && date.tm_sec == 0 && date.tm_hour == 0) {
+        date.tm_year = 2022;
+        date.tm_mon = 1;
+        date.tm_mday = 1;
+        date.tm_hour = 1;
+        date.tm_min = 1;
+        date.tm_sec = 1;
+    }
+
+    return date;
+};
 
 static inline string serialize_iso8601(struct tm tt)
 {
-    char timestamp[] = "YYYY-MM-ddTHH:mm:ss.SSSZ";
-    if ((size_t)snprintf(timestamp, sizeof(timestamp), "%04d-%02d-%02dT%02d:%02d:%06.03fZ",
-                         1970 + tt.tm_year, 1 + tt.tm_mon, tt.tm_mday, tt.tm_hour, tt.tm_min,
-                         (double)tt.tm_sec)
-        >= sizeof(timestamp)) {
-        fprintf(stderr, "[%s]: Invalid iso8601 values in struct tm: {%d, %d, %d, %d, %d, %d}\n",
-                __func__, tt.tm_sec, tt.tm_min, tt.tm_hour, tt.tm_mday, tt.tm_mon, tt.tm_year);
-        return "";
-    }
+    tt = fixDate(tt);
+    char timestamp[] = "YYYY-MM-ddTHH:mm:ss.SSS+00:00Z";
+    sprintf(timestamp, "%04d-%02d-%02dT%02d:%02d:%06.03fZ", 1970 + tt.tm_year, 1 + tt.tm_mon,
+            tt.tm_mday, tt.tm_hour, tt.tm_min, (double)tt.tm_sec);
     return timestamp;
 }
 
@@ -23,13 +32,14 @@ static inline struct tm deserialize_iso8601(string s)
 
     if (sscanf(s.c_str(), "%04d-%02d-%02dT%02d:%02d:%lfZ", &tt.tm_year, &tt.tm_mon, &tt.tm_mday,
                &tt.tm_hour, &tt.tm_min, &seconds)
-        != 6) {
-        fprintf(stderr, "[%s] Bad iso8601 datetime: \"%s\"\n", __func__, s.c_str());
-        return { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-    }
+        != 6)
+        return tt;
     tt.tm_sec = (int)seconds;
     tt.tm_mon -= 1;
     tt.tm_year -= 1970;
+
+    tt = fixDate(tt);
+
     return tt;
 };
 
@@ -184,4 +194,20 @@ json UpdateCategoriesRequest::serialize()
 void UpdateCategoriesRequest::deserialize(json data)
 {
     deserializeCategoryTree(data, categoriesTree, error);
+}
+
+void CategoriesTree::updateLists()
+{
+    this->subcategories.clear();
+    this->teams.clear();
+    for (auto &cat : this->categories) {
+        for (auto &scat : cat.children) {
+            scat.parent = &cat;
+            this->subcategories.push_back(&scat);
+            for (auto &team : scat.children) {
+                team.parent = &scat;
+                this->teams.push_back(&team);
+            }
+        }
+    }
 }

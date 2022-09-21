@@ -1,9 +1,10 @@
 #include "shutdown.h"
 
-void Shutdown::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response)
+void Shutdown::handleRequest(Poco::Net::HTTPServerRequest &request,
+                             Poco::Net::HTTPServerResponse &response)
 {
     prepareServerResponse(response);
-    std::ostream& ostream = response.send();
+    std::ostream &ostream = response.send();
 
     json responseJson;
 

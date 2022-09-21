@@ -27,14 +27,9 @@ public:
     CategoryTypes type;
     bool isHidden = false;
     std::string location;
-    struct tm dateCreated;
-    // todo add position
-};
+    struct tm dateCreated = {};
 
-class CategoriesTree
-{
-public:
-    std::vector<ICategory> categories;
+    // todo add position
 };
 
 class Category : public ICategory
@@ -72,6 +67,15 @@ public:
     void deserialize(json data) override;
 };
 
+class CategoriesTree
+{
+public:
+    std::vector<ICategory> categories;
+    void updateLists();
+    std::vector<ICategory *> teams;
+    std::vector<ICategory *> subcategories;
+};
+
 void deserializeCategoryTree(json &data, CategoriesTree &categoriesTree, std::string &error);
 
 class CategoriesTreeResponse : ISerializable
@@ -94,5 +98,7 @@ public:
 
     CategoriesTree categoriesTree;
 };
+
+struct tm fixDate(struct tm date);
 
 #endif

@@ -1,6 +1,9 @@
 #include "auth_model.h"
 
-AuthRequest::AuthRequest(std::string _email, std::string _password) : email(std::move(_email)), password(std::move(_password)) {}
+AuthRequest::AuthRequest(std::string _email, std::string _password)
+    : email(std::move(_email)), password(std::move(_password))
+{
+}
 
 json AuthRequest::serialize()
 {
@@ -14,16 +17,14 @@ json AuthRequest::serialize()
 
 void AuthRequest::deserialize(json data)
 {
-    if (!data.contains("email") || data["email"] == "")
-    {
+    if (!data.contains("email") || data["email"] == "") {
         error = "Email field is required";
         return;
     }
 
     email = data["email"];
 
-    if (!data.contains("password") || data["password"] == "")
-    {
+    if (!data.contains("password") || data["password"] == "") {
         error = "Password field is required";
         return;
     }
@@ -31,13 +32,13 @@ void AuthRequest::deserialize(json data)
     password = data["password"];
 }
 
-AuthResponse::AuthResponse(std::string _token) : token(std::move(_token)) {}
+AuthResponse::AuthResponse(std::string _token) : token(std::move(_token)) { }
 
 json AuthResponse::serialize()
 {
     json response;
 
-    response["data"] = { {"token", token} };
+    response["data"] = { { "token", token } };
     response["status"] = 200;
 
     return response;
@@ -45,8 +46,7 @@ json AuthResponse::serialize()
 
 void AuthResponse::deserialize(json data)
 {
-    if (data["status"] != 200)
-    {
+    if (data["status"] != 200) {
         error = data["data"]["message"];
         return;
     }

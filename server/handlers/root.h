@@ -8,7 +8,8 @@ using namespace nlohmann;
 class Root : public Poco::Net::HTTPRequestHandler
 {
 public:
-    void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response) override;
+    void handleRequest(Poco::Net::HTTPServerRequest &request,
+                       Poco::Net::HTTPServerResponse &response) override;
 };
 
 #endif

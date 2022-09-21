@@ -7,26 +7,28 @@
 #include "CustomButton.h"
 #include "models/categories_model.h"
 
-
 QT_BEGIN_NAMESPACE
-namespace Ui { class CatButton; }
+namespace Ui {
+class CatButton;
+}
 QT_END_NAMESPACE
 
-class CatButton : public QWidget {
-Q_OBJECT
+class CatButton : public QWidget
+{
+    Q_OBJECT
 
 public:
     explicit CatButton(QWidget *parent, CustomButton *mainButton, bool active = false);
 
     ~CatButton() override;
 
-    QPushButton* dropdownButton;
+    QPushButton *dropdownButton;
 
     bool isActive = false;
 
 private:
     Ui::CatButton *ui;
-    CustomButton* mainButton;
+    CustomButton *mainButton;
 };
 
 #endif

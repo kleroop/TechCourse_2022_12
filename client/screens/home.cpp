@@ -1,6 +1,7 @@
 #include "home.h"
 #include "ui_Home.h"
 #include "info_arch.h"
+#include "teams.h"
 
 Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 {
@@ -19,6 +20,10 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 
     auto InfoArchWidget = new InfoArch(this);
     ui->stackedWidget->addWidget(InfoArchWidget);
+
+    auto TeamsWidget = new Teams(this);
+    ui->stackedWidget->addWidget(TeamsWidget);
+    ui->stackedWidget->setCurrentIndex(3);
 
     this->MainNavigationWidget = new MainNavigation(HeaderWidget, HeaderWidget, true);
     auto *layout = new QHBoxLayout;
@@ -122,7 +127,7 @@ bool Home::eventFilter(QObject *watched, QEvent *event)
     if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[4]) ui->stackedWidget->setCurrentIndex(0);
     if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[5]) ui->stackedWidget->setCurrentIndex(0);
     if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[6]) ui->stackedWidget->setCurrentIndex(2);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[7]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[7]) ui->stackedWidget->setCurrentIndex(3);
     if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[8]) ui->stackedWidget->setCurrentIndex(0);
     if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[9]) ui->stackedWidget->setCurrentIndex(0);
 
