@@ -28,11 +28,15 @@ public:
 
 public slots:
     void syncComboBox(int index);
+    void checkApplyIsEnabled();
 
 private:
     Api api;
     CategoriesTree catTree;
     ICategory *activeTeam = nullptr;
+    ICategory *activeSubCategory = nullptr;
+
+    bool isCreateTeamActive;
 
     void fillTable();
     void fillComboBox(QComboBox *box, std::vector<std::string> items, bool clean = true);
@@ -45,6 +49,8 @@ private:
     void setEditingTeam(ICategory *team);
 
     void applyChanges();
+    void createTeem();
+    void cancel();
 
     Ui::Teams *ui;
 };

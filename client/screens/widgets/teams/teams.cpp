@@ -43,8 +43,13 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams)
     });
     fillComboBox(ui->locCBox, locations);
     connect(ui->applyButton, &QPushButton::clicked, this, [this]() { applyChanges(); });
-    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
-            &Teams::syncComboBox);
+    connect(ui->createTeamButton, &QPushButton::clicked, this, [this]() { createTeem(); });
+    connect(ui->cancelButton, &QPushButton::clicked, this, [this]() { cancel(); });
+    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::syncComboBox);
+    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::checkApplyIsEnabled);
+    connect(ui->teamNameForm, SIGNAL(textChanged(const QString &)), this, SLOT(checkApplyIsEnabled()));
+
+    isCreateTeamActive = false;
 }
 
 Teams::~Teams()
@@ -142,30 +147,67 @@ void Teams::applyChanges()
     std::string cat_inbox = ui->catCBox->currentText().toStdString();
     std::string sub_inbox = ui->subCBox->currentText().toStdString();
     std::string name_inbox = ui->teamNameForm->text().toStdString();
-
-    activeTeam->location = location_inbox;
-    activeTeam->title = name_inbox;
-
-    if (!ui->subCBox->currentText().isEmpty()) {
-        ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
-        ICategory *activeSub = &activeCat->children[ui->subCBox->currentIndex()];
-
-        if (activeSub->title != activeTeam->parent->title) {
-            ICategory *oldParent = activeTeam->parent;
-            ICategory *newParent = activeSub;
-
-            ptrdiff_t indexInParent = activeTeam - &oldParent->children[0];
-            ICategory team = oldParent->children[indexInParent];
-
-            oldParent->children.erase(oldParent->children.begin() + indexInParent);
-
-            newParent->children.push_back(team);
-            activeTeam = &newParent->children.back();
-            activeTeam->parent = newParent;
-
-            catTree.updateLists();
+    if (isCreateTeamActive) {
+        for (auto w: catTree.subcategories) {
+            if (w->title == ui->subCBox->currentText().toStdString()) {
+                activeSubCategory = w;
+            }
         }
+        this->activeSubCategory->children.insert(
+                activeSubCategory->children.begin(),
+                Team(name_inbox, false, this->activeSubCategory, location_inbox));
+        api.updateCategories(this->catTree,
+                             [=](const CategoriesTreeResponse &resp) {     api.getCategories([=](const CategoriesTreeResponse &resp) {
+                                                                           this->catTree = resp.categoriesTree;
+                                                                           if (!catTree.categories.empty()) {
+                                                                               catTree.updateLists();
+                                                                               fillTable();
+                                                                           }
+                                                                       }); });
     }
+    else {
+        activeTeam->location = location_inbox;
+        activeTeam->title = name_inbox;
 
-    fillTable();
+        if (!ui->subCBox->currentText().isEmpty()) {
+            ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
+            ICategory *activeSub = &activeCat->children[ui->subCBox->currentIndex()];
+
+            if (activeSub->title != activeTeam->parent->title) {
+                ICategory *oldParent = activeTeam->parent;
+                ICategory *newParent = activeSub;
+
+                ptrdiff_t indexInParent = activeTeam - &oldParent->children[0];
+                ICategory team = oldParent->children[indexInParent];
+
+                oldParent->children.erase(oldParent->children.begin() + indexInParent);
+
+                newParent->children.push_back(team);
+                activeTeam = &newParent->children.back();
+                activeTeam->parent = newParent;
+            }
+
+        }
+        catTree.updateLists();
+        fillTable();
+    }
+}
+void Teams::createTeem()
+{
+    ui->applyButton->setEnabled(false);
+    ui->locCBox->setCurrentIndex(0);
+    ui->catCBox->setCurrentIndex(0);
+    ui->subCBox->setCurrentIndex(0);
+    ui->teamNameForm->clear();
+
+    isCreateTeamActive = true;
+}
+void Teams::checkApplyIsEnabled()
+{
+    bool isEnabled = !ui->teamNameForm->text().isEmpty() && !ui->subCBox->currentText().isEmpty();
+    ui->applyButton->setEnabled(isEnabled);
+}
+void Teams::cancel()
+{
+    isCreateTeamActive = false;
 }
