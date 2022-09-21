@@ -34,9 +34,9 @@ private:
     Api api;
     CategoriesTree catTree;
     ICategory *activeTeam = nullptr;
-    ICategory *activeSubCategory = nullptr;
 
-    bool isCreateTeamActive;
+    bool isCreateTeamActive = false;
+    bool isEditTeamActive = false;
 
     void fillTable();
     void fillComboBox(QComboBox *box, std::vector<std::string> items, bool clean = true);
@@ -48,15 +48,14 @@ private:
     std::vector<std::string> getNames(std::vector<ICategory> categories);
 
     void setEditingTeam(ICategory *team);
+    void setDefault();
 
     void applyChanges();
 
-    void createTeem();
+    void createTeam();
     void cancel();
 
     Ui::Teams *ui;
-
-
 };
 
 class LeftAlignItem : public QTableWidgetItem
