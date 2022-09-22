@@ -47,6 +47,7 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams)
     connect(ui->cancelButton, &QPushButton::clicked, this, [this]() { cancel(); });
     connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::syncComboBox);
     connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::checkApplyIsEnabled);
+    connect(ui->locCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::checkApplyIsEnabled);
     connect(ui->teamNameForm, SIGNAL(textChanged(const QString &)), this, SLOT(checkApplyIsEnabled()));
 
     isCreateTeamActive = false;
@@ -69,7 +70,7 @@ void Teams::fillTable()
 {
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(static_cast<int>(catTree.teams.size()));
-
+    ui->tableWidget->sortByColumn(6, Qt::AscendingOrder); // for fix bug
     for (int row = 0; row < static_cast<int>(catTree.teams.size()); ++row) {
         auto team = catTree.teams[row];
 
@@ -79,19 +80,21 @@ void Teams::fillTable()
         ui->tableWidget->setItem(row, 0, new LeftAlignItem(QString::fromStdString(team->title)));
         ui->tableWidget->setItem(row, 1, new LeftAlignItem(QString::fromStdString(team->location)));
         ui->tableWidget->setItem(row, 2, new LeftAlignItem(QString::fromStdString(dateAdded.str())));
-        ui->tableWidget->setItem(row, 3, new LeftAlignItem(QString::fromStdString(team->parent->title)));
-        ui->tableWidget->setItem(row, 4, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
+        ui->tableWidget->setItem(row, 3, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
+        ui->tableWidget->setItem(row, 4, new LeftAlignItem(QString::fromStdString(team->parent->title)));
+
 
         auto editButton = new QPushButton("Edit");
         editButton->setStyleSheet(EditButtonStyle);
 
         auto deleteButton = new QPushButton();
+        deleteButton->setFixedSize(40,40);
         deleteButton->setStyleSheet(DeleteButtonStyle);
 
         ui->tableWidget->setCellWidget(row, 5, editButton);
         ui->tableWidget->setCellWidget(row, 6, deleteButton);
-
-        ui->tableWidget->setRowHeight(row, ui->tableWidget->rowHeight(row) + 15); // to make padding
+        if (!rowH) rowH = ui->tableWidget->rowHeight(row) + 15;
+        ui->tableWidget->setRowHeight(row, rowH);
     }
 }
 
@@ -151,19 +154,15 @@ void Teams::applyChanges()
         for (auto w: catTree.subcategories) {
             if (w->title == ui->subCBox->currentText().toStdString()) {
                 activeSubCategory = w;
+                time_t now = time(0);
+                tm tstruct = *localtime(&now);
+                this->activeSubCategory->children.push_back(Team(name_inbox, false, this->activeSubCategory, location_inbox, tstruct));
+                break;
             }
         }
-        this->activeSubCategory->children.insert(
-                activeSubCategory->children.begin(),
-                Team(name_inbox, false, this->activeSubCategory, location_inbox));
+
         api.updateCategories(this->catTree,
-                             [=](const CategoriesTreeResponse &resp) {     api.getCategories([=](const CategoriesTreeResponse &resp) {
-                                                                           this->catTree = resp.categoriesTree;
-                                                                           if (!catTree.categories.empty()) {
-                                                                               catTree.updateLists();
-                                                                               fillTable();
-                                                                           }
-                                                                       }); });
+                             [=](const CategoriesTreeResponse &resp) { catTree.updateLists(); this->fillTable(); });
     }
     else {
         activeTeam->location = location_inbox;
@@ -188,7 +187,6 @@ void Teams::applyChanges()
             }
 
         }
-        catTree.updateLists();
         fillTable();
     }
 }
@@ -204,10 +202,15 @@ void Teams::createTeem()
 }
 void Teams::checkApplyIsEnabled()
 {
-    bool isEnabled = !ui->teamNameForm->text().isEmpty() && !ui->subCBox->currentText().isEmpty();
+    bool isEnabled = !ui->teamNameForm->text().isEmpty() && !ui->subCBox->currentText().isEmpty() && !ui->locCBox->currentText().isEmpty();
     ui->applyButton->setEnabled(isEnabled);
 }
 void Teams::cancel()
 {
+    ui->applyButton->setEnabled(false);
+    ui->locCBox->setCurrentIndex(0);
+    ui->catCBox->setCurrentIndex(0);
+    ui->subCBox->setCurrentIndex(0);
+    ui->teamNameForm->clear();
     isCreateTeamActive = false;
 }

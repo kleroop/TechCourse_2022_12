@@ -37,6 +37,7 @@ private:
     ICategory *activeSubCategory = nullptr;
 
     bool isCreateTeamActive;
+    int rowH = 0;
 
     void fillTable();
     void fillComboBox(QComboBox *box, std::vector<std::string> items, bool clean = true);
