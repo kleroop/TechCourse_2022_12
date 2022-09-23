@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1247</width>
-    <height>640</height>
+    <width>1137</width>
+    <height>689</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,6 +25,21 @@
    <string>Teams</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="horizontalFrame">
      <property name="minimumSize">
@@ -34,6 +49,18 @@
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -76,6 +103,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="editingFrame">
+     <property name="spacing">
+      <number>7</number>
+     </property>
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
@@ -88,6 +118,18 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="label_7">
           <property name="sizePolicy">
@@ -139,6 +181,18 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="label_8">
           <property name="sizePolicy">
@@ -190,6 +244,18 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="label_9">
           <property name="sizePolicy">
@@ -241,6 +307,18 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_5">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="label_6">
           <property name="sizePolicy">
@@ -262,7 +340,7 @@
         <item>
          <widget class="QLineEdit" name="teamNameForm">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -344,7 +422,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -388,6 +466,9 @@ QTableWidget::item {
 	padding-bottom: 15;
  }</string>
      </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustIgnored</enum>
+     </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
@@ -414,6 +495,9 @@ QTableWidget::item {
      </attribute>
      <attribute name="verticalHeaderDefaultSectionSize">
       <number>30</number>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>25</number>
      </attribute>
      <attribute name="verticalHeaderShowSortIndicator" stdset="0">
       <bool>true</bool>
