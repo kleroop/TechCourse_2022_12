@@ -35,6 +35,7 @@ private:
     CategoriesTree catTree;
     ICategory *activeTeam = nullptr;
 
+    int rowH = 0;
     bool isCreateTeamActive = false;
     bool isEditTeamActive = false;
 
@@ -44,10 +45,12 @@ private:
     void init();
 
     std::vector<std::string> getNames(std::vector<ICategory *> categories);
-	
+
     std::vector<std::string> getNames(std::vector<ICategory> categories);
 
     void setEditingTeam(ICategory *team);
+    void setDefault();
+
     void setDefault();
 
     void applyChanges();
