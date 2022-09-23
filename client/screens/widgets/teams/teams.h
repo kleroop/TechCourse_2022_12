@@ -49,10 +49,10 @@ private:
     std::vector<std::string> getNames(std::vector<ICategory> categories);
 
     void setEditingTeam(ICategory *team);
-
     void setDefault();
 
     void applyChanges();
+
     void createTeam();
     void cancel();
 
