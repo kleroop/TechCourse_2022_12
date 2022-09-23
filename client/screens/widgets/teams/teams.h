@@ -51,8 +51,6 @@ private:
     void setEditingTeam(ICategory *team);
     void setDefault();
 
-    void setDefault();
-
     void applyChanges();
 
     void createTeam();

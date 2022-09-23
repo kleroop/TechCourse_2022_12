@@ -13,6 +13,11 @@ static const QString EditButtonStyle = "background: transparent;\n"
                                        "color: rgb(215, 33, 48);\n"
                                        "font: 50 12pt \"Open Sans\";";
 
+static const QString EditButtonStyleActive = "background: #D72130;"
+                                             "border: none;"
+                                             "font: 50 12pt \"Open Sans\";"
+                                             "color: #FFFFFF;";
+
 static const QString DeleteButtonStyle = "background: transparent;\n"
                                          "background-image: url(:/Resources/trash_icon.png);\n"
                                          "padding: 10px;\n"
@@ -57,9 +62,11 @@ Teams::~Teams() {
 
 void Teams::setDefault() {
     catTree.updateLists();
+    ui->applyButton->setEnabled(false);
+    ui->applyButton->setText("Apply");
     fillComboBox(ui->catCBox, getNames(catTree.categories));
-    ui->catCBox->setCurrentIndex(0);
-    ui->locCBox->setCurrentIndex(0);
+    ui->catCBox->setCurrentIndex(-1);
+    ui->locCBox->setCurrentIndex(-1);
     ui->teamNameForm->clear();
     isCreateTeamActive = false;
     isEditTeamActive = false;
@@ -67,10 +74,19 @@ void Teams::setDefault() {
 }
 
 void Teams::init() {
+    ui->locCBox->setPlaceholderText("All");
+    ui->catCBox->setPlaceholderText("All");
+    ui->subCBox->setPlaceholderText("All");
     setDefault();
 }
 
+void setRowBackground(const QBrush &brush, QAbstractItemModel *model, int row, const QModelIndex &parent = QModelIndex()) {
+    for (int i = 0; i < model->columnCount(parent); ++i)
+        model->setData(model->index(row, i, parent), brush, Qt::BackgroundRole);
+}
+
 void Teams::fillTable() {
+    catTree.updateLists();
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(static_cast<int>(catTree.teams.size()));
     ui->tableWidget->sortByColumn(6, Qt::AscendingOrder); // for fix bug
@@ -86,12 +102,17 @@ void Teams::fillTable() {
         ui->tableWidget->setItem(row, 3, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
         ui->tableWidget->setItem(row, 4, new LeftAlignItem(QString::fromStdString(team->parent->title)));
 
-
         auto editButton = new QPushButton("Edit");
         editButton->setStyleSheet(EditButtonStyle);
         editButton->setCursor(Qt::PointingHandCursor);
+        editButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
         connect(editButton, &QPushButton::clicked, this, [=]{
             setEditingTeam(team);
+            for (int i =0; i <ui->tableWidget->rowCount(); i++){
+                ui->tableWidget->cellWidget(i, 5)->setStyleSheet(EditButtonStyle);
+            }
+            editButton->setStyleSheet(EditButtonStyleActive);
         });
 
         auto deleteButton = new QPushButton();
@@ -107,7 +128,9 @@ void Teams::fillTable() {
 
 void Teams::setEditingTeam(ICategory *team) {
     setDefault();
+    ui->applyButton->setText("Apply");
     isEditTeamActive = true;
+    checkApplyIsEnabled();
 
     activeTeam = team;
     ui->locCBox->setCurrentText(team->location.c_str());
@@ -130,6 +153,8 @@ void Teams::syncComboBox(int index) {
     if (index >= 0 && (unsigned int)index < catTree.categories.size()){
         ICategory *active = &catTree.categories[index];
         fillComboBox(ui->subCBox, getNames(active->children));
+    }else{
+        ui->subCBox->clear();
     }
 }
 
@@ -158,11 +183,14 @@ void Teams::applyChanges() {
     if (isCreateTeamActive) {
         ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
         ICategory *activeSubCategory = &activeCat->children[ui->subCBox->currentIndex()];
-        time_t now = time(0);
+        time_t now = time(nullptr);
         tm tstruct = *localtime(&now);
         activeSubCategory->children.push_back(Team(name_inbox, false, activeSubCategory, location_inbox, tstruct));
-        api.updateCategories(this->catTree,
-                             [=](const CategoriesTreeResponse &resp) { catTree.updateLists(); this->fillTable(); isCreateTeamActive = false; ui->catCBox->setCurrentIndex(0); ui->locCBox->setCurrentIndex(0); ui->teamNameForm->clear(); });
+        api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
+            this->fillTable();
+        });
+        setDefault();
+
     } else if (isEditTeamActive){
         activeTeam->location = location_inbox;
         activeTeam->title = name_inbox;
@@ -186,38 +214,37 @@ void Teams::applyChanges() {
             }
 
         }
-        api.updateCategories(this->catTree,
-                             [=](const CategoriesTreeResponse &resp) { catTree.updateLists(); this->fillTable(); isEditTeamActive = false; ui->catCBox->setCurrentIndex(0); ui->locCBox->setCurrentIndex(0); ui->teamNameForm->clear(); });
+        api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
+            this->fillTable();
+        });
+        setDefault();
     }
 
 }
 
 void Teams::createTeam()
 {
-    ui->applyButton->setEnabled(false);
-    ui->locCBox->setCurrentIndex(0);
+    setDefault();
+    ui->applyButton->setText("Add");
+    ui->locCBox->setCurrentIndex(1);
     ui->catCBox->setCurrentIndex(0);
     ui->subCBox->setCurrentIndex(0);
-    ui->teamNameForm->clear();
-
     isCreateTeamActive = true;
 }
 
 void Teams::checkApplyIsEnabled()
 {
-    bool isEnabled = !ui->teamNameForm->text().isEmpty() && !ui->subCBox->currentText().isEmpty() && !ui->locCBox->currentText().isEmpty() &&(isCreateTeamActive || isEditTeamActive);
+    bool isEnabled = !ui->teamNameForm->text().isEmpty()
+            && !ui->subCBox->currentText().isEmpty()
+            && !ui->locCBox->currentText().isEmpty()
+            &&(isCreateTeamActive || isEditTeamActive);
+
     ui->applyButton->setEnabled(isEnabled);
 }
 
 void Teams::cancel()
 {
-    ui->applyButton->setEnabled(false);
-    ui->locCBox->setCurrentIndex(0);
-    ui->catCBox->setCurrentIndex(0);
-    ui->subCBox->setCurrentIndex(0);
-    ui->teamNameForm->clear();
-    isCreateTeamActive = false;
-    isEditTeamActive = false;
+    setDefault();
 }
 
 

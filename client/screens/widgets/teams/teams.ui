@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>1137</width>
-    <height>689</height>
+    <height>562</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -90,11 +90,30 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>12</pointsize>
+          <family>Open Sans</family>
+          <pointsize>-1</pointsize>
+          <weight>75</weight>
+          <italic>false</italic>
+          <bold>true</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #D72130;
+border: 1px solid #C63638;
+border: none;
+
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 16px;
+color: #FFFFFF;</string>
+        </property>
         <property name="text">
-         <string>Create Team</string>
+         <string>+ Add team </string>
         </property>
        </widget>
       </item>
@@ -140,8 +159,23 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Roboto</family>
+            <pointsize>-1</pointsize>
+            <weight>62</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 10px;
+line-height: 12px;
+letter-spacing: 0.9px;
+text-transform: uppercase;
+color: #7F8899;
+</string>
           </property>
           <property name="text">
            <string>Location</string>
@@ -164,8 +198,27 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>11</pointsize>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #D4D9E2;
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 16px;
+color: #2B2F43;</string>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -203,8 +256,22 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Roboto</family>
+            <pointsize>-1</pointsize>
+            <weight>62</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 10px;
+line-height: 12px;
+letter-spacing: 0.9px;
+text-transform: uppercase;
+color: #7F8899;</string>
           </property>
           <property name="text">
            <string>Category</string>
@@ -227,8 +294,24 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>11</pointsize>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #D4D9E2;
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 16px;
+color: #2B2F43;</string>
           </property>
          </widget>
         </item>
@@ -266,8 +349,22 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Roboto</family>
+            <pointsize>-1</pointsize>
+            <weight>62</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 10px;
+line-height: 12px;
+letter-spacing: 0.9px;
+text-transform: uppercase;
+color: #7F8899;</string>
           </property>
           <property name="text">
            <string>Subcategory</string>
@@ -290,8 +387,24 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>11</pointsize>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #D4D9E2;
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 16px;
+color: #2B2F43;</string>
           </property>
          </widget>
         </item>
@@ -329,8 +442,22 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Roboto</family>
+            <pointsize>-1</pointsize>
+            <weight>62</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 10px;
+line-height: 12px;
+letter-spacing: 0.9px;
+text-transform: uppercase;
+color: #7F8899;</string>
           </property>
           <property name="text">
            <string>Team name</string>
@@ -353,15 +480,32 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #D4D9E2;
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 16px;
+color: #2B2F43;
+</string>
+          </property>
+          <property name="placeholderText">
+           <string>Name of team or player</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
      </item>
-     <item>
+     <item alignment="Qt::AlignBottom">
       <widget class="QPushButton" name="applyButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
@@ -377,15 +521,32 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <family>Open Sans</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
         </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #D72130;
+border: none;
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 16px;
+color: #FFFFFF;</string>
        </property>
        <property name="text">
         <string>Apply</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item alignment="Qt::AlignBottom">
       <widget class="QPushButton" name="cancelButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
@@ -401,8 +562,25 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <family>Open Sans</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
         </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #FFFFFF;
+border: none;
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 16px;
+color: #D72130;</string>
        </property>
        <property name="text">
         <string>Cancel</string>
@@ -447,8 +625,6 @@
 }
 
 QTableWidget {
-	padding-left: 35;
-	padding-right: 20;
 	padding-top: 15;
 	border: none;
 }
