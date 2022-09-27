@@ -1,5 +1,6 @@
 #include "teams.h"
 #include "ui_Teams.h"
+#include "confirmation_modal.h"
 
 static const std::vector<std::string> locations{
     "",         "Alabama",         "Alaska",        "Arizona",  "Arkansas",  "California",
@@ -73,15 +74,29 @@ void Teams::fillTable()
 
         ui->tableWidget->setItem(row, 0, new LeftAlignItem(QString::fromStdString(team->title)));
         ui->tableWidget->setItem(row, 1, new LeftAlignItem(QString::fromStdString(team->location)));
-        ui->tableWidget->setItem(row, 2, new LeftAlignItem(QString::fromStdString(dateAdded.str())));
-        ui->tableWidget->setItem(row, 3, new LeftAlignItem(QString::fromStdString(team->parent->title)));
-        ui->tableWidget->setItem(row, 4, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
+        ui->tableWidget->setItem(row, 2,
+                                 new LeftAlignItem(QString::fromStdString(dateAdded.str())));
+        ui->tableWidget->setItem(row, 3,
+                                 new LeftAlignItem(QString::fromStdString(team->parent->title)));
+        ui->tableWidget->setItem(
+                row, 4, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
 
         auto editButton = new QPushButton("Edit");
         editButton->setStyleSheet(EditButtonStyle);
 
+        connect(editButton, &QPushButton::clicked, this, [team, this]() { setEditingTeam(team); });
+
         auto deleteButton = new QPushButton();
         deleteButton->setStyleSheet(DeleteButtonStyle);
+
+        connect(deleteButton, &QPushButton::clicked, this, [team, this]() {
+            auto removalModal = new ConfirmationModal(
+                    "You are about to delete this team",
+                    "This team will be deleted from My Teams\nAre you sure?", "Delete", []() {},
+                    []() {}, this);
+
+            removalModal->onCall();
+        });
 
         ui->tableWidget->setCellWidget(row, 5, editButton);
         ui->tableWidget->setCellWidget(row, 6, deleteButton);
