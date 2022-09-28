@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "hover/hover.h"
 #include <QHoverEvent>
+#include <QMouseEvent>
 #include <QEvent>
 #include <QPushButton>
 #include "../../header/header.h"
@@ -23,10 +24,9 @@ public:
     ~ButtonDecorator() override;
 
     bool event(QEvent *) override;
-    void hoverEnter(QHoverEvent *event);
-    void hoverLeave(QHoverEvent *event);
-    void mouseButtonPress(QHoverEvent *event);
-
+    void hoverEnter();
+    void hoverLeave();
+    void mouseButtonPress();
     void setDefaultStyleSheet();
     void setData(QWidget *parent, Header *header, QWidget *parentWidget, QString text,
                  QString icon);

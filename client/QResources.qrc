@@ -8,6 +8,7 @@
         <file>Resources/user_prof_pic.png</file>
         <file>Resources/switch_icon.jpg</file>
         <file>Resources/dropdownIcon.png</file>
+        <file>Resources/trash_icon.png</file>
         <file>Resources/navigation_icons/hover_element.png</file>
         <file>Resources/navigation_icons/advertising_icon_active.png</file>
         <file>Resources/navigation_icons/partners_icon_active.png</file>
@@ -24,7 +25,6 @@
         <file>Resources/navigation_icons/surveys_icon.png</file>
         <file>Resources/navigation_icons/surveys_icon_active.png</file>
         <file>Resources/dropdownIcon.png</file>
-        <file>Resources/trash_icon.png</file>
         <file>Resources/switch_icon.jpg</file>
         <file>Resources/user_prof_pic.png</file>
         <file>Resources/navigation_icons/banners_icon.png</file>
@@ -34,7 +34,6 @@
         <file>Resources/image_BG.png</file>
         <file>Resources/navigation_icons/languages_icon.png</file>
         <file>Resources/navigation_icons/languages_icon_active.png</file>
-
         <file>Resources/fonts/open-sans/OpenSans-Bold.ttf</file>
         <file>Resources/fonts/open-sans/OpenSans-Regular.ttf</file>
         <file>Resources/fonts/open-sans/OpenSans-Semibold.ttf</file>

@@ -23,24 +23,21 @@ bool ButtonDecorator::event(QEvent *e)
 {
     switch (e->type()) {
     case QEvent::HoverEnter:
-        hoverEnter(dynamic_cast<QHoverEvent *>(e));
+        hoverEnter();
         return true;
-        break;
     case QEvent::HoverLeave:
-        hoverLeave(dynamic_cast<QHoverEvent *>(e));
+        hoverLeave();
         return true;
-        break;
     case QEvent::MouseButtonPress:
-        mouseButtonPress(dynamic_cast<QHoverEvent *>(e));
+        mouseButtonPress();
         return true;
-        break;
     default:
         break;
     }
     return QPushButton::event(e);
 }
 
-void ButtonDecorator::hoverEnter(QHoverEvent *event)
+void ButtonDecorator::hoverEnter()
 {
     hover = new Hover(parentWidget, this, this->parent, text);
     hover->show();
@@ -51,9 +48,10 @@ void ButtonDecorator::hoverEnter(QHoverEvent *event)
                         + this->icon + "_icon_active.png);\n");
 }
 
-void ButtonDecorator::hoverLeave(QHoverEvent *event)
+void ButtonDecorator::hoverLeave()
 {
-    hover->hide();
+    if (hover)
+        hover->hide();
     if (activeButtonDecorator == this) {
         this->setStyleSheet("border-radius: 27%;\n"
                             "padding: 13px;\n"
@@ -69,7 +67,7 @@ void ButtonDecorator::hoverLeave(QHoverEvent *event)
     }
 }
 
-void ButtonDecorator::mouseButtonPress(QHoverEvent *event)
+void ButtonDecorator::mouseButtonPress()
 {
     if (activeButtonDecorator && activeButtonDecorator != this)
         activeButtonDecorator->setDefaultStyleSheet();
