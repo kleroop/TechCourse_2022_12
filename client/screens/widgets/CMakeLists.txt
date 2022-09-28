@@ -6,6 +6,7 @@ add_subdirectory(header)
 add_subdirectory(navigation)
 add_subdirectory(main_navigation)
 add_subdirectory(info_arch)
+add_subdirectory(image_view)
 add_subdirectory(teams)
 
 add_library(client_widgets INTERFACE)

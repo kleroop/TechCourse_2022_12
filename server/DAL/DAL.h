@@ -90,9 +90,10 @@ public:
     SubCategory *scat;
     string location;
     Poco::DateTime dateCreated;
+    Poco::Nullable<Poco::Data::BLOB> icon;
 
     Team(string name, bool isHidden, SubCategory *scat, string location,
-         Poco::DateTime dateCreated);
+         Poco::DateTime dateCreated, Poco::Nullable<Poco::Data::BLOB> icon);
     Team() = default;
     void Create() override;
     vector<Team> Select(string query, Bindings binds) override;
