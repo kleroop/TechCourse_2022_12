@@ -1,5 +1,6 @@
 #include "teams.h"
 #include "ui_Teams.h"
+#include <image_view.h>
 
 static const std::vector<std::string> locations{
         "", "Alabama", "Alaska", "Arizona", "Arkansas", "California",
@@ -33,6 +34,8 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams) {
     ui->tableWidget->setShowGrid(false);
     ui->tableWidget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->tableWidget->verticalHeader()->setVisible(false);
+    ui->iconLayout->replaceWidget(ui->iconView, new image_view(this));
+    delete ui->iconView;
 
     api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
                 "eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW"
