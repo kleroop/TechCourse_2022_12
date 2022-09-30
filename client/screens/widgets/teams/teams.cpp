@@ -34,7 +34,8 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams) {
     ui->tableWidget->setShowGrid(false);
     ui->tableWidget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->tableWidget->verticalHeader()->setVisible(false);
-    ui->iconLayout->replaceWidget(ui->iconView, new image_view(this));
+    img = new image_view(this);
+    ui->iconLayout->replaceWidget(ui->iconView, img);
     delete ui->iconView;
 
     api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
@@ -61,6 +62,17 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams) {
 
 Teams::~Teams() {
     delete ui;
+}
+
+static ICData imageToBytes(const QImage &qImage){
+    ICData icon_bytes(qImage.constBits(), qImage.constBits() + qImage.sizeInBytes());
+    return icon_bytes;
+}
+
+static QImage bytesToImage(const ICData &icon_bytes){
+    QImage qImage;
+    bool flag = qImage.loadFromData(icon_bytes.data(), icon_bytes.size());
+    return qImage;
 }
 
 void Teams::setDefault() {
@@ -136,6 +148,10 @@ void Teams::setEditingTeam(ICategory *team) {
     checkApplyIsEnabled();
 
     activeTeam = team;
+    img->clear();
+    if (!team->icon.empty()){
+        img->setImage(bytesToImage(team->icon));
+    }
     ui->locCBox->setCurrentText(team->location.c_str());
     ui->catCBox->setCurrentText(team->parent->parent->title.c_str());
     ui->subCBox->setCurrentText(team->parent->title.c_str());
@@ -177,18 +193,25 @@ std::vector<std::string> Teams::getNames(std::vector<ICategory> categories) {
     return names;
 }
 
+
 void Teams::applyChanges() {
     std::string location_inbox = ui->locCBox->currentText().toStdString();
     std::string cat_inbox = ui->catCBox->currentText().toStdString();
     std::string sub_inbox = ui->subCBox->currentText().toStdString();
     std::string name_inbox = ui->teamNameForm->text().toStdString();
+    ICData icon_bytes = {};
+    if (!img->getImage().isNull())
+    {
+        QImage qImage = qvariant_cast<QImage>(img->getImage());
+        icon_bytes = imageToBytes(qImage);
+    }
 
     if (isCreateTeamActive) {
         ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
         ICategory *activeSubCategory = &activeCat->children[ui->subCBox->currentIndex()];
         time_t now = time(nullptr);
         tm tstruct = *localtime(&now);
-        activeSubCategory->children.push_back(Team(name_inbox, false, activeSubCategory, location_inbox, tstruct));
+        activeSubCategory->children.push_back(Team(name_inbox, false, activeSubCategory, location_inbox, tstruct, icon_bytes));
         api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
             this->fillTable();
         });
@@ -197,7 +220,7 @@ void Teams::applyChanges() {
     } else if (isEditTeamActive){
         activeTeam->location = location_inbox;
         activeTeam->title = name_inbox;
-
+        // TODO: edit icon
         if (!ui->subCBox->currentText().isEmpty()) {
             ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
             ICategory *activeSub = &activeCat->children[ui->subCBox->currentIndex()];

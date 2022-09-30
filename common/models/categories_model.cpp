@@ -50,9 +50,10 @@ json ICategory::serialize()
     if (type == CategoryTypes::TEAM) {
         response["location"] = location;
         response["dateCreated"] = serialize_iso8601(dateCreated);
-        if (icon.size() > 0) {
+        if (!icon.empty()) {
             size_t b64_len = Base64encode_len(icon.size());
             char *b64 = new char[b64_len];
+            Base64encode(b64, (char*)icon.data(), icon.size());
             response["icon"] = string(b64, b64_len);
             delete[] b64;
         } else {

@@ -23,9 +23,9 @@ public slots:
     void mousePressEvent(QMouseEvent *event) override;
 private:
     QVariant image;
-    void setImage(QImage img);
     Ui::image_view *ui;
 public:
+    void setImage(QImage img);
     image_view(QWidget *parent);
     ~image_view() override;
     QVariant getImage();
