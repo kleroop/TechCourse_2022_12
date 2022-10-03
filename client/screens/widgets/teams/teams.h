@@ -56,6 +56,8 @@ private:
     void createTeam();
     void cancel();
 
+    void deleteTeam(ICategory* team);
+
     Ui::Teams *ui;
 };
 

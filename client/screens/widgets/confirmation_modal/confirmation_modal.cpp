@@ -51,16 +51,10 @@ ConfirmationModal::ConfirmationModal(QString _title, QString _message, QString _
 
     this->move(parent->window()->width() / 2 - this->width() / 2,
                parent->window()->height() / 2 - this->height() / 2);
-
 }
 
 ConfirmationModal::~ConfirmationModal()
 {
     delete overlay;
     delete ui;
-}
-
-void ConfirmationModal::onCall()
-{
-    this->show();
 }

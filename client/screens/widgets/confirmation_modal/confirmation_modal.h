@@ -22,11 +22,9 @@ class ConfirmationModal : public QWidget
 
 public:
     explicit ConfirmationModal(QString _title, QString _message, QString _confirmLabel,
-                               ModalCallback  _onConfirm, ModalCallback  _onCancel,
+                               ModalCallback _onConfirm, ModalCallback _onCancel,
                                QWidget *parent = nullptr);
     ~ConfirmationModal() override;
-
-    void onCall();
 
 private:
     QString title;
