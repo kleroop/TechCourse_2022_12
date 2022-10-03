@@ -32,8 +32,9 @@ public:
     // todo add position
 };
 
-class Category : public ICategory
-{
+struct tm fixDate(struct tm date);
+
+class Category : public ICategory {
 public:
     Category(std::string title, bool isHidden, ICategory *parent = nullptr)
         : ICategory(std::move(title), isHidden, parent)
@@ -61,7 +62,7 @@ public:
     {
         this->type = CategoryTypes::TEAM;
         this->location = std::move(location);
-        this->dateCreated = dateCreated;
+        this->dateCreated = fixDate(dateCreated);
     }
     json serialize() override;
     void deserialize(json data) override;
@@ -99,6 +100,5 @@ public:
     CategoriesTree categoriesTree;
 };
 
-struct tm fixDate(struct tm date);
 
 #endif

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1247</width>
-    <height>598</height>
+    <width>1250</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -25,6 +25,21 @@
    <string>Teams</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="horizontalFrame">
      <property name="minimumSize">
@@ -34,6 +49,18 @@
       </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -63,11 +90,31 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>12</pointsize>
+          <family>Open Sans</family>
+          <pointsize>-1</pointsize>
+          <weight>75</weight>
+          <italic>false</italic>
+          <bold>true</bold>
          </font>
         </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #D72130;
+                                        border: 1px solid #C63638;
+                                        border: none;
+
+                                        font-family: 'Open Sans';
+                                        font-style: normal;
+                                        font-weight: 600;
+                                        font-size: 12px;
+                                        line-height: 16px;
+                                        color: #FFFFFF;
+                                    </string>
+        </property>
         <property name="text">
-         <string>Create Team</string>
+         <string>+ Add team</string>
         </property>
        </widget>
       </item>
@@ -76,6 +123,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="editingFrame">
+     <property name="spacing">
+      <number>7</number>
+     </property>
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
@@ -88,6 +138,18 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="label_7">
           <property name="sizePolicy">
@@ -98,8 +160,23 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Roboto</family>
+            <pointsize>-1</pointsize>
+            <weight>62</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Roboto';
+                                                font-style: normal;
+                                                font-weight: 500;
+                                                font-size: 10px;
+                                                line-height: 12px;
+                                                letter-spacing: 0.9px;
+                                                text-transform: uppercase;
+                                                color: #7F8899;
+                                            </string>
           </property>
           <property name="text">
            <string>Location</string>
@@ -122,8 +199,40 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>11</pointsize>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QComboBox {
+	border: 1px solid #D4D9E2;
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	color: #2B2F43;
+}
+
+QComboBox::drop-down:button {
+	border: none;
+	padding-right: 5px;
+}
+
+QComboBox::down-arrow {
+	image: url(:/Resources/dropdownIcon.png);
+	widht: 10px;
+	height: 10px;
+}</string>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -138,7 +247,41 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+	border: 1px solid #D4D9E2;
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	color: #2B2F43;
+}
+
+QComboBox::drop-down:button {
+	border: none;
+	padding-right: 5px;
+}
+
+QComboBox::down-arrow {
+	image: url(:/Resources/dropdownIcon.png);
+	widht: 10px;
+	height: 10px;
+}</string>
+       </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="label_8">
           <property name="sizePolicy">
@@ -149,8 +292,23 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Roboto</family>
+            <pointsize>-1</pointsize>
+            <weight>62</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Roboto';
+                                                font-style: normal;
+                                                font-weight: 500;
+                                                font-size: 10px;
+                                                line-height: 12px;
+                                                letter-spacing: 0.9px;
+                                                text-transform: uppercase;
+                                                color: #7F8899;
+                                            </string>
           </property>
           <property name="text">
            <string>Category</string>
@@ -173,8 +331,25 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>11</pointsize>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #D4D9E2;
+                                                font-family: 'Open Sans';
+                                                font-style: normal;
+                                                font-weight: 600;
+                                                font-size: 12px;
+                                                line-height: 16px;
+                                                color: #2B2F43;
+                                            </string>
           </property>
          </widget>
         </item>
@@ -190,6 +365,18 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="label_9">
           <property name="sizePolicy">
@@ -200,8 +387,23 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Roboto</family>
+            <pointsize>-1</pointsize>
+            <weight>62</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Roboto';
+                                                font-style: normal;
+                                                font-weight: 500;
+                                                font-size: 10px;
+                                                line-height: 12px;
+                                                letter-spacing: 0.9px;
+                                                text-transform: uppercase;
+                                                color: #7F8899;
+                                            </string>
           </property>
           <property name="text">
            <string>Subcategory</string>
@@ -224,8 +426,37 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>11</pointsize>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QComboBox {
+	border: 1px solid #D4D9E2;
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	color: #2B2F43;
+}
+
+QComboBox::drop-down:button {
+	border: none;
+	padding-right: 5px;
+}
+
+QComboBox::down-arrow {
+	image: url(:/Resources/dropdownIcon.png);
+	widht: 10px;
+	height: 10px;
+}</string>
           </property>
          </widget>
         </item>
@@ -241,6 +472,18 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_5">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QLabel" name="label_6">
           <property name="sizePolicy">
@@ -251,8 +494,23 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Roboto</family>
+            <pointsize>-1</pointsize>
+            <weight>62</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">font-family: 'Roboto';
+                                                font-style: normal;
+                                                font-weight: 500;
+                                                font-size: 10px;
+                                                line-height: 12px;
+                                                letter-spacing: 0.9px;
+                                                text-transform: uppercase;
+                                                color: #7F8899;
+                                            </string>
           </property>
           <property name="text">
            <string>Team name</string>
@@ -262,7 +520,7 @@
         <item>
          <widget class="QLineEdit" name="teamNameForm">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -275,60 +533,137 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: 1px solid #D4D9E2;
+                                                font-family: 'Open Sans';
+                                                font-style: normal;
+                                                font-weight: 600;
+                                                font-size: 12px;
+                                                line-height: 16px;
+                                                color: #2B2F43;
+                                            </string>
+          </property>
+          <property name="placeholderText">
+           <string>Name of team or player</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="applyButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+     <item alignment="Qt::AlignBottom">
+      <widget class="QFrame" name="frame_2">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>35</height>
-        </size>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Apply</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Cancel</string>
-       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="applyButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: #D72130;
+                                    border: none;
+                                    font-family: 'Open Sans';
+                                    font-style: normal;
+                                    font-weight: 600;
+                                    font-size: 12px;
+                                    line-height: 16px;
+                                    color: #FFFFFF;
+                                </string>
+          </property>
+          <property name="text">
+           <string>Apply</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cancelButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Open Sans</family>
+            <pointsize>-1</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: #FFFFFF;
+                                    border: none;
+                                    font-family: 'Open Sans';
+                                    font-style: normal;
+                                    font-weight: 600;
+                                    font-size: 12px;
+                                    line-height: 16px;
+                                    color: #D72130;
+                                </string>
+          </property>
+          <property name="text">
+           <string>Cancel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
@@ -344,7 +679,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -357,8 +692,94 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QHeaderView::section {
+	font-family: &quot;url(:/Resources/fonts/open-sans/OpenSans-Semibold.ttf)&quot;;
+	font-weight: 500;
+	font-size: 12px;
+	color: rgb(67, 76, 93);
+	border: none;
+	margin: 0;
+	padding: 0;
+	padding-top: 5px;
+}
+
+QTableWidget {
+	padding-top: 15;
+	border: none;
+}
+
+QTableWidget::item {
+	font-family: &quot;url(:/Resources/fonts/open-sans/OpenSans-Semibold.ttf)&quot;;
+	font-weight: 400;
+	font-size: 16px;
+	color: rgb(43, 47, 67);
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	border-bottom: 1px solid rgb(212, 217, 226);
+	padding-top: 15;
+	padding-bottom: 15;
+}
+
+QScrollBar:horizontal {              
+        border: none;
+        background:white;
+        height: 8px;
+        margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop: 0 rgb(157, 157, 147), stop: 0.5 rgb(157, 157, 147), stop:1 rgb(157, 157, 147));
+    min-height: 0px;
+}
+QScrollBar::add-line:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+    stop: 0 rgb(157, 157, 147), stop: 0.5 rgb(157, 157, 147),  stop:1 rgb(157, 157, 147));
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+    stop: 0  rgb(157, 157, 147), stop: 0.5 rgb(157, 157, 147),  stop:1 rgb(157, 157, 147));
+    height: 0 px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar:vertical {              
+        border: none;
+        background:white;
+        width: 8px;    
+        margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop: 0 rgb(157, 157, 147), stop: 0.5 rgb(157, 157, 147), stop:1 rgb(157, 157, 147));
+    min-height: 0px;
+}
+QScrollBar::add-line:vertical {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+    stop: 0 rgb(157, 157, 147), stop: 0.5 rgb(157, 157, 147),  stop:1 rgb(157, 157, 147));
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+    stop: 0  rgb(157, 157, 147), stop: 0.5 rgb(157, 157, 147),  stop:1 rgb(157, 157, 147));
+    height: 0 px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustIgnored</enum>
+     </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showGrid">
+      <bool>true</bool>
      </property>
      <property name="sortingEnabled">
       <bool>true</bool>
@@ -372,8 +793,17 @@
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>170</number>
      </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>10</number>
+     </attribute>
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>30</number>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>25</number>
      </attribute>
      <attribute name="verticalHeaderShowSortIndicator" stdset="0">
       <bool>true</bool>
@@ -381,16 +811,6 @@
      <attribute name="verticalHeaderStretchLastSection">
       <bool>false</bool>
      </attribute>
-     <row>
-      <property name="text">
-       <string>Test1</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>Test2</string>
-      </property>
-     </row>
      <column>
       <property name="text">
        <string>TEAM</string>
@@ -426,65 +846,12 @@
        <string/>
       </property>
      </column>
-     <item row="0" column="0">
-      <property name="text">
-       <string>Blah</string>
-      </property>
-     </item>
-     <item row="0" column="1">
-      <property name="text">
-       <string>Bleh</string>
-      </property>
-     </item>
-     <item row="0" column="2">
-      <property name="text">
-       <string>42</string>
-      </property>
-     </item>
-     <item row="0" column="3">
-      <property name="text">
-       <string>Categoty</string>
-      </property>
-     </item>
-     <item row="0" column="4">
-      <property name="text">
-       <string>Subcategory</string>
-      </property>
-     </item>
-     <item row="0" column="5">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="1" column="0">
-      <property name="text">
-       <string>Hdjsdn</string>
-      </property>
-     </item>
-     <item row="1" column="1">
-      <property name="text">
-       <string>ksnfjsnfsj</string>
-      </property>
-     </item>
-     <item row="1" column="2">
-      <property name="text">
-       <string>29323</string>
-      </property>
-     </item>
-     <item row="1" column="3">
-      <property name="text">
-       <string>nmsndsnd</string>
-      </property>
-     </item>
-     <item row="1" column="4">
-      <property name="text">
-       <string>kfsfnskjfn</string>
-      </property>
-     </item>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../QResources.qrc"/>
+ </resources>
  <connections/>
 </ui>

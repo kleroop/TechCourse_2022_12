@@ -18,11 +18,11 @@ class MainButton : public QPushButton
 
 public:
     explicit MainButton(QWidget *parent = nullptr, Header *header = nullptr,
-                        const QString &text = nullptr);
+                        const QString &text = nullptr, bool isHidden = false);
     ~MainButton() override;
 
     bool event(QEvent *) override;
-    void mouseButtonPress(QHoverEvent *event);
+    void mouseButtonPress();
     void setDefaultStyleSheet();
     void setActiveStyleSheet();
 
@@ -30,8 +30,10 @@ private:
     Ui::MainButton *ui;
     QString text;
     Header *header;
+    bool isHidden;
 };
 
 extern MainButton *activeMainButton;
+extern bool clickedActiveButton;
 
 #endif // QTWORLD_MAIN_BUTTON_H

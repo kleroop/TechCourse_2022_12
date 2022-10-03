@@ -13,6 +13,7 @@ InfoArch::InfoArch(QWidget *parent) : QWidget(parent), ui(new Ui::InfoArch)
     api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
                 "eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW"
                 "4ifQ.E9AEDCWuVSrbPKS9CBeG0H4PD56tcqY4PhX5bMWnP4k";
+
     api.getCategories([=](const CategoriesTreeResponse &resp) {
         this->catTree = resp.categoriesTree;
         fillCategories();
