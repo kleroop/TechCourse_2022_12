@@ -4,15 +4,14 @@ project(QTWorld)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#[[ todo: use cppunit
 include(FetchContent)
 FetchContent_Declare(
-        cunit
-        GIT_REPOSITORY https://gitlab.com/cunity/cunit.git
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.12.1
 )
-
-FetchContent_MakeAvailable(cunit)
-]]
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
 # Global compilation options
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
@@ -24,6 +23,9 @@ include(cmake/utils.cmake)
 
 find_package(nlohmann_json CONFIG REQUIRED)
 
+set(ALL_SRCS CACHE INTERNAL "mydescription" FORCE)
+
 add_subdirectory(common)
 add_subdirectory(client)
 add_subdirectory(server)
+add_subdirectory(tests)

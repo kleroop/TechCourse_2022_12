@@ -21,4 +21,6 @@ target_link_libraries(client PRIVATE
         common
         client::utils client::api client::widgets)
 
+set(ALL_SRCS ${ALL_SRCS} CACHE INTERNAL "description")
+
 windeployqt(client)
