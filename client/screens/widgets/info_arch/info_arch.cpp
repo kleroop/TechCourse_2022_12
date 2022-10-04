@@ -70,8 +70,8 @@ std::vector<CustomButton *> InfoArch::getCustomButtons(const std::vector<ICatego
     return result;
 }
 
-
-void InfoArch::setActiveCat(ICategory *category) {
+void InfoArch::setActiveCat(ICategory *category)
+{
     this->activeCategory = category;
     setActiveSubCat(nullptr);
     clearLayout(ui->subCategoriesFrame->layout());

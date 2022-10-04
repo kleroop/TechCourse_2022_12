@@ -6,15 +6,13 @@
 #include <nlohmann/json.hpp>
 #include <QNetworkAccessManager>
 #include <functional>
-#include <QNetworkReply>
-#include <QEventLoop>
 
 using nlohmann::json;
 using std::string;
-class Api : public QObject{
-Q_OBJECT
+class Api
+{
 public:
-    Api(QNetworkAccessManager *mng = nullptr);
+    Api();
     ~Api();
     void login(string email, string password, const std::function<void(const AuthResponse &)> &f);
 
@@ -27,9 +25,8 @@ public:
 
 private:
     QNetworkAccessManager *manager;
-
     void makeRequest(string path, json inp, string token,
                      const std::function<void(const json &)> &f);
 };
 
-#endif
+#endif // API_H

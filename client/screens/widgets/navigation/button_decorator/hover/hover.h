@@ -15,11 +15,13 @@ class Hover : public QWidget
     Q_OBJECT
 
 public:
-    explicit Hover(QWidget *parent = nullptr, QPushButton *hoverButton = nullptr, QWidget *ParentButton = nullptr, const QString &text = nullptr);
+    explicit Hover(QWidget *parent = nullptr, QPushButton *hoverButton = nullptr,
+                   QWidget *ParentButton = nullptr, const QString &text = nullptr);
     ~Hover() override;
 
     void setHoverText();
     void setPos();
+
 private:
     Ui::Hover *ui;
     QPushButton *hoverButton;

@@ -3,7 +3,6 @@
 #include "info_arch.h"
 #include "teams.h"
 
-
 Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home)
 {
     ui->setupUi(this);
@@ -44,7 +43,6 @@ Home::~Home()
 void Home::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
-
 }
 
 void Home::switchUserView()
@@ -75,20 +73,15 @@ void Home::switchAdminView()
 
 bool Home::event(QEvent *event)
 {
-    if (activeButtonDecorator && previousActiveButtonDecorator == nullptr)
-    {
-        if (activeMainButton)
-        {
+    if (activeButtonDecorator && previousActiveButtonDecorator == nullptr) {
+        if (activeMainButton) {
             activeMainButton->setDefaultStyleSheet();
             activeMainButton = nullptr;
             previousActiveMainButton = nullptr;
         }
         previousActiveButtonDecorator = activeButtonDecorator;
-    }
-    else if (activeMainButton && previousActiveMainButton == nullptr)
-    {
-        if (activeButtonDecorator)
-        {
+    } else if (activeMainButton && previousActiveMainButton == nullptr) {
+        if (activeButtonDecorator) {
             activeButtonDecorator->setDefaultStyleSheet();
             activeButtonDecorator = nullptr;
             previousActiveButtonDecorator = nullptr;
@@ -99,40 +92,54 @@ bool Home::event(QEvent *event)
     return QWidget::event(event);
 }
 
-
 bool Home::eventFilter(QObject *watched, QEvent *event)
 {
 
-    if (event->type() == QEvent::MouseButtonPress && watched == userProfile->getSwitchButton())
-    {
-        if (isAdminSwiched)
-        {
+    if (event->type() == QEvent::MouseButtonPress && watched == userProfile->getSwitchButton()) {
+        if (isAdminSwiched) {
             switchUserView();
-        }
-        else
-        {
+        } else {
             switchAdminView();
         }
     }
 
-    if (event->type() == QEvent::MouseButtonPress && watched == HeaderWidget->getSaveButton())
-    {
+    if (event->type() == QEvent::MouseButtonPress && watched == HeaderWidget->getSaveButton()) {
         MainNavigationWidget->updateCategoriesAdminView();
         activeMainButton = nullptr;
     }
 
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[0]) ui->stackedWidget->setCurrentIndex(0);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[1]) ui->stackedWidget->setCurrentIndex(0);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[2]) ui->stackedWidget->setCurrentIndex(0);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[3]) ui->stackedWidget->setCurrentIndex(0);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[4]) ui->stackedWidget->setCurrentIndex(0);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[5]) ui->stackedWidget->setCurrentIndex(0);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[6]) ui->stackedWidget->setCurrentIndex(2);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[7]) ui->stackedWidget->setCurrentIndex(3);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[8]) ui->stackedWidget->setCurrentIndex(0);
-    if (event->type() == QEvent::MouseButtonPress && watched == NavigationWidget->buttonDecoratorArray[9]) ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[0])
+        ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[1])
+        ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[2])
+        ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[3])
+        ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[4])
+        ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[5])
+        ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[6])
+        ui->stackedWidget->setCurrentIndex(2);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[7])
+        ui->stackedWidget->setCurrentIndex(3);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[8])
+        ui->stackedWidget->setCurrentIndex(0);
+    if (event->type() == QEvent::MouseButtonPress
+        && watched == NavigationWidget->buttonDecoratorArray[9])
+        ui->stackedWidget->setCurrentIndex(0);
 
-    if (isAdminSwiched ){
+    if (isAdminSwiched) {
         // scroll right button action
         if (event->type() == QEvent::MouseButtonPress
             && watched == HeaderWidget->getRightScrollButton()) {

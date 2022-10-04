@@ -18,10 +18,10 @@ class Navigation : public QWidget
     Q_OBJECT
 
 public:
-    explicit Navigation(QWidget *parent = nullptr, Header* header = nullptr);
+    explicit Navigation(QWidget *parent = nullptr, Header *header = nullptr);
     ~Navigation() override;
 
-    QWidget* getMainNavigationWidget();
+    QWidget *getMainNavigationWidget();
 
     void setHideButton();
     void setShowButton();
