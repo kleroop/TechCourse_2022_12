@@ -1,5 +1,4 @@
 #include <api.h>
-#include <QNetworkReply>
 
 static json toJson(QNetworkReply *reply)
 {
@@ -26,9 +25,13 @@ static QByteArray toQtByteArray(const json &document)
     return data;
 }
 
-Api::Api()
+Api::Api(QNetworkAccessManager *mng)
 {
-    manager = new QNetworkAccessManager();
+    if(!mng){
+        manager = new QNetworkAccessManager();
+    }else{
+        manager = mng;
+    }
 }
 
 Api::~Api()
