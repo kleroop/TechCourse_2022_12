@@ -17,11 +17,10 @@ QT_END_NAMESPACE
 class MainNavigation : public QWidget
 {
 public:
-    explicit MainNavigation(QWidget *parent = nullptr, Header *header = nullptr,
-                            bool _isAdminSwiched = true);
+    explicit MainNavigation(QWidget *parent = nullptr, Header *header = nullptr, bool _isAdminSwiched = true);
     ~MainNavigation() override;
 
-    MainButton *addNewButton(const QString &text, bool isHidden);
+    MainButton* addNewButton(const QString &text, bool isHidden);
 
     QVector<MainButton *> getMainButtonVector();
     void updateCategoriesAdminView();
@@ -34,7 +33,7 @@ private:
     Ui::MainNavigation *ui;
     Api api;
     CategoriesTree catTree;
-    //    void deleteButton(MainButton* mainButton);
+//    void deleteButton(MainButton* mainButton);
     Header *header;
     bool isAdminSwiched;
 };

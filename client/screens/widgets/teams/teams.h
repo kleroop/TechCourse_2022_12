@@ -35,7 +35,7 @@ private:
     Api api;
     CategoriesTree catTree;
     ICategory *activeTeam = nullptr;
-    image_view *img;
+    image_view* img;
 
     int rowH = 0;
     bool isCreateTeamActive = false;
@@ -64,7 +64,10 @@ private:
 class LeftAlignItem : public QTableWidgetItem
 {
 public:
-    LeftAlignItem(const QString &text) : QTableWidgetItem(text) { setTextAlignment(Qt::AlignLeft); }
+    LeftAlignItem(const QString& text) : QTableWidgetItem(text)
+    {
+        setTextAlignment(Qt::AlignLeft);
+    }
 };
 
 #endif

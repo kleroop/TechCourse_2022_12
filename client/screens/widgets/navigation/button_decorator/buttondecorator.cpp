@@ -3,7 +3,7 @@
 #include <utility>
 #include "ui_ButtonDecorator.h"
 
-ButtonDecorator *activeButtonDecorator = nullptr;
+ButtonDecorator * activeButtonDecorator = nullptr;
 
 ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new Ui::ButtonDecorator)
 {
@@ -14,14 +14,14 @@ ButtonDecorator::ButtonDecorator(QWidget *parent) : QPushButton(parent), ui(new 
 
 ButtonDecorator::~ButtonDecorator()
 {
-    if (hover)
-        delete hover;
+    if (hover) delete hover;
     delete ui;
 }
 
-bool ButtonDecorator::event(QEvent *e)
+bool ButtonDecorator::event(QEvent * e)
 {
-    switch (e->type()) {
+    switch(e->type())
+    {
     case QEvent::HoverEnter:
         hoverEnter();
         return true;
@@ -44,41 +44,39 @@ void ButtonDecorator::hoverEnter()
     this->setStyleSheet("border-radius: 27%;\n"
                         "padding: 13px;\n"
                         "background: #f9f9fb;\n"
-                        "image: url(:/Resources/navigation_icons/"
-                        + this->icon + "_icon_active.png);\n");
+                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon_active.png);\n");
 }
 
 void ButtonDecorator::hoverLeave()
 {
-    if (hover)
-        hover->hide();
-    if (activeButtonDecorator == this) {
+    if (hover) hover->hide();
+    if (activeButtonDecorator == this)
+    {
         this->setStyleSheet("border-radius: 27%;\n"
                             "padding: 13px;\n"
                             "background-color: none;\n"
-                            "image: url(:/Resources/navigation_icons/"
-                            + this->icon + "_icon_active.png);\n");
-    } else {
+                            "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon_active.png);\n");
+    }
+    else
+    {
         this->setStyleSheet("border-radius: 27%;\n"
                             "padding: 13px;\n"
                             "background-color: none;\n"
-                            "image: url(:/Resources/navigation_icons/"
-                            + this->icon + "_icon.png);\n");
+                            "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
     }
 }
 
 void ButtonDecorator::mouseButtonPress()
 {
-    if (activeButtonDecorator && activeButtonDecorator != this)
-        activeButtonDecorator->setDefaultStyleSheet();
-    if (activeButtonDecorator != this) {
+    if (activeButtonDecorator && activeButtonDecorator != this) activeButtonDecorator->setDefaultStyleSheet();
+    if (activeButtonDecorator != this)
+    {
         activeButtonDecorator = this;
         header->setSectionName(text);
     }
 }
 
-void ButtonDecorator::setData(QWidget *parent, Header *header, QWidget *parentWidget, QString text,
-                              QString icon)
+void ButtonDecorator::setData(QWidget *parent, Header* header, QWidget *parentWidget, QString text, QString icon)
 {
     this->parent = parent;
     this->parentWidget = parentWidget;
@@ -91,6 +89,5 @@ void ButtonDecorator::setDefaultStyleSheet()
     this->setStyleSheet("border-radius: 27%;\n"
                         "padding: 13px;\n"
                         "background-color: none;\n"
-                        "image: url(:/Resources/navigation_icons/"
-                        + this->icon + "_icon.png);\n");
+                        "image: url(:/Resources/navigation_icons/" + this->icon  + "_icon.png);\n");
 }

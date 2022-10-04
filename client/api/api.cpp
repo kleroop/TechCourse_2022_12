@@ -42,8 +42,8 @@ void Api::makeRequest(string path, json inp, string token,
     QNetworkRequest request(QUrl(QString::fromStdString("http://localhost:5000" + path)));
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    /* string s = to_string(inp);
-     const char *cs = s.c_str();*/
+   /* string s = to_string(inp);
+    const char *cs = s.c_str();*/
     string headerData = "Bearer " + token;
     request.setRawHeader("Authorization", QByteArray::fromStdString(headerData));
 

@@ -21,11 +21,9 @@ public slots:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-
 private:
     QVariant image;
     Ui::image_view *ui;
-
 public:
     void setImage(QImage img);
     image_view(QWidget *parent);

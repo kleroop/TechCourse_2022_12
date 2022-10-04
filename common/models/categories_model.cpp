@@ -53,7 +53,7 @@ json ICategory::serialize()
         if (!icon.empty()) {
             size_t b64_len = Base64encode_len(icon.size());
             char *b64 = new char[b64_len];
-            Base64encode(b64, (char *)icon.data(), icon.size());
+            Base64encode(b64, (char*)icon.data(), icon.size());
             response["icon"] = string(b64, b64_len);
             delete[] b64;
         } else {
@@ -101,7 +101,7 @@ void ICategory::deserialize(json data)
     if (data.contains("icon") && data["icon"] != nullptr) {
         const string &idata = data["icon"].get<string>();
         size_t bdata_len = Base64decode_len(idata.c_str());
-        uint8_t *bdata = new uint8_t[bdata_len];
+        uint8_t *bdata = new uint8_t [bdata_len];
         Base64decode((char *)bdata, idata.c_str());
         icon = { bdata, bdata + bdata_len };
         delete[] bdata;

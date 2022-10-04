@@ -52,10 +52,11 @@ void image_view::dropEvent(QDropEvent *event)
         QList<QUrl> urlList = mime->urls();
         QImage img;
 
+
         if (img.load(urlList.at(0).toLocalFile())) {
             setImage(img);
             event->accept();
-            return;
+            return ;
         }
     }
     event->ignore();

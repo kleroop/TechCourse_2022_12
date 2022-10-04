@@ -9,6 +9,7 @@
 enum CategoryTypes { CATEGORY, SUBCATEGORY, TEAM };
 typedef std::vector<uint8_t> ICData;
 
+
 class ICategory : public ISerializable
 {
 public:
@@ -31,13 +32,13 @@ public:
     struct tm dateCreated = {};
     ICData icon = {};
 
+
     // todo add position
 };
 
 struct tm fixDate(struct tm date);
 
-class Category : public ICategory
-{
+class Category : public ICategory {
 public:
     Category(std::string title, bool isHidden, ICategory *parent = nullptr)
         : ICategory(std::move(title), isHidden, parent)
@@ -59,8 +60,7 @@ public:
 class Team : public ICategory
 {
 public:
-    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "",
-         struct tm dateCreated = {}, ICData img = {})
+    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "", struct tm dateCreated = {}, ICData img={})
         : ICategory(std::move(title), isHidden, parent)
     {
         this->type = CategoryTypes::TEAM;
@@ -103,5 +103,6 @@ public:
 
     CategoriesTree categoriesTree;
 };
+
 
 #endif

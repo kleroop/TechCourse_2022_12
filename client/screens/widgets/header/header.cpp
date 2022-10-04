@@ -44,7 +44,7 @@ void Header::switchAdminView()
     ui->frame_3->show();
 }
 
-QPushButton *Header::getSaveButton()
+QPushButton* Header::getSaveButton()
 {
     return ui->saveButton;
 }

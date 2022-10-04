@@ -45,12 +45,7 @@ cmake --build build
 ```
 
 ## Code Style
-
-All project PRs must follow [Qt coding style](https://wiki.qt.io/Qt_Coding_Style)
+All project PRs must follow [Qt coding style](https://wiki.qt.io/Qt_Coding_Style) 
 and format each edited file with clang-format before committing.
-
 ## Contribution
-
-In order to sync fork with main repo for PR,
-read [how to sync a forked repo](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
-.
+In order to sync fork with main repo for PR, read [how to sync a forked repo](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork).

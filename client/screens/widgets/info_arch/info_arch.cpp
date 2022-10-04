@@ -10,6 +10,7 @@ InfoArch::InfoArch(QWidget *parent) : QWidget(parent), ui(new Ui::InfoArch)
     buttonTemplate->hide();
     ui->categoriesFrame->layout()->takeAt(ui->categoriesFrame->layout()->indexOf(buttonTemplate));
 
+
     api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
                 "eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW"
                 "4ifQ.E9AEDCWuVSrbPKS9CBeG0H4PD56tcqY4PhX5bMWnP4k";
@@ -70,8 +71,8 @@ std::vector<CustomButton *> InfoArch::getCustomButtons(const std::vector<ICatego
     return result;
 }
 
-void InfoArch::setActiveCat(ICategory *category)
-{
+
+void InfoArch::setActiveCat(ICategory *category) {
     this->activeCategory = category;
     setActiveSubCat(nullptr);
     clearLayout(ui->subCategoriesFrame->layout());
