@@ -58,16 +58,15 @@ private:
     void createTeam();
     void cancel();
 
+    void deleteTeam(ICategory* team);
+
     Ui::Teams *ui;
 };
 
 class LeftAlignItem : public QTableWidgetItem
 {
 public:
-    LeftAlignItem(const QString& text) : QTableWidgetItem(text)
-    {
-        setTextAlignment(Qt::AlignLeft);
-    }
+    LeftAlignItem(const QString &text) : QTableWidgetItem(text) { setTextAlignment(Qt::AlignLeft); }
 };
 
 #endif

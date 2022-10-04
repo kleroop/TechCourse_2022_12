@@ -1,5 +1,7 @@
 #include "teams.h"
 #include "ui_Teams.h"
+#include "confirmation_modal.h"
+#include "algorithm"
 #include <image_view.h>
 #include <QBuffer>
 
@@ -159,6 +161,16 @@ void Teams::fillTable()
         deleteButton->setFixedSize(50, 20);
         deleteButton->setStyleSheet(DeleteButtonStyle);
 
+        connect(deleteButton, &QPushButton::clicked, this, [=] {
+            new ConfirmationModal(
+                    "You are about to delete this team!",
+                    "This team will be deleted from My Teams!\n"
+                    "Are you sure?",
+                    "Delete", [=]() {
+                        this->deleteTeam(team);
+                    }, []() {}, this);
+        });
+
         ui->tableWidget->setCellWidget(row, 5, editButton);
         ui->tableWidget->setCellWidget(row, 6, deleteButton);
         if (!rowH)
@@ -272,6 +284,20 @@ void Teams::applyChanges()
                              [=](const CategoriesTreeResponse &resp) { this->fillTable(); });
         setDefault();
     }
+}
+
+void Teams::deleteTeam(ICategory* team)
+{
+    auto subCategory = team->parent;
+    auto it = std::find_if(subCategory->children.begin(), subCategory->children.end(), [team](ICategory& child) -> bool {
+        return child.title == team->title;
+    });
+
+    if (it != subCategory->children.end())
+        subCategory->children.erase(it);
+
+    api.updateCategories(this->catTree,
+                         [=](const CategoriesTreeResponse &resp) { this->fillTable(); });
 }
 
 void Teams::createTeam()

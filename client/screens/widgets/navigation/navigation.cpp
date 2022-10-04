@@ -1,7 +1,7 @@
 #include "navigation.h"
 #include "ui_Navigation.h"
 
-Navigation::Navigation(QWidget *parent, Header* header) : QWidget(parent), ui(new Ui::Navigation)
+Navigation::Navigation(QWidget *parent, Header *header) : QWidget(parent), ui(new Ui::Navigation)
 {
     ui->setupUi(this);
     (buttonDecoratorArray[0] = ui->surveysButton)->setData(this, header, parent, "Surveys", "surveys");
@@ -24,7 +24,7 @@ Navigation::~Navigation()
 {
     delete ui;
 }
-QWidget * Navigation::getMainNavigationWidget()
+QWidget *Navigation::getMainNavigationWidget()
 {
     return ui->mainNavigationWidget;
 }
