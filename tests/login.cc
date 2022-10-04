@@ -1,24 +1,37 @@
 #include <gtest/gtest.h>
 #include "api.h"
+#include <QEventLoop>
+#include <QCoreApplication>
+#include <QNetworkAccessManager>
+#include <utility>
 
-TEST(LoginTest, SuccessfulLogin) {
-    Api api;
-    std::string mail = "admin@example.com";
-    std::string pass = "admin";
-    std::atomic_bool callback_called_flag{false};
-    bool loginState = false;
+bool loginRequest(std::string mail, std::string pass){
+    int a0 = 0;
+    QCoreApplication a((int &) a0, nullptr);
+    auto *manager = new QNetworkAccessManager;
+    QEventLoop loop;
+    QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+    Api api(manager);
+    bool rtrn = false;
 
-    api.login(mail, pass, [&callback_called_flag, &loginState](const AuthResponse &resp) {
-        if (!resp.error.empty()) {
-            loginState = true;
-        }else{
-            perror(resp.error.c_str());
-        }
-        callback_called_flag = true;
+    api.login(std::move(mail), std::move(pass), [&rtrn](const AuthResponse &resp) {
+        std::cout << resp.token << std::endl;
+        std::cout << resp.error << std::endl;
+        rtrn = resp.error.empty();
     });
 
-    int retry_count = 100;
-    while (!callback_called_flag && retry_count-- > 0)
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    ASSERT_TRUE(loginState);
+    loop.exec();
+    return rtrn;
+}
+
+TEST(LoginTest, SuccessfullLogin) {
+    EXPECT_TRUE(loginRequest("admin@example.com", "admin"));
+}
+
+TEST(LoginTest, InvalidEmail) {
+    EXPECT_FALSE(loginRequest("error", "admin"));
+}
+
+TEST(LoginTest, InvalidPassword) {
+    EXPECT_FALSE(loginRequest("admin@example.com", "error"));
 }
