@@ -29,18 +29,20 @@ public:
     void mouseButtonPress();
 
     void setDefaultStyleSheet();
-    void setData(QWidget *parent, Header *header, QWidget *parentWidget, QString text, QString icon);
+    void setData(QWidget *parent, Header *header, QWidget *parentWidget, QString text,
+                 QString icon);
 
     QString text;
     QString icon;
-    Hover* hover = nullptr;
+    Hover *hover = nullptr;
     QWidget *parentWidget;
     QWidget *parent;
-    Header* header;
+    Header *header;
+
 private:
     Ui::ButtonDecorator *ui;
 };
 
-extern ButtonDecorator * activeButtonDecorator;
+extern ButtonDecorator *activeButtonDecorator;
 
 #endif // QTWORLD_BUTTONDECORATOR_H
