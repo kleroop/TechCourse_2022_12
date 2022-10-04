@@ -4,11 +4,14 @@
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class ClickCatchOverlay; }
+namespace Ui {
+class ClickCatchOverlay;
+}
 QT_END_NAMESPACE
 
-class ClickCatchOverlay : public QWidget {
-Q_OBJECT
+class ClickCatchOverlay : public QWidget
+{
+    Q_OBJECT
 
 public:
     explicit ClickCatchOverlay(QWidget *parent, bool blurred = false);
@@ -23,6 +26,5 @@ private:
 
     void resizeEvent(QResizeEvent *event);
 };
-
 
 #endif

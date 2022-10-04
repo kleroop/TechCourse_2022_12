@@ -1,18 +1,26 @@
 #include "categories_model.h"
+#include <base64.h>
+#include <utility>
+struct tm fixDate(struct tm date)
+{
+    if (date.tm_year == 0 && date.tm_sec == 0 && date.tm_hour == 0) {
+        date.tm_year = 2022;
+        date.tm_mon = 1;
+        date.tm_mday = 1;
+        date.tm_hour = 1;
+        date.tm_min = 1;
+        date.tm_sec = 1;
+    }
 
-#include <cstdio>
+    return date;
+};
 
 static inline string serialize_iso8601(struct tm tt)
 {
-    char timestamp[] = "YYYY-MM-ddTHH:mm:ss.SSSZ";
-    if ((size_t)snprintf(timestamp, sizeof(timestamp), "%04d-%02d-%02dT%02d:%02d:%06.03fZ",
-                         1970 + tt.tm_year, 1 + tt.tm_mon, tt.tm_mday, tt.tm_hour, tt.tm_min,
-                         (double)tt.tm_sec)
-        >= sizeof(timestamp)) {
-        fprintf(stderr, "[%s]: Invalid iso8601 values in struct tm: {%d, %d, %d, %d, %d, %d}\n",
-                __func__, tt.tm_sec, tt.tm_min, tt.tm_hour, tt.tm_mday, tt.tm_mon, tt.tm_year);
-        return "";
-    }
+    tt = fixDate(tt);
+    char timestamp[] = "YYYY-MM-ddTHH:mm:ss.SSS+00:00Z";
+    sprintf(timestamp, "%04d-%02d-%02dT%02d:%02d:%06.03fZ", 1970 + tt.tm_year, 1 + tt.tm_mon,
+            tt.tm_mday, tt.tm_hour, tt.tm_min, (double)tt.tm_sec);
     return timestamp;
 }
 
@@ -23,13 +31,14 @@ static inline struct tm deserialize_iso8601(string s)
 
     if (sscanf(s.c_str(), "%04d-%02d-%02dT%02d:%02d:%lfZ", &tt.tm_year, &tt.tm_mon, &tt.tm_mday,
                &tt.tm_hour, &tt.tm_min, &seconds)
-        != 6) {
-        fprintf(stderr, "[%s] Bad iso8601 datetime: \"%s\"\n", __func__, s.c_str());
-        return { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-    }
+        != 6)
+        return tt;
     tt.tm_sec = (int)seconds;
     tt.tm_mon -= 1;
     tt.tm_year -= 1970;
+
+    tt = fixDate(tt);
+
     return tt;
 };
 
@@ -41,6 +50,15 @@ json ICategory::serialize()
     if (type == CategoryTypes::TEAM) {
         response["location"] = location;
         response["dateCreated"] = serialize_iso8601(dateCreated);
+        if (!icon.empty()) {
+            size_t b64_len = Base64encode_len(icon.size());
+            char *b64 = new char[b64_len];
+            Base64encode(b64, (char*)icon.data(), icon.size());
+            response["icon"] = string(b64, b64_len);
+            delete[] b64;
+        } else {
+            response["icon"] = nullptr;
+        }
     }
 
     std::vector<json> children_json;
@@ -78,6 +96,15 @@ void ICategory::deserialize(json data)
 
     if (data.contains("dateCreated")) {
         dateCreated = deserialize_iso8601(data["dateCreated"]);
+    }
+
+    if (data.contains("icon") && data["icon"] != nullptr) {
+        const string &idata = data["icon"].get<string>();
+        size_t bdata_len = Base64decode_len(idata.c_str());
+        uint8_t *bdata = new uint8_t [bdata_len];
+        Base64decode((char *)bdata, idata.c_str());
+        icon = { bdata, bdata + bdata_len };
+        delete[] bdata;
     }
 
     for (auto &child : data["children"]) {
@@ -184,4 +211,20 @@ json UpdateCategoriesRequest::serialize()
 void UpdateCategoriesRequest::deserialize(json data)
 {
     deserializeCategoryTree(data, categoriesTree, error);
+}
+
+void CategoriesTree::updateLists()
+{
+    this->subcategories.clear();
+    this->teams.clear();
+    for (auto &cat : this->categories) {
+        for (auto &scat : cat.children) {
+            scat.parent = &cat;
+            this->subcategories.push_back(&scat);
+            for (auto &team : scat.children) {
+                team.parent = &scat;
+                this->teams.push_back(&team);
+            }
+        }
+    }
 }

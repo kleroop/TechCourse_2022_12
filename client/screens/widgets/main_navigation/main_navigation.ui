@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1119</width>
-    <height>66</height>
+    <height>138</height>
    </rect>
   </property>
   <property name="contextMenuPolicy">
@@ -19,17 +19,6 @@
   <property name="layoutDirection">
    <enum>Qt::RightToLeft</enum>
   </property>
-  <layout class="QHBoxLayout" name="mainLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
-  </layout>
  </widget>
  <resources/>
  <connections/>

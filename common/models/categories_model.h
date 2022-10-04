@@ -7,6 +7,8 @@
 #include "ISerializable.h"
 
 enum CategoryTypes { CATEGORY, SUBCATEGORY, TEAM };
+typedef std::vector<uint8_t> ICData;
+
 
 class ICategory : public ISerializable
 {
@@ -27,18 +29,16 @@ public:
     CategoryTypes type;
     bool isHidden = false;
     std::string location;
-    struct tm dateCreated;
+    struct tm dateCreated = {};
+    ICData icon = {};
+
+
     // todo add position
 };
 
-class CategoriesTree
-{
-public:
-    std::vector<ICategory> categories;
-};
+struct tm fixDate(struct tm date);
 
-class Category : public ICategory
-{
+class Category : public ICategory {
 public:
     Category(std::string title, bool isHidden, ICategory *parent = nullptr)
         : ICategory(std::move(title), isHidden, parent)
@@ -60,16 +60,25 @@ public:
 class Team : public ICategory
 {
 public:
-    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "",
-         struct tm dateCreated = {})
+    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "", struct tm dateCreated = {}, ICData img={})
         : ICategory(std::move(title), isHidden, parent)
     {
         this->type = CategoryTypes::TEAM;
         this->location = std::move(location);
-        this->dateCreated = dateCreated;
+        this->dateCreated = fixDate(dateCreated);
+        this->icon = img;
     }
     json serialize() override;
     void deserialize(json data) override;
+};
+
+class CategoriesTree
+{
+public:
+    std::vector<ICategory> categories;
+    void updateLists();
+    std::vector<ICategory *> teams;
+    std::vector<ICategory *> subcategories;
 };
 
 void deserializeCategoryTree(json &data, CategoriesTree &categoriesTree, std::string &error);
@@ -94,5 +103,6 @@ public:
 
     CategoriesTree categoriesTree;
 };
+
 
 #endif

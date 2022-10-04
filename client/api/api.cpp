@@ -36,12 +36,14 @@ Api::~Api()
     delete manager;
 }
 
-void Api::makeRequest(string path, json inp, string token, const std::function<void(const json &)> &f)
+void Api::makeRequest(string path, json inp, string token,
+                      const std::function<void(const json &)> &f)
 {
     QNetworkRequest request(QUrl(QString::fromStdString("http://localhost:5000" + path)));
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
+   /* string s = to_string(inp);
+    const char *cs = s.c_str();*/
     string headerData = "Bearer " + token;
     request.setRawHeader("Authorization", QByteArray::fromStdString(headerData));
 
@@ -64,17 +66,33 @@ void Api::login(string email, string password, const std::function<void(const Au
     });
 }
 
-void Api::getCategories(const std::function<void(const CategoriesTreeResponse &)> &f) {
+void Api::getCategories(const std::function<void(const CategoriesTreeResponse &)> &f)
+{
     nlohmann::json j;
     makeRequest("/categories/get", j, this->token, [=](const json &inp) {
         CategoriesTree categoriesTree;
         CategoriesTreeResponse r(categoriesTree);
         r.deserialize(inp);
+
+        for (auto &cat : r.categoriesTree.categories) {
+            cat.type = CategoryTypes::CATEGORY;
+            for (auto &scat : cat.children) {
+                scat.type = CategoryTypes::SUBCATEGORY;
+                scat.parent = &cat;
+                for (auto &team : scat.children) {
+                    team.type = CategoryTypes::TEAM;
+                    team.parent = &scat;
+                }
+            }
+        }
+
         f(r);
     });
 }
 
-void Api::updateCategories(CategoriesTree &categoriesTree, const std::function<void(const CategoriesTreeResponse &)> &f) {
+void Api::updateCategories(CategoriesTree &categoriesTree,
+                           const std::function<void(const CategoriesTreeResponse &)> &f)
+{
     UpdateCategoriesRequest request(categoriesTree);
     makeRequest("/categories/update", request.serialize(), this->token, [=](const json &inp) {
         CategoriesTree categoriesTree;
@@ -83,20 +101,3 @@ void Api::updateCategories(CategoriesTree &categoriesTree, const std::function<v
         f(r);
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
