@@ -10,6 +10,7 @@
 
 #include "api.h"
 #include "models/categories_model.h"
+#include "image_view.h"
 #include "uiUtils.h"
 
 QT_BEGIN_NAMESPACE
@@ -34,6 +35,7 @@ private:
     Api api;
     CategoriesTree catTree;
     ICategory *activeTeam = nullptr;
+    image_view* img;
 
     int rowH = 0;
     bool isCreateTeamActive = false;

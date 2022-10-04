@@ -1,12 +1,14 @@
 #include "teams.h"
 #include "ui_Teams.h"
+#include <image_view.h>
+#include <QBuffer>
 
 static const std::vector<std::string> locations{
-        "", "Alabama", "Alaska", "Arizona", "Arkansas", "California",
-        "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii",
-        "Idaho", "IllinoisIndiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
-        "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
-        "Missouri", "Montana", "Nebraska"
+    "",         "Alabama",         "Alaska",        "Arizona",  "Arkansas",  "California",
+    "Colorado", "Connecticut",     "Delaware",      "Florida",  "Georgia",   "Hawaii",
+    "Idaho",    "IllinoisIndiana", "Iowa",          "Kansas",   "Kentucky",  "Louisiana",
+    "Maine",    "Maryland",        "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+    "Missouri", "Montana",         "Nebraska"
 };
 
 static const QString EditButtonStyle = "background: transparent;\n"
@@ -24,7 +26,8 @@ static const QString DeleteButtonStyle = "background: transparent;\n"
                                          "background-repeat: no-repeat;\n"
                                          "background-position: center center;";
 
-Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams) {
+Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams)
+{
     ui->setupUi(this);
 
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -33,6 +36,9 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams) {
     ui->tableWidget->setShowGrid(false);
     ui->tableWidget->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->tableWidget->verticalHeader()->setVisible(false);
+    img = new image_view(this);
+    ui->iconLayout->replaceWidget(ui->iconView, img);
+    delete ui->iconView;
 
     api.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
                 "eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjYxMzcwNjcwLjExOCwic3ViIjoiYWRtaW"
@@ -50,17 +56,43 @@ Teams::Teams(QWidget *parent) : QWidget(parent), ui(new Ui::Teams) {
     connect(ui->applyButton, &QPushButton::clicked, this, [this]() { applyChanges(); });
     connect(ui->createTeamButton, &QPushButton::clicked, this, [this]() { createTeam(); });
     connect(ui->cancelButton, &QPushButton::clicked, this, [this]() { cancel(); });
-    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::syncComboBox);
-    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::checkApplyIsEnabled);
-    connect(ui->locCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Teams::checkApplyIsEnabled);
-    connect(ui->teamNameForm, SIGNAL(textChanged(const QString &)), this, SLOT(checkApplyIsEnabled()));
+    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &Teams::syncComboBox);
+    connect(ui->catCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &Teams::checkApplyIsEnabled);
+    connect(ui->locCBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &Teams::checkApplyIsEnabled);
+    connect(ui->teamNameForm, SIGNAL(textChanged(const QString &)), this,
+            SLOT(checkApplyIsEnabled()));
 }
 
-Teams::~Teams() {
+Teams::~Teams()
+{
     delete ui;
 }
 
-void Teams::setDefault() {
+static ICData imageToBytes(const QImage &qImage)
+{
+    QBuffer buf;
+    buf.open(QIODevice::ReadWrite);
+    bool saveOk = qImage.save(&buf, "PNG");
+    assert(saveOk);
+    buf.seek(0);
+    const QByteArray &qarr = buf.data();
+    ICData icon_bytes(qarr.begin(), qarr.end());
+    return icon_bytes;
+}
+
+static QImage bytesToImage(const ICData &icon_bytes)
+{
+    QImage qImage;
+    bool loadOk = qImage.loadFromData(icon_bytes.data(), icon_bytes.size());
+    assert(loadOk);
+    return qImage;
+}
+
+void Teams::setDefault()
+{
     catTree.updateLists();
     ui->applyButton->setEnabled(false);
     ui->applyButton->setText("Apply");
@@ -71,21 +103,26 @@ void Teams::setDefault() {
     isCreateTeamActive = false;
     isEditTeamActive = false;
     activeTeam = nullptr;
+    img->clear();
 }
 
-void Teams::init() {
+void Teams::init()
+{
     ui->locCBox->setPlaceholderText("All");
     ui->catCBox->setPlaceholderText("All");
     ui->subCBox->setPlaceholderText("All");
     setDefault();
 }
 
-void setRowBackground(const QBrush &brush, QAbstractItemModel *model, int row, const QModelIndex &parent = QModelIndex()) {
+void setRowBackground(const QBrush &brush, QAbstractItemModel *model, int row,
+                      const QModelIndex &parent = QModelIndex())
+{
     for (int i = 0; i < model->columnCount(parent); ++i)
         model->setData(model->index(row, i, parent), brush, Qt::BackgroundRole);
 }
 
-void Teams::fillTable() {
+void Teams::fillTable()
+{
     catTree.updateLists();
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(static_cast<int>(catTree.teams.size()));
@@ -98,18 +135,21 @@ void Teams::fillTable() {
 
         ui->tableWidget->setItem(row, 0, new LeftAlignItem(QString::fromStdString(team->title)));
         ui->tableWidget->setItem(row, 1, new LeftAlignItem(QString::fromStdString(team->location)));
-        ui->tableWidget->setItem(row, 2, new LeftAlignItem(QString::fromStdString(dateAdded.str())));
-        ui->tableWidget->setItem(row, 3, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
-        ui->tableWidget->setItem(row, 4, new LeftAlignItem(QString::fromStdString(team->parent->title)));
+        ui->tableWidget->setItem(row, 2,
+                                 new LeftAlignItem(QString::fromStdString(dateAdded.str())));
+        ui->tableWidget->setItem(
+                row, 3, new LeftAlignItem(QString::fromStdString(team->parent->parent->title)));
+        ui->tableWidget->setItem(row, 4,
+                                 new LeftAlignItem(QString::fromStdString(team->parent->title)));
 
         auto editButton = new QPushButton("Edit");
         editButton->setStyleSheet(EditButtonStyle);
         editButton->setCursor(Qt::PointingHandCursor);
         editButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-        connect(editButton, &QPushButton::clicked, this, [=]{
+        connect(editButton, &QPushButton::clicked, this, [=] {
             setEditingTeam(team);
-            for (int i =0; i <ui->tableWidget->rowCount(); i++){
+            for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
                 ui->tableWidget->cellWidget(i, 5)->setStyleSheet(EditButtonStyle);
             }
             editButton->setStyleSheet(EditButtonStyleActive);
@@ -121,80 +161,96 @@ void Teams::fillTable() {
 
         ui->tableWidget->setCellWidget(row, 5, editButton);
         ui->tableWidget->setCellWidget(row, 6, deleteButton);
-        if (!rowH) rowH = ui->tableWidget->rowHeight(row) + 20;
+        if (!rowH)
+            rowH = ui->tableWidget->rowHeight(row) + 20;
         ui->tableWidget->setRowHeight(row, rowH);
     }
 }
 
-void Teams::setEditingTeam(ICategory *team) {
+void Teams::setEditingTeam(ICategory *team)
+{
     setDefault();
     ui->applyButton->setText("Apply");
     isEditTeamActive = true;
     checkApplyIsEnabled();
 
     activeTeam = team;
+    img->clear();
+    if (!team->icon.empty()) {
+        img->setImage(bytesToImage(team->icon));
+    }
     ui->locCBox->setCurrentText(team->location.c_str());
     ui->catCBox->setCurrentText(team->parent->parent->title.c_str());
     ui->subCBox->setCurrentText(team->parent->title.c_str());
     ui->teamNameForm->setText(QString::fromStdString(activeTeam->title));
 }
 
-void Teams::fillComboBox(QComboBox *box, std::vector<std::string> items, bool clean) {
+void Teams::fillComboBox(QComboBox *box, std::vector<std::string> items, bool clean)
+{
     QStringList list;
     if (clean)
         box->clear();
-    for (const auto &item: items) {
+    for (const auto &item : items) {
         list.push_back(QString::fromStdString(item));
     }
     box->addItems(list);
 }
 
-void Teams::syncComboBox(int index) {
-    if (index >= 0 && (unsigned int)index < catTree.categories.size()){
+void Teams::syncComboBox(int index)
+{
+    if (index >= 0 && (unsigned int)index < catTree.categories.size()) {
         ICategory *active = &catTree.categories[index];
         fillComboBox(ui->subCBox, getNames(active->children));
-    }else{
+    } else {
         ui->subCBox->clear();
     }
 }
 
-std::vector<std::string> Teams::getNames(std::vector<ICategory *> categories) {
+std::vector<std::string> Teams::getNames(std::vector<ICategory *> categories)
+{
     std::vector<std::string> names;
-    for (auto cat: categories) {
+    for (auto cat : categories) {
         names.push_back(cat->title);
     }
     return names;
 }
 
-std::vector<std::string> Teams::getNames(std::vector<ICategory> categories) {
+std::vector<std::string> Teams::getNames(std::vector<ICategory> categories)
+{
     std::vector<std::string> names;
-    for (auto cat: categories) {
+    for (auto cat : categories) {
         names.push_back(cat.title);
     }
     return names;
 }
 
-void Teams::applyChanges() {
+void Teams::applyChanges()
+{
     std::string location_inbox = ui->locCBox->currentText().toStdString();
     std::string cat_inbox = ui->catCBox->currentText().toStdString();
     std::string sub_inbox = ui->subCBox->currentText().toStdString();
     std::string name_inbox = ui->teamNameForm->text().toStdString();
+    ICData icon_bytes = {};
+    if (!img->getImage().isNull()) {
+        QImage qImage = qvariant_cast<QImage>(img->getImage());
+        icon_bytes = imageToBytes(qImage);
+    }
 
     if (isCreateTeamActive) {
         ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
         ICategory *activeSubCategory = &activeCat->children[ui->subCBox->currentIndex()];
         time_t now = time(nullptr);
         tm tstruct = *localtime(&now);
-        activeSubCategory->children.push_back(Team(name_inbox, false, activeSubCategory, location_inbox, tstruct));
-        api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
-            this->fillTable();
-        });
+        activeSubCategory->children.push_back(
+                Team(name_inbox, false, activeSubCategory, location_inbox, tstruct, icon_bytes));
+        api.updateCategories(this->catTree,
+                             [=](const CategoriesTreeResponse &resp) { this->fillTable(); });
         setDefault();
 
-    } else if (isEditTeamActive){
+    } else if (isEditTeamActive) {
         activeTeam->location = location_inbox;
         activeTeam->title = name_inbox;
-
+        activeTeam->icon = icon_bytes;
         if (!ui->subCBox->currentText().isEmpty()) {
             ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
             ICategory *activeSub = &activeCat->children[ui->subCBox->currentIndex()];
@@ -205,21 +261,17 @@ void Teams::applyChanges() {
 
                 ptrdiff_t indexInParent = activeTeam - &oldParent->children[0];
                 ICategory team = oldParent->children[indexInParent];
-
                 oldParent->children.erase(oldParent->children.begin() + indexInParent);
 
                 newParent->children.push_back(team);
                 activeTeam = &newParent->children.back();
                 activeTeam->parent = newParent;
             }
-
         }
-        api.updateCategories(this->catTree, [=](const CategoriesTreeResponse &resp) {
-            this->fillTable();
-        });
+        api.updateCategories(this->catTree,
+                             [=](const CategoriesTreeResponse &resp) { this->fillTable(); });
         setDefault();
     }
-
 }
 
 void Teams::createTeam()
@@ -234,10 +286,8 @@ void Teams::createTeam()
 
 void Teams::checkApplyIsEnabled()
 {
-    bool isEnabled = !ui->teamNameForm->text().isEmpty()
-            && !ui->subCBox->currentText().isEmpty()
-            && !ui->locCBox->currentText().isEmpty()
-            &&(isCreateTeamActive || isEditTeamActive);
+    bool isEnabled = !ui->teamNameForm->text().isEmpty() && !ui->subCBox->currentText().isEmpty()
+            && !ui->locCBox->currentText().isEmpty() && (isCreateTeamActive || isEditTeamActive);
 
     ui->applyButton->setEnabled(isEnabled);
 }
@@ -246,6 +296,3 @@ void Teams::cancel()
 {
     setDefault();
 }
-
-
-

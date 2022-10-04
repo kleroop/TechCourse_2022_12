@@ -1,7 +1,6 @@
 #include "categories_model.h"
-
+#include <base64.h>
 #include <utility>
-
 struct tm fixDate(struct tm date)
 {
     if (date.tm_year == 0 && date.tm_sec == 0 && date.tm_hour == 0) {
@@ -51,6 +50,15 @@ json ICategory::serialize()
     if (type == CategoryTypes::TEAM) {
         response["location"] = location;
         response["dateCreated"] = serialize_iso8601(dateCreated);
+        if (!icon.empty()) {
+            size_t b64_len = Base64encode_len(icon.size());
+            char *b64 = new char[b64_len];
+            Base64encode(b64, (char*)icon.data(), icon.size());
+            response["icon"] = string(b64, b64_len);
+            delete[] b64;
+        } else {
+            response["icon"] = nullptr;
+        }
     }
 
     std::vector<json> children_json;
@@ -88,6 +96,15 @@ void ICategory::deserialize(json data)
 
     if (data.contains("dateCreated")) {
         dateCreated = deserialize_iso8601(data["dateCreated"]);
+    }
+
+    if (data.contains("icon") && data["icon"] != nullptr) {
+        const string &idata = data["icon"].get<string>();
+        size_t bdata_len = Base64decode_len(idata.c_str());
+        uint8_t *bdata = new uint8_t [bdata_len];
+        Base64decode((char *)bdata, idata.c_str());
+        icon = { bdata, bdata + bdata_len };
+        delete[] bdata;
     }
 
     for (auto &child : data["children"]) {

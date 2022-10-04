@@ -77,6 +77,7 @@ Status DAL::InitEx(string host, string port, string username, string dbname, str
         "   subCategoryId SERIAL NOT NULL,"
         "   location VARCHAR(32) NOT NULL,"
         "   dateCreated TIMESTAMP NOT NULL,"
+        "   icon BYTEA,"
         "   FOREIGN KEY(subCategoryId) REFERENCES DSubCategory(id) ON DELETE CASCADE"
         ")"
     };
@@ -379,20 +380,22 @@ void SubCategory::Delete()
 }
 
 Team::Team(string name, bool isHidden, SubCategory *scat, string location,
-           Poco::DateTime dateCreated)
+           Poco::DateTime dateCreated, Poco::Nullable<Poco::Data::BLOB> icon)
 {
     this->name = name;
     this->isHidden = isHidden;
     this->scat = scat;
     this->location = location;
     this->dateCreated = dateCreated;
+    this->icon = icon;
 }
 void Team::Create()
 {
-    Statement insert = InsertQueryBuild(getTable(),
-                                        { bind(this->name), bind(this->isHidden), bind(scat->id),
-                                          bind(this->location), bind(this->dateCreated) },
-                                        this->id);
+    Statement insert =
+            InsertQueryBuild(getTable(),
+                             { bind(this->name), bind(this->isHidden), bind(scat->id),
+                               bind(this->location), bind(this->dateCreated), bind(this->icon) },
+                             this->id);
 
     executeInsert(this, insert);
 }
@@ -401,20 +404,21 @@ std::vector<Team> Team::Select(string query, Bindings binds)
     Statement select = SelectQueryBuild(getTable(), query, binds);
     int32_t cat_id;
     select, into(this->id), into(this->name), into(this->isHidden), into(cat_id),
-            into(this->location), into(this->dateCreated);
+            into(this->location), into(this->dateCreated), into(this->icon);
     return executeSelect(this, select);
 }
 void Team::Update()
 {
-    Statement update = UpdateQueryBuild(getTable(),
-                                        "name = $1, "
-                                        "isHidden = $2, "
-                                        "subCategoryId = $3, "
-                                        "location = $4, "
-                                        "dateCreated = $5",
-                                        "id = $6",
-                                        { bind(name), bind(isHidden), bind(scat->id),
-                                          bind(location), bind(dateCreated), bind(id) });
+    Statement update =
+            UpdateQueryBuild(getTable(),
+                             "name = $1, "
+                             "isHidden = $2, "
+                             "subCategoryId = $3, "
+                             "location = $4, "
+                             "dateCreated = $5",
+                             "id = $6",
+                             { bind(name), bind(isHidden), bind(scat->id), bind(location),
+                               bind(dateCreated), bind(id), bind(icon) });
     executeUpdate(this, update);
 }
 void Team::Delete()
