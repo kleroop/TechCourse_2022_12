@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     /* Categories */
     DAL::Category cat("test1", false);
     DAL::SubCategory scat("test2", false, &cat);
-    DAL::Team team("test3", false, &scat, "Dallas", Poco::DateTime(2022, 11, 11));
+    DAL::Team team("test3", false, &scat, "Dallas", Poco::DateTime(2022, 11, 11), {});
     cat.Create();
     scat.Create();
     team.Create();

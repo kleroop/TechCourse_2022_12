@@ -7,6 +7,8 @@
 #include "ISerializable.h"
 
 enum CategoryTypes { CATEGORY, SUBCATEGORY, TEAM };
+typedef std::vector<uint8_t> ICData;
+
 
 class ICategory : public ISerializable
 {
@@ -28,6 +30,8 @@ public:
     bool isHidden = false;
     std::string location;
     struct tm dateCreated = {};
+    ICData icon = {};
+
 
     // todo add position
 };
@@ -56,13 +60,13 @@ public:
 class Team : public ICategory
 {
 public:
-    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "",
-         struct tm dateCreated = {})
+    Team(std::string title, bool isHidden, ICategory *parent, std::string location = "", struct tm dateCreated = {}, ICData img={})
         : ICategory(std::move(title), isHidden, parent)
     {
         this->type = CategoryTypes::TEAM;
         this->location = std::move(location);
         this->dateCreated = fixDate(dateCreated);
+        this->icon = img;
     }
     json serialize() override;
     void deserialize(json data) override;

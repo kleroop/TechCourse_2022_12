@@ -54,8 +54,12 @@ void UpdateCategories::handleRequest(Poco::Net::HTTPServerRequest &request,
             for (auto &team : subCategory.children) {
                 ICategory teamm = team;
                 team.dateCreated = fixDate(team.dateCreated);
+                auto dalIcon = Poco::Nullable<Poco::Data::BLOB>();
+                if (!team.icon.empty()){
+                    dalIcon.assign(team.icon);
+                }
                 DAL::Team teamDAL(team.title, team.isHidden, &subCategoryDAL, team.location,
-                                  Poco::DateTime(team.dateCreated));
+                                  Poco::DateTime(team.dateCreated),dalIcon);
                 teamDAL.Create();
             }
         }

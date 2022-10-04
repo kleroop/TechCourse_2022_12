@@ -16,8 +16,14 @@ CategoriesTree fromDal()
             auto teams = subCategory.teams;
 
             for (const auto &team : teams) {
+                ICData icData = {};
+
+                if (!team.icon.isNull()) {
+                    icData = team.icon.value().content();
+                }
+
                 Team teamModel(team.name, team.isHidden, &subCategoryModel, team.location,
-                               team.dateCreated.makeTM());
+                               team.dateCreated.makeTM(), icData);
                 subCategoryModel.children.push_back(teamModel);
             }
 
