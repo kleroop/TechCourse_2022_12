@@ -83,7 +83,7 @@ public:
 
 void deserializeCategoryTree(json &data, CategoriesTree &categoriesTree, std::string &error);
 
-class CategoriesTreeResponse : ISerializable
+class CategoriesTreeResponse : public ISerializable
 {
 public:
     explicit CategoriesTreeResponse(CategoriesTree &_categoriesTree);
