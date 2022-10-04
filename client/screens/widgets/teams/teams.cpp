@@ -103,6 +103,7 @@ void Teams::setDefault()
     isCreateTeamActive = false;
     isEditTeamActive = false;
     activeTeam = nullptr;
+    img->clear();
 }
 
 void Teams::init()
