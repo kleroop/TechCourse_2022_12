@@ -249,7 +249,7 @@ void Teams::applyChanges()
     } else if (isEditTeamActive) {
         activeTeam->location = location_inbox;
         activeTeam->title = name_inbox;
-        // TODO: edit icon
+        activeTeam->icon = icon_bytes;
         if (!ui->subCBox->currentText().isEmpty()) {
             ICategory *activeCat = &catTree.categories[ui->catCBox->currentIndex()];
             ICategory *activeSub = &activeCat->children[ui->subCBox->currentIndex()];
@@ -260,7 +260,6 @@ void Teams::applyChanges()
 
                 ptrdiff_t indexInParent = activeTeam - &oldParent->children[0];
                 ICategory team = oldParent->children[indexInParent];
-
                 oldParent->children.erase(oldParent->children.begin() + indexInParent);
 
                 newParent->children.push_back(team);
