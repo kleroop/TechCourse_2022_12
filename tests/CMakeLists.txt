@@ -16,8 +16,17 @@ target_link_libraries(login_test PRIVATE GTest::gtest_main Qt5::Core Qt5::Networ
         common
         client::api)
 
+add_executable(dal_test dal.cc)
+target_link_libraries(dal_test PRIVATE utils DAL GTest::gtest_main)
+add_custom_command(TARGET dal_test POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:DAL>
+        $<TARGET_FILE_DIR:dal_test>)
+
 include(GoogleTest)
 gtest_discover_tests(categories)
 gtest_discover_tests(login_test)
+gtest_discover_tests(dal_test)
+
 
 windeployqt(login_test)
